@@ -11,15 +11,6 @@
 
     <artifactId>domain</artifactId>
     <packaging>pom</packaging>
-    <modules>
-        <module>member</module>
-        <module>user</module>
-        <module>salon</module>
-        <module>notification</module>
-        <module>booking</module>
-        <module>service</module>
-        <module>hairdresser</module>
-    </modules>
 
     <dependencies>
         <dependency>
