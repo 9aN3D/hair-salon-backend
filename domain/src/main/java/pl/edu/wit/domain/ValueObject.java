@@ -1,4 +1,4 @@
-package pl.edu.wit.domain.user;
+package pl.edu.wit.domain;
 
 public interface ValueObject {
 
