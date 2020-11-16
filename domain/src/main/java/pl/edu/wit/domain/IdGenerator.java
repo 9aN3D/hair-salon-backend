@@ -1,7 +1,7 @@
 package pl.edu.wit.domain;
 
-public interface IdGenerator<ID> {
+public interface IdGenerator {
 
-    ID generate();
+    String generate();
 
 }
