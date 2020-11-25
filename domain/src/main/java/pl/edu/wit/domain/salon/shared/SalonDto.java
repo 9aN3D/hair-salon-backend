@@ -11,4 +11,6 @@ public class SalonDto {
 
     private String name;
 
+    private SalonAddressDto address;
+
 }

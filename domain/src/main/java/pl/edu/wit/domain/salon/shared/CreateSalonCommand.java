@@ -9,5 +9,17 @@ import pl.edu.wit.domain.cqrs.Command;
 public class CreateSalonCommand implements Command<CreateSalonResult> {
 
     String name;
+    Address address;
+
+    @Value
+    @Builder
+    public static class Address {
+
+        String streetName;
+        String postalCode;
+        String city;
+        String country;
+
+    }
 
 }
