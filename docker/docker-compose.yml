@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+
+  mongodb:
+    build: mongodb
+    container_name: "mongodb"
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    volumes:
+      - ./mongodb-data/db:/data/db
+      - ./mongodb-data/mongo-backup:/data/mongo-backup
+    ports:
+      - "27017:27017"
+    command: mongod --auth

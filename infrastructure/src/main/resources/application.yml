@@ -1,0 +1,22 @@
+spring:
+  data:
+    mongodb:
+      port: 27017
+      username: crm_user
+      password: crm_user
+      database: hair-salon-db
+
+  application:
+    name: hair-salon-backend
+
+  output:
+    ansi:
+      enabled: always
+
+
+logging:
+  level:
+    pl.edu.wit: TRACE
+
+server:
+  port: 9000
