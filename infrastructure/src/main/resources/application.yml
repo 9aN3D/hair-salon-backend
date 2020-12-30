@@ -5,6 +5,7 @@ spring:
       username: crm_user
       password: crm_user
       database: hair-salon-db
+      auto-index-creation: false
 
   application:
     name: hair-salon-backend
