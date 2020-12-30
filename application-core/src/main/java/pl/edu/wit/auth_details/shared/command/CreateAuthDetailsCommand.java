@@ -2,8 +2,7 @@ package pl.edu.wit.auth_details.shared.command;
 
 import lombok.Data;
 import pl.edu.wit.auth_details.shared.Role;
-
-import java.util.Set;
+import pl.edu.wit.auth_details.shared.Status;
 
 @Data
 public class CreateAuthDetailsCommand {
@@ -12,6 +11,8 @@ public class CreateAuthDetailsCommand {
 
     private String password;
 
-    private Set<Role> roles;
+    private Role role;
+
+    private Status status;
 
 }

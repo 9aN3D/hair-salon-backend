@@ -11,7 +11,7 @@ import static java.lang.String.format;
 
 @ToString(of = "email")
 @EqualsAndHashCode(of = "email")
-class Email {
+public class Email {
 
     private final Pattern pattern;
     private final String email;
@@ -22,16 +22,16 @@ class Email {
         this.email = validateEmail(value);
     }
 
-    public String validateEmail(String value) {
+    public String value() {
+        return email;
+    }
+
+    private String validateEmail(String value) {
         var validatedString = new StringNotBlank(value).validate();
         if (pattern.matcher(validatedString).matches()) {
             return validatedString;
         }
         throw new EmailNotValidException(format("Email %s is not valid", email));
-    }
-
-    public String value() {
-        return email;
     }
 
 }
