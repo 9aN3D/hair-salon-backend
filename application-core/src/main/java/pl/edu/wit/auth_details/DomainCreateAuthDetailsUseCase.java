@@ -1,11 +1,11 @@
-package pl.edu.wit.auth_details.usecase;
+package pl.edu.wit.auth_details;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import pl.edu.wit.IdGenerator;
 import pl.edu.wit.PasswordEncoder;
 import pl.edu.wit.auth_details.domain.AuthDetails;
-import pl.edu.wit.auth_details.port.primary.CreateAuthDetails;
+import pl.edu.wit.auth_details.port.primary.CreateAuthDetailsUseCase;
 import pl.edu.wit.auth_details.port.secondary.AuthDetailsRepository;
 import pl.edu.wit.auth_details.shared.command.CreateAuthDetailsCommand;
 import pl.edu.wit.auth_details.shared.exception.AuthDetailsAlreadyExists;
@@ -14,14 +14,14 @@ import static java.lang.String.format;
 
 @Slf4j
 @RequiredArgsConstructor
-public final class AuthDetailsUseCase implements CreateAuthDetails {
+final class DomainCreateAuthDetailsUseCase implements CreateAuthDetailsUseCase {
 
     private final IdGenerator idGenerator;
     private final PasswordEncoder passwordEncoder;
     private final AuthDetailsRepository authDetailsRepository;
 
     @Override
-    public String create(final CreateAuthDetailsCommand command) {
+    public String create(CreateAuthDetailsCommand command) {
         log.trace("Creating auth details: {command: {}}", command);
         checkAuthDetailsExistsByEmail(command.getEmail());
         var authDetails = new AuthDetails(idGenerator, passwordEncoder, command);

@@ -4,11 +4,10 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import pl.edu.wit.IdGenerator;
 import pl.edu.wit.PasswordEncoder;
-import pl.edu.wit.auth_details.shared.Role;
-import pl.edu.wit.auth_details.shared.Status;
+import pl.edu.wit.auth_details.shared.AuthDetailsRole;
+import pl.edu.wit.auth_details.shared.AuthDetailsStatus;
 import pl.edu.wit.auth_details.shared.command.CreateAuthDetailsCommand;
-import pl.edu.wit.auth_details.shared.exception.AuthDetailsRoleNotValidException;
-import pl.edu.wit.auth_details.shared.exception.AuthDetailsStatusNotValidException;
+import pl.edu.wit.auth_details.shared.exception.AuthDetailsNotValidException;
 
 import static java.util.Objects.nonNull;
 
@@ -19,38 +18,38 @@ public class AuthDetails {
     private final String id;
     private final Email email;
     private final AuthDetailsPassword password;
-    private final Status status;
-    private final Role role;
+    private final AuthDetailsStatus authDetailsStatus;
+    private final AuthDetailsRole authDetailsRole;
 
     public AuthDetails(IdGenerator idGenerator,
                        PasswordEncoder passwordEncoder,
                        String email,
                        String password,
-                       Status status,
-                       Role role) {
+                       AuthDetailsStatus authDetailsStatus,
+                       AuthDetailsRole authDetailsRole) {
         this.id = idGenerator.generate();
         this.email = new Email(email);
         this.password = new AuthDetailsPassword(password, passwordEncoder);
-        this.status = validateStatus(status);
-        this.role = validateRole(role);
+        this.authDetailsStatus = validateStatus(authDetailsStatus);
+        this.authDetailsRole = validateRole(authDetailsRole);
     }
 
     public AuthDetails(IdGenerator idGenerator, PasswordEncoder passwordEncoder, CreateAuthDetailsCommand command) {
-        this(idGenerator, passwordEncoder, command.getEmail(), command.getPassword(), command.getStatus(), command.getRole());
+        this(idGenerator, passwordEncoder, command.getEmail(), command.getPassword(), command.getAuthDetailsStatus(), command.getAuthDetailsRole());
     }
 
-    private Status validateStatus(Status status) {
-        if (nonNull(status)) {
-            return status;
+    private AuthDetailsStatus validateStatus(AuthDetailsStatus authDetailsStatus) {
+        if (nonNull(authDetailsStatus)) {
+            return authDetailsStatus;
         }
-        throw new AuthDetailsStatusNotValidException("Auth details role collections cannot be null");
+        throw new AuthDetailsNotValidException("Auth details status cannot be null");
     }
 
-    private Role validateRole(Role role) {
-        if (nonNull(role)) {
-            return role;
+    private AuthDetailsRole validateRole(AuthDetailsRole authDetailsRole) {
+        if (nonNull(authDetailsRole)) {
+            return authDetailsRole;
         }
-        throw new AuthDetailsRoleNotValidException("Auth details role collections cannot be null");
+        throw new AuthDetailsNotValidException("Auth details role cannot be null");
     }
 
     public String getId() {
@@ -65,12 +64,12 @@ public class AuthDetails {
         return password.value();
     }
 
-    public Status getStatus() {
-        return status;
+    public AuthDetailsStatus getAuthDetailsStatus() {
+        return authDetailsStatus;
     }
 
-    public Role getRole() {
-        return role;
+    public AuthDetailsRole getAuthDetailsRole() {
+        return authDetailsRole;
     }
 
 }

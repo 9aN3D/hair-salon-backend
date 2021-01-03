@@ -2,8 +2,8 @@ package pl.edu.wit.auth_details.shared.dto;
 
 import lombok.Builder;
 import lombok.Value;
-import pl.edu.wit.auth_details.shared.Role;
-import pl.edu.wit.auth_details.shared.Status;
+import pl.edu.wit.auth_details.shared.AuthDetailsRole;
+import pl.edu.wit.auth_details.shared.AuthDetailsStatus;
 
 @Value
 @Builder
@@ -15,8 +15,8 @@ public class AuthDetailsDto {
 
     String password;
 
-    Status status;
+    AuthDetailsStatus authDetailsStatus;
 
-    Role role;
+    AuthDetailsRole authDetailsRole;
 
 }

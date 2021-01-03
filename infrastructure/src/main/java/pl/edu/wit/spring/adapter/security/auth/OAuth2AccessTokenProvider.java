@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import pl.edu.wit.token.port.secondary.TokenProvider;
-import pl.edu.wit.token.shared.dto.TokenDto;
+import pl.edu.wit.token.port.secondary.AccessTokenProvider;
+import pl.edu.wit.token.shared.dto.AccessTokenDto;
 import pl.edu.wit.token.shared.exception.InvalidCredentialsException;
 
 import java.util.List;
@@ -25,13 +25,13 @@ import static java.util.Objects.isNull;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class OAuth2TokenProvider implements TokenProvider {
+public class OAuth2AccessTokenProvider implements AccessTokenProvider {
 
     private final RestTemplate restTemplate;
     private final ResourceServerProperties resourceServerProperties;
 
     @Override
-    public TokenDto generate(String email, String password) {
+    public AccessTokenDto generate(String email, String password) {
         var loginMap = prepareGenerateRequestEntityBody(email, password);
         var headers = prepareHeaders();
         var requestEntity = new HttpEntity<>(loginMap, headers);
@@ -40,7 +40,7 @@ public class OAuth2TokenProvider implements TokenProvider {
     }
 
     @Override
-    public TokenDto refresh(String refreshToken) {
+    public AccessTokenDto refresh(String refreshToken) {
         var loginMap = prepareRefreshRequestEntityBody(refreshToken);
         var headers = prepareHeaders();
         var requestEntity = new HttpEntity<>(loginMap, headers);
@@ -66,27 +66,27 @@ public class OAuth2TokenProvider implements TokenProvider {
         return restTemplate.exchange(resourceServerProperties.getTokenInfoUri(), HttpMethod.POST, requestEntity, Map.class);
     }
 
-    private TokenDto handleGenerateTokenResponse(ResponseEntity<Map> responseEntity, String email) {
+    private AccessTokenDto handleGenerateTokenResponse(ResponseEntity<Map> responseEntity, String email) {
         if (isNull(responseEntity) || isNull(responseEntity.getBody())) {
             return handleEmptyResponse(email);
         }
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             log.info("Got access token: {username: {}}}", email);
-            return toTokenDto(responseEntity.getBody());
+            return toAccessTokenDto(responseEntity.getBody());
         }
         log.warn("Unable to log user {response: {}}", responseEntity.getBody());
         throw new InvalidCredentialsException(format("Unable to log in user: {username: %s}", email));
     }
 
-    private TokenDto handleEmptyResponse(String username) {
+    private AccessTokenDto handleEmptyResponse(String username) {
         var errorMessage = format("Unable to log in user: {username: %s}. Response body is empty", username);
         log.warn(errorMessage);
         throw new InvalidCredentialsException(errorMessage);
     }
 
-    private TokenDto toTokenDto(Map body) {
-        return TokenDto.builder()
-                .accessToken((String) body.get("access_token"))
+    private AccessTokenDto toAccessTokenDto(Map body) {
+        return AccessTokenDto.builder()
+                .value((String) body.get("access_token"))
                 .refreshToken((String) body.get("refresh_token"))
                 .tokenType((String) body.get("token_type"))
                 .expiresIn((Integer) body.get("expires_in"))
@@ -100,13 +100,13 @@ public class OAuth2TokenProvider implements TokenProvider {
         }};
     }
 
-    private TokenDto handleRefreshTokenResponse(ResponseEntity<Map> responseEntity) {
+    private AccessTokenDto handleRefreshTokenResponse(ResponseEntity<Map> responseEntity) {
         if (isNull(responseEntity) || isNull(responseEntity.getBody())) {
             throw new InvalidCredentialsException("Unable to refresh token. Response body is empty");
         }
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             log.info("Successful token refresh");
-            return toTokenDto(responseEntity.getBody());
+            return toAccessTokenDto(responseEntity.getBody());
         }
         log.warn("Unable to refresh token {response: {}}", responseEntity.getBody());
         throw new InvalidCredentialsException("Unable to refresh token");

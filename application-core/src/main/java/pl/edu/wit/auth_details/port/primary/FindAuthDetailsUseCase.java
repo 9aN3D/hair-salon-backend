@@ -4,8 +4,8 @@ import pl.edu.wit.auth_details.shared.dto.AuthDetailsDto;
 
 import java.util.Optional;
 
-public interface FindAuthDetails {
+public interface FindAuthDetailsUseCase {
 
-    Optional<AuthDetailsDto> findOneByEmail(String email);
+    AuthDetailsDto findOneByEmail(String email);
 
 }

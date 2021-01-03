@@ -4,12 +4,12 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import pl.edu.wit.auth_details.shared.Role;
+import pl.edu.wit.auth_details.shared.AuthDetailsRole;
 
 import java.util.Set;
 
 @Data
-@Document
+@Document(value = "AuthDetails")
 public class AuthDetailsDocument {
 
     @Id
@@ -20,6 +20,6 @@ public class AuthDetailsDocument {
 
     String password;
 
-    Set<Role> roles;
+    Set<AuthDetailsRole> authDetailsRoles;
 
 }
