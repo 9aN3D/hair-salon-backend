@@ -9,7 +9,7 @@ import pl.edu.wit.spring.adapter.repository.auth_details.document.AuthDetailsDoc
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-01-06T19:50:57+0100",
+    date = "2021-01-06T20:26:40+0100",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 14 (Oracle Corporation)"
 )
 @Component
