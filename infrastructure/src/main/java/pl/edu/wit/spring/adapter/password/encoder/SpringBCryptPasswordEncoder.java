@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SpringBCryptPasswordEncoder implements pl.edu.wit.PasswordEncoder {
+public class SpringBCryptPasswordEncoder implements pl.edu.wit.application.port.secondary.PasswordEncoder {
 
     private final PasswordEncoder passwordEncoder;
 

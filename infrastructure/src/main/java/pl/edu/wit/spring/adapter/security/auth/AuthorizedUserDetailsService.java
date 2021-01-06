@@ -8,8 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.edu.wit.auth_details.port.secondary.AuthDetailsRepository;
-import pl.edu.wit.auth_details.shared.dto.AuthDetailsDto;
+import pl.edu.wit.application.port.secondary.AuthDetailsRepository;
+import pl.edu.wit.domain.dto.AuthDetailsDto;
 
 import static java.lang.String.format;
 
@@ -30,7 +30,7 @@ public class AuthorizedUserDetailsService implements UserDetailsService {
     }
 
     private AuthDetailsDto checkStatus(AuthDetailsDto authDetailsDto) {
-        switch (authDetailsDto.getAuthDetailsStatus()) {
+        switch (authDetailsDto.getStatus()) {
             case BANNED:
                 throw new UserBannedException("User is banned by administrator");
             case NOT_ACTIVE:
@@ -48,7 +48,7 @@ public class AuthorizedUserDetailsService implements UserDetailsService {
                 .accountExpired(false)
                 .credentialsExpired(false)
                 .accountLocked(false)
-                .authorities(authDetailsDto.getAuthDetailsRole().toString())
+                .authorities(authDetailsDto.getRole().toString())
                 .build();
     }
 

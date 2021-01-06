@@ -33,7 +33,7 @@ security:
   oauth2:
     resource:
       id: hairSalonApiResource
-      token-info-uri: http://localhost:9001/oauth/token
+      token-info-uri: http://localhost:9000/oauth/token
     client:
       client-id: testClientId
       client-secret: testClientSecret

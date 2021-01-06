@@ -4,12 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import pl.edu.wit.token.AccessTokenFacade;
-import pl.edu.wit.token.shared.command.GenerateAccessTokenCommand;
-import pl.edu.wit.token.shared.command.RefreshAccessTokenCommand;
-import pl.edu.wit.token.shared.dto.AccessTokenDto;
+import pl.edu.wit.application.command.GenerateAccessTokenCommand;
+import pl.edu.wit.application.command.RefreshAccessTokenCommand;
+import pl.edu.wit.application.port.primary.AccessTokenService;
+import pl.edu.wit.domain.dto.AccessTokenDto;
 
+import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -17,16 +19,18 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(value = "/api/v1/tokens", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 public class TokenController {
 
-    private final AccessTokenFacade accessTokenFacade;
+    private final AccessTokenService accessTokenService;
 
     @PostMapping
+    @ResponseStatus(OK)
     public AccessTokenDto generate(@RequestBody GenerateAccessTokenCommand command) {
-        return accessTokenFacade.getGenerateAccessTokenUseCase().generate(command);
+        return accessTokenService.generate(command);
     }
 
     @PostMapping(value = "/refresh")
+    @ResponseStatus(OK)
     public AccessTokenDto refresh(@RequestBody RefreshAccessTokenCommand command) {
-        return accessTokenFacade.getRefreshAccessTokenUseCase().refresh(command);
+        return accessTokenService.refresh(command);
     }
 
 }

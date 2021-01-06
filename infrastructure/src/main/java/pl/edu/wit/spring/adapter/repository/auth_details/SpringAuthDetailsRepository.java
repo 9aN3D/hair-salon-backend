@@ -2,9 +2,10 @@ package pl.edu.wit.spring.adapter.repository.auth_details;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import pl.edu.wit.auth_details.domain.AuthDetails;
-import pl.edu.wit.auth_details.port.secondary.AuthDetailsRepository;
-import pl.edu.wit.auth_details.shared.dto.AuthDetailsDto;
+import org.springframework.transaction.annotation.Transactional;
+import pl.edu.wit.application.port.secondary.AuthDetailsRepository;
+import pl.edu.wit.domain.dto.AuthDetailsDto;
+import pl.edu.wit.domain.model.auth_details.AuthDetails;
 import pl.edu.wit.spring.adapter.repository.auth_details.mapper.AuthDetailsMapper;
 
 import java.util.Optional;
@@ -17,6 +18,7 @@ public class SpringAuthDetailsRepository implements AuthDetailsRepository {
     private final AuthDetailsMapper mapper;
 
     @Override
+    @Transactional
     public String save(AuthDetails authDetails) {
         return repository.save(mapper.toDocument(authDetails)).getId();
     }

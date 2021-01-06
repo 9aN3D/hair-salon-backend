@@ -3,7 +3,7 @@ package pl.edu.wit.spring.adapter.repository.member.document;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import pl.edu.wit.member.domain.MemberAgreement;
+import pl.edu.wit.domain.model.member.MemberAgreement;
 
 import java.time.LocalDateTime;
 import java.util.Set;

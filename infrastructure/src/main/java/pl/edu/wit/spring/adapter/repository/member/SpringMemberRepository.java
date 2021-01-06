@@ -2,8 +2,9 @@ package pl.edu.wit.spring.adapter.repository.member;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import pl.edu.wit.member.domain.Member;
-import pl.edu.wit.member.port.secondary.MemberRepository;
+import org.springframework.transaction.annotation.Transactional;
+import pl.edu.wit.application.port.secondary.MemberRepository;
+import pl.edu.wit.domain.model.member.Member;
 import pl.edu.wit.spring.adapter.repository.member.mapper.MemberMapper;
 
 @Repository
@@ -14,6 +15,7 @@ public class SpringMemberRepository implements MemberRepository {
     private final MemberMapper mapper;
 
     @Override
+    @Transactional
     public String save(Member member) {
         return repository.save(mapper.toDocument(member)).getId();
     }

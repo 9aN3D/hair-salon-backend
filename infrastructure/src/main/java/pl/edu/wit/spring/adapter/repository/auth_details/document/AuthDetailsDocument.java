@@ -4,9 +4,8 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import pl.edu.wit.auth_details.shared.AuthDetailsRole;
-
-import java.util.Set;
+import pl.edu.wit.domain.model.auth_details.AuthDetailsRole;
+import pl.edu.wit.domain.model.auth_details.AuthDetailsStatus;
 
 @Data
 @Document(value = "AuthDetails")
@@ -20,6 +19,8 @@ public class AuthDetailsDocument {
 
     String password;
 
-    Set<AuthDetailsRole> authDetailsRoles;
+    AuthDetailsStatus status;
+
+    AuthDetailsRole role;
 
 }

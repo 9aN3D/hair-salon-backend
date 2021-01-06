@@ -2,7 +2,7 @@ package pl.edu.wit.spring.adapter.id.generator;
 
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
-import pl.edu.wit.IdGenerator;
+import pl.edu.wit.application.port.secondary.IdGenerator;
 
 @Component
 public class MongoIdGenerator implements IdGenerator {
