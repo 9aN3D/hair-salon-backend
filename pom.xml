@@ -27,7 +27,6 @@
         <java.version>11</java.version>
         <spring-boot.version>2.2.6.RELEASE</spring-boot.version>
         <spring-core.version>5.2.5.RELEASE</spring-core.version>
-        <spring.boot.version>2.4.1</spring.boot.version>
         <spring-security-oauth2.version>2.1.7.RELEASE</spring-security-oauth2.version>
         <oauth2.version>2.3.6.RELEASE</oauth2.version>
         <junit.version>5.6.2</junit.version>

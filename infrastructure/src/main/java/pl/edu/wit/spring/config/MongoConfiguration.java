@@ -3,11 +3,8 @@ package pl.edu.wit.spring.config;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
-import org.springframework.data.mongodb.MongoDbFactory;
-import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.convert.MongoConverter;
 import org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver;
@@ -45,9 +42,9 @@ public class MongoConfiguration {
         log.info("Mongo InitIndicesAfterStartup take: {}", (System.currentTimeMillis() - init));
     }
 
-    @Bean
-    MongoTransactionManager transactionManager(MongoDbFactory dbFactory) {
-        return new MongoTransactionManager(dbFactory);
-    }
+//    @Bean
+//    MongoTransactionManager transactionManager(MongoDatabaseFactory mongoDatabaseFactory) {
+//        return new MongoTransactionManager(mongoDatabaseFactory);
+//    }
 
 }

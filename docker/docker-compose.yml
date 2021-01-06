@@ -13,7 +13,7 @@ services:
       - ./mongodb-data/mongo-backup:/data/mongo-backup
     ports:
       - "27017:27017"
-    command: mongod --auth --replSet rs0 --port 27017
+    command: mongod --auth
 
   redis:
     image: redis
