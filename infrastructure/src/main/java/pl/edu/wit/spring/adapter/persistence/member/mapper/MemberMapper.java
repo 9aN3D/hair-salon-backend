@@ -2,6 +2,7 @@ package pl.edu.wit.spring.adapter.persistence.member.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.springframework.stereotype.Component;
 import pl.edu.wit.domain.model.Email;
 import pl.edu.wit.domain.model.PhoneNumber;
@@ -17,8 +18,14 @@ import pl.edu.wit.spring.adapter.persistence.member.model.MemberDocument;
 public abstract class MemberMapper {
 
     @Mapping(source = "member.id", target = "id")
-    @Mapping(source = "authDetailsDocument", target = "authDetails" )
+    @Mapping(source = "authDetailsDocument", target = "authDetails")
+    @Mapping(source = "member", target = "phoneNumber", qualifiedByName = "phoneNumber")
     public abstract MemberDocument toDocument(Member member, AuthDetailsDocument authDetailsDocument);
+
+    @Named("phoneNumber")
+    String phoneNumberToString(Member member) {
+        return member.getPhoneNumber().value();
+    }
 
     public Member toDomain(MemberDocument memberDocument) {
         return Member.builder()

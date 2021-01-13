@@ -55,8 +55,8 @@ public class Member {
         return surname;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber.value();
+    public PhoneNumber getPhoneNumber() {
+        return phoneNumber;
     }
 
     public Set<MemberAgreement> getAgreements() {
@@ -76,7 +76,7 @@ public class Member {
                 .id(id)
                 .name(name)
                 .surname(surname)
-                .phoneNumber(getPhoneNumber())
+                .phoneNumber(phoneNumber.value())
                 .agreements(getAgreements())
                 .authDetails(authDetails.toDto())
                 .registrationDateTime(registrationDateTime)

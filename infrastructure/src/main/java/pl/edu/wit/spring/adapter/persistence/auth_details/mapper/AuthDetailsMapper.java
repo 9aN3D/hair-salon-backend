@@ -1,6 +1,8 @@
 package pl.edu.wit.spring.adapter.persistence.auth_details.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.springframework.stereotype.Component;
 import pl.edu.wit.domain.dto.AuthDetailsDto;
 import pl.edu.wit.domain.model.Email;
@@ -12,7 +14,19 @@ import pl.edu.wit.spring.adapter.persistence.auth_details.model.AuthDetailsDocum
 @Mapper(componentModel = "spring")
 public abstract class AuthDetailsMapper {
 
+    @Mapping(source = "authDetails", target = "email", qualifiedByName = "email")
+    @Mapping(source = "authDetails", target = "password", qualifiedByName = "password")
     public abstract AuthDetailsDocument toDocument(AuthDetails authDetails);
+
+    @Named("email")
+    String emailToString(AuthDetails authDetails) {
+        return authDetails.getEmail().value();
+    }
+
+    @Named("password")
+    String passwordToString(AuthDetails authDetails) {
+        return authDetails.getPassword().value();
+    }
 
     public abstract AuthDetailsDto toDto(AuthDetailsDocument document);
 

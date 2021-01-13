@@ -36,12 +36,12 @@ public class AuthDetails {
         return id;
     }
 
-    public String getEmail() {
-        return email.value();
+    public Email getEmail() {
+        return email;
     }
 
-    public String getPassword() {
-        return password.value();
+    public AuthDetailsPassword getPassword() {
+        return password;
     }
 
     public AuthDetailsStatus getStatus() {
@@ -55,8 +55,8 @@ public class AuthDetails {
     public AuthDetailsDto toDto() {
         return AuthDetailsDto.builder()
                 .id(id)
-                .email(getEmail())
-                .password(getPassword())
+                .email(email.value())
+                .password(password.value())
                 .status(status)
                 .role(role)
                 .build();
