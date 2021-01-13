@@ -3,9 +3,11 @@ package pl.edu.wit.domain.model.member;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import pl.edu.wit.domain.dto.MemberDto;
 import pl.edu.wit.domain.exception.member.MemberNotValidException;
 import pl.edu.wit.domain.model.PhoneNumber;
 import pl.edu.wit.domain.model.StringNotBlank;
+import pl.edu.wit.domain.model.auth_details.AuthDetails;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -22,7 +24,7 @@ public class Member {
     private final String surname;
     private final PhoneNumber phoneNumber;
     private final MemberAgreements agreements;
-    private final String authDetailsId;
+    private final AuthDetails authDetails;
     private final LocalDateTime registrationDateTime;
 
     public Member(String id,
@@ -30,14 +32,14 @@ public class Member {
                   String surname,
                   PhoneNumber phoneNumber,
                   MemberAgreements agreements,
-                  String authDetailsId,
+                  AuthDetails authDetails,
                   LocalDateTime registrationDateTime) {
         this.id = setId(id);
         this.name = setName(name);
         this.surname = setSurname(surname);
         this.phoneNumber = setPhoneNumber(phoneNumber);
         this.agreements = setAgreements(agreements);
-        this.authDetailsId = setAuthDetailsId(authDetailsId);
+        this.authDetails = setAuthDetails(authDetails);
         this.registrationDateTime = setRegistrationDateTime(registrationDateTime);
     }
 
@@ -61,12 +63,24 @@ public class Member {
         return agreements.value();
     }
 
-    public String getAuthDetailsId() {
-        return authDetailsId;
+    public AuthDetails getAuthDetails() {
+        return authDetails;
     }
 
     public LocalDateTime getRegistrationDateTime() {
         return registrationDateTime;
+    }
+
+    public MemberDto toDto() {
+        return MemberDto.builder()
+                .id(id)
+                .name(name)
+                .surname(surname)
+                .phoneNumber(getPhoneNumber())
+                .agreements(getAgreements())
+                .authDetails(authDetails.toDto())
+                .registrationDateTime(registrationDateTime)
+                .build();
     }
 
     private String setId(String id) {
@@ -98,8 +112,11 @@ public class Member {
         throw new MemberNotValidException("Member agreements cannot be null");
     }
 
-    private String setAuthDetailsId(String authDetailsId) {
-        return new StringNotBlank(authDetailsId).validate();
+    private AuthDetails setAuthDetails(AuthDetails authDetails) {
+        if (nonNull(authDetails)) {
+            return authDetails;
+        }
+        throw new MemberNotValidException("Member auth details cannot be null");
     }
 
     private LocalDateTime setRegistrationDateTime(LocalDateTime registrationDateTime) {

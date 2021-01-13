@@ -10,7 +10,7 @@ public class CollectionHelper {
         return !isEmpty(collection);
     }
 
-    private static boolean isEmpty(Collection<?> collection) {
+    public static boolean isEmpty(Collection<?> collection) {
         return isNull(collection) || collection.isEmpty();
     }
 

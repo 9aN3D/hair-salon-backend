@@ -6,24 +6,33 @@ import pl.edu.wit.application.command.RegisterMemberCommand;
 import pl.edu.wit.application.factory.MemberFactory;
 import pl.edu.wit.application.port.primary.AuthDetailsService;
 import pl.edu.wit.application.port.primary.MemberRegistrationService;
-import pl.edu.wit.application.port.secondary.MemberRepository;
+import pl.edu.wit.application.port.secondary.MemberDao;
+import pl.edu.wit.domain.exception.auth_details.AuthDetailsAlreadyExists;
+
+import static java.lang.String.format;
 
 @Slf4j
 @RequiredArgsConstructor
 public class AppMemberRegistrationService implements MemberRegistrationService {
 
-    private final MemberRepository memberRepository;
-    private final AuthDetailsService authDetailsService;
+    private final MemberDao memberDao;
     private final MemberFactory factory;
+    private final AuthDetailsService authDetailsService;
 
     @Override
     public void register(RegisterMemberCommand command) {
         log.trace("Registering member {command: {}}", command);
-        var createAuthDetailsCommand = factory.buildCreateAuthDetailsCommand(command);
-        var authDetailsId = authDetailsService.create(createAuthDetailsCommand);
-        var member = factory.createNewMember(authDetailsId, command);
-        var savedMemberId = memberRepository.save(member);
+        var member = factory.createNewMember(command);
+        throwIfExistByCommandEmail(command.getEmail());
+        var savedMemberId = memberDao.save(member);
         log.info("Registered member {savedMemberId: {}}", savedMemberId);
+    }
+
+    private void throwIfExistByCommandEmail(String email) {
+        if (authDetailsService.existByEmail(email)) {
+            throw new AuthDetailsAlreadyExists(
+                    format("Auth details already exists by email: %s", email));
+        }
     }
 
 }

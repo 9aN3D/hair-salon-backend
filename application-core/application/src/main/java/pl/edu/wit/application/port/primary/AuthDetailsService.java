@@ -1,11 +1,10 @@
 package pl.edu.wit.application.port.primary;
 
-import pl.edu.wit.application.command.CreateAuthDetailsCommand;
 import pl.edu.wit.domain.dto.AuthDetailsDto;
 
 public interface AuthDetailsService {
 
-    String create(CreateAuthDetailsCommand command);
+    Boolean existByEmail(String email);
 
     AuthDetailsDto findOneByEmail(String email);
 

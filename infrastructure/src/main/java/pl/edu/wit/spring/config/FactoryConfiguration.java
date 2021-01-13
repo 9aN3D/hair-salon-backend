@@ -16,8 +16,8 @@ public class FactoryConfiguration {
     }
 
     @Bean
-    MemberFactory memberFactory(IdGenerator idGenerator) {
-        return new MemberFactory(idGenerator);
+    MemberFactory memberFactory(IdGenerator idGenerator, AuthDetailsFactory authDetailsFactory) {
+        return new MemberFactory(idGenerator, authDetailsFactory);
     }
 
 }

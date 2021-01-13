@@ -14,7 +14,7 @@ public class AuthDetailsFactory {
     private final IdGenerator idGenerator;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthDetails buildAuthDetails(CreateAuthDetailsCommand command) {
+    public AuthDetails createNewAuthDetails(CreateAuthDetailsCommand command) {
         return AuthDetails.builder()
                 .id(idGenerator.generate())
                 .password(new AuthDetailsPassword(passwordEncoder.encode(command.getPassword())))

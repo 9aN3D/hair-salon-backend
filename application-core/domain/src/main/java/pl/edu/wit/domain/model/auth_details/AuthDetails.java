@@ -3,6 +3,7 @@ package pl.edu.wit.domain.model.auth_details;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import pl.edu.wit.domain.dto.AuthDetailsDto;
 import pl.edu.wit.domain.exception.auth_details.AuthDetailsNotValidException;
 import pl.edu.wit.domain.model.Email;
 
@@ -49,6 +50,16 @@ public class AuthDetails {
 
     public AuthDetailsRole getRole() {
         return role;
+    }
+
+    public AuthDetailsDto toDto() {
+        return AuthDetailsDto.builder()
+                .id(id)
+                .email(getEmail())
+                .password(getPassword())
+                .status(status)
+                .role(role)
+                .build();
     }
 
     private String setId(String id) {

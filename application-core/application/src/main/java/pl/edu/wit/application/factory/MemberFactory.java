@@ -16,29 +16,34 @@ import static pl.edu.wit.domain.model.auth_details.AuthDetailsStatus.ACTIVE;
 public class MemberFactory {
 
     private final IdGenerator idGenerator;
+    private final AuthDetailsFactory authDetailsFactory;
 
-    public Member createNewMember(String authDetailsId, RegisterMemberCommand command) {
+    public Member createNewMember(RegisterMemberCommand command) {
         return Member.builder()
                 .id(idGenerator.generate())
                 .name(command.getName())
                 .surname(command.getSurname())
-                .authDetailsId(authDetailsId)
-                .agreements(MemberAgreements.builder()
-                        .personalDataAgreement(command.getPersonalDataAgreement())
-                        .reservationReceiptAgreement(command.getReservationReceiptAgreement())
-                        .marketingAgreement(command.getMarketingAgreement())
-                        .build())
+                .authDetails(authDetailsFactory.createNewAuthDetails(buildCreateAuthDetailsCommand(command)))
+                .agreements(buildMemberAgreements(command))
                 .phoneNumber(new PhoneNumber(command.getPhone()))
                 .registrationDateTime(now())
                 .build();
     }
 
-    public CreateAuthDetailsCommand buildCreateAuthDetailsCommand(RegisterMemberCommand command) {
+    private CreateAuthDetailsCommand buildCreateAuthDetailsCommand(RegisterMemberCommand command) {
         return CreateAuthDetailsCommand.builder()
                 .email(command.getEmail())
                 .password(command.getPassword())
-                .status(ACTIVE)
                 .role(MEMBER)
+                .status(ACTIVE)
+                .build();
+    }
+
+    private MemberAgreements buildMemberAgreements(RegisterMemberCommand command) {
+        return MemberAgreements.builder()
+                .personalDataAgreement(command.getPersonalDataAgreement())
+                .reservationReceiptAgreement(command.getReservationReceiptAgreement())
+                .marketingAgreement(command.getMarketingAgreement())
                 .build();
     }
 

@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-@EnableMongoRepositories(basePackages = "pl.edu.wit.spring.adapter.repository")
+@EnableMongoRepositories(basePackages = "pl.edu.wit.spring.adapter.persistence")
 public class MongoConfiguration {
 
     private final MongoTemplate mongoTemplate;
@@ -41,10 +41,5 @@ public class MongoConfiguration {
         }
         log.info("Mongo InitIndicesAfterStartup take: {}", (System.currentTimeMillis() - init));
     }
-
-//    @Bean
-//    MongoTransactionManager transactionManager(MongoDatabaseFactory mongoDatabaseFactory) {
-//        return new MongoTransactionManager(mongoDatabaseFactory);
-//    }
 
 }

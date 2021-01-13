@@ -8,8 +8,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.edu.wit.application.port.secondary.AuthDetailsRepository;
+import pl.edu.wit.application.port.secondary.AuthDetailsDao;
 import pl.edu.wit.domain.dto.AuthDetailsDto;
+import pl.edu.wit.domain.model.auth_details.AuthDetails;
 
 import static java.lang.String.format;
 
@@ -18,11 +19,12 @@ import static java.lang.String.format;
 @RequiredArgsConstructor
 public class AuthorizedUserDetailsService implements UserDetailsService {
 
-    private final AuthDetailsRepository repository;
+    private final AuthDetailsDao repository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return repository.findByEmail(username)
+        return repository.findOne(username)
+                .map(AuthDetails::toDto)
                 .map(this::checkStatus)
                 .map(this::toUserDetails)
                 .orElseThrow(() -> new UsernameNotFoundException(
@@ -40,15 +42,15 @@ public class AuthorizedUserDetailsService implements UserDetailsService {
         }
     }
 
-    private UserDetails toUserDetails(AuthDetailsDto authDetailsDto) {
+    private UserDetails toUserDetails(AuthDetailsDto dto) {
         return User.builder()
-                .username(authDetailsDto.getEmail())
-                .password(authDetailsDto.getPassword())
+                .username(dto.getEmail())
+                .password(dto.getPassword())
                 .disabled(false)
                 .accountExpired(false)
                 .credentialsExpired(false)
                 .accountLocked(false)
-                .authorities(authDetailsDto.getRole().toString())
+                .authorities(dto.getRole().toString())
                 .build();
     }
 

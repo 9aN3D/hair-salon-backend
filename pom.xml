@@ -39,6 +39,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <querydsl.version>4.4.0</querydsl.version>
     </properties>
 
     <dependencyManagement>
@@ -104,6 +105,17 @@
                 <groupId>org.springframework.security.oauth.boot</groupId>
                 <artifactId>spring-security-oauth2-autoconfigure</artifactId>
                 <version>${spring-security-oauth2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.querydsl</groupId>
+                <artifactId>querydsl-apt</artifactId>
+                <version>${querydsl.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.querydsl</groupId>
+                <artifactId>querydsl-mongodb</artifactId>
+                <version>${querydsl.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
