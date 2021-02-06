@@ -6,6 +6,7 @@ import pl.edu.wit.application.factory.AuthDetailsFactory;
 import pl.edu.wit.application.factory.MemberFactory;
 import pl.edu.wit.application.port.secondary.IdGenerator;
 import pl.edu.wit.application.port.secondary.PasswordEncoder;
+import pl.edu.wit.application.port.secondary.PhoneNumberProvider;
 
 @Configuration
 public class FactoryConfiguration {
@@ -16,8 +17,8 @@ public class FactoryConfiguration {
     }
 
     @Bean
-    MemberFactory memberFactory(IdGenerator idGenerator, AuthDetailsFactory authDetailsFactory) {
-        return new MemberFactory(idGenerator, authDetailsFactory);
+    MemberFactory memberFactory(IdGenerator idGenerator, AuthDetailsFactory authDetailsFactory, PhoneNumberProvider phoneNumberProvider) {
+        return new MemberFactory(idGenerator, authDetailsFactory, phoneNumberProvider);
     }
 
 }

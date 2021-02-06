@@ -40,6 +40,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <querydsl.version>4.4.0</querydsl.version>
+        <libphonenumber.version>8.12.16</libphonenumber.version>
     </properties>
 
     <dependencyManagement>
@@ -116,6 +117,11 @@
                 <groupId>com.querydsl</groupId>
                 <artifactId>querydsl-mongodb</artifactId>
                 <version>${querydsl.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.googlecode.libphonenumber</groupId>
+                <artifactId>libphonenumber</artifactId>
+                <version>${libphonenumber.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -71,6 +71,10 @@
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-mongodb</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>libphonenumber</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

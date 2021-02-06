@@ -1,6 +1,8 @@
 package pl.edu.wit.domain.exception.auth_details;
 
-public class AuthDetailsAlreadyExists extends RuntimeException {
+import pl.edu.wit.domain.exception.DomainException;
+
+public class AuthDetailsAlreadyExists extends DomainException {
 
     public AuthDetailsAlreadyExists(String message) {
         super(message);

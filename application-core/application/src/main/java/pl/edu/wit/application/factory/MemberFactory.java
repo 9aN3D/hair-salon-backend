@@ -5,6 +5,7 @@ import pl.edu.wit.application.command.CreateAuthDetailsCommand;
 import pl.edu.wit.application.command.RegisterMemberCommand;
 import pl.edu.wit.application.command.UpdateMemberCommand;
 import pl.edu.wit.application.port.secondary.IdGenerator;
+import pl.edu.wit.application.port.secondary.PhoneNumberProvider;
 import pl.edu.wit.domain.model.PhoneNumber;
 import pl.edu.wit.domain.model.auth_details.AuthDetails;
 import pl.edu.wit.domain.model.member.Member;
@@ -21,6 +22,7 @@ public class MemberFactory {
 
     private final IdGenerator idGenerator;
     private final AuthDetailsFactory authDetailsFactory;
+    private final PhoneNumberProvider phoneNumberProvider;
 
     public Member createNewMember(RegisterMemberCommand command) {
         return Member.builder()
@@ -29,7 +31,7 @@ public class MemberFactory {
                 .surname(command.getSurname())
                 .authDetails(authDetailsFactory.createNewAuthDetails(buildCreateAuthDetailsCommand(command)))
                 .agreements(buildMemberAgreements(command))
-                .phoneNumber(new PhoneNumber(command.getPhone()))
+                .phoneNumber(verifyPhoneNumber(command.getPhone()))
                 .registrationDateTime(now())
                 .build();
     }
@@ -44,7 +46,7 @@ public class MemberFactory {
                 .authDetails(updateAuthDetails(command, oldMember))
                 .agreements(new MemberAgreements(oldMember.getAgreements()))
                 .phoneNumber(ofNullable(command.getPhone())
-                        .map(PhoneNumber::new)
+                        .map(this::verifyPhoneNumber)
                         .orElseGet(oldMember::getPhoneNumber))
                 .registrationDateTime(oldMember.getRegistrationDateTime())
                 .build();
@@ -73,6 +75,10 @@ public class MemberFactory {
             return oldMemberAuthDetails;
         }
         return authDetailsFactory.updateAuthDetails(command, oldMemberAuthDetails);
+    }
+
+    private PhoneNumber verifyPhoneNumber(String phoneNumber) {
+        return phoneNumberProvider.verify(phoneNumber);
     }
 
 }

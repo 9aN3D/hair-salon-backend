@@ -1,6 +1,8 @@
 package pl.edu.wit.domain.exception.auth_details;
 
-public class AuthDetailsPasswordNotValidException extends RuntimeException {
+import pl.edu.wit.domain.exception.DomainException;
+
+public class AuthDetailsPasswordNotValidException extends DomainException {
 
     public AuthDetailsPasswordNotValidException(String message) {
         super(message);

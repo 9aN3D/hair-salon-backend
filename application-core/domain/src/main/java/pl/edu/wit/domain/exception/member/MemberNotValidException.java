@@ -1,6 +1,8 @@
 package pl.edu.wit.domain.exception.member;
 
-public class MemberNotValidException extends RuntimeException {
+import pl.edu.wit.domain.exception.DomainException;
+
+public class MemberNotValidException extends DomainException {
 
     public MemberNotValidException(String message) {
         super(message);

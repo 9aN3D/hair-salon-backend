@@ -13,7 +13,7 @@ import javax.naming.AuthenticationException;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
-@Order(1)
+@Order(100)
 @RestControllerAdvice
 public class SecurityAdvice extends Advice {
 
