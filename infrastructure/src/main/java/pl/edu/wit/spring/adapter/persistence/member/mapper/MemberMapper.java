@@ -4,12 +4,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Component;
-import pl.edu.wit.domain.model.Email;
-import pl.edu.wit.domain.model.PhoneNumber;
-import pl.edu.wit.domain.model.auth_details.AuthDetails;
-import pl.edu.wit.domain.model.auth_details.AuthDetailsPassword;
-import pl.edu.wit.domain.model.member.Member;
-import pl.edu.wit.domain.model.member.MemberAgreements;
+import pl.edu.wit.application.domain.model.Email;
+import pl.edu.wit.application.domain.model.NotBlankPhoneNumber;
+import pl.edu.wit.application.domain.model.auth_details.AuthDetails;
+import pl.edu.wit.application.domain.model.auth_details.AuthDetailsPassword;
+import pl.edu.wit.application.domain.model.member.Member;
+import pl.edu.wit.application.domain.model.member.MemberAgreements;
 import pl.edu.wit.spring.adapter.persistence.auth_details.model.AuthDetailsDocument;
 import pl.edu.wit.spring.adapter.persistence.member.model.MemberDocument;
 
@@ -32,7 +32,7 @@ public abstract class MemberMapper {
                 .id(memberDocument.getId())
                 .name(memberDocument.getName())
                 .surname(memberDocument.getSurname())
-                .phoneNumber(new PhoneNumber(memberDocument.getPhoneNumber()))
+                .phoneNumber(new NotBlankPhoneNumber(memberDocument.getPhoneNumber()))
                 .agreements(new MemberAgreements(memberDocument.getAgreements()))
                 .authDetails(toAuthDetails(memberDocument.getAuthDetails()))
                 .registrationDateTime(memberDocument.getRegistrationDateTime())

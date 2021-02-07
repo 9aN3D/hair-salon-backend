@@ -3,9 +3,9 @@ package pl.edu.wit.api.response;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
-import pl.edu.wit.domain.dto.AuthDetailsDto;
-import pl.edu.wit.domain.model.auth_details.AuthDetailsRole;
-import pl.edu.wit.domain.model.auth_details.AuthDetailsStatus;
+import pl.edu.wit.application.domain.model.auth_details.AuthDetailsRole;
+import pl.edu.wit.application.domain.model.auth_details.AuthDetailsStatus;
+import pl.edu.wit.application.dto.AuthDetailsDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

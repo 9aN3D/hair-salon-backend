@@ -8,9 +8,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.edu.wit.application.domain.model.auth_details.AuthDetails;
+import pl.edu.wit.application.dto.AuthDetailsDto;
 import pl.edu.wit.application.port.secondary.AuthDetailsDao;
-import pl.edu.wit.domain.dto.AuthDetailsDto;
-import pl.edu.wit.domain.model.auth_details.AuthDetails;
 
 import static java.lang.String.format;
 

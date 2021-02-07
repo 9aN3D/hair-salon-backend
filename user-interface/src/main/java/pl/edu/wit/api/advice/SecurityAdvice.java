@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.NativeWebRequest;
 import pl.edu.wit.api.response.Problem;
-import pl.edu.wit.domain.exception.token.InvalidCredentialsException;
+import pl.edu.wit.application.exception.token.InvalidCredentialsException;
 
 import javax.naming.AuthenticationException;
 

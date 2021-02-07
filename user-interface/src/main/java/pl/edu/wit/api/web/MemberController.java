@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.wit.api.response.MemberResponse;
-import pl.edu.wit.application.command.UpdateMemberCommand;
+import pl.edu.wit.application.command.MemberUpdateCommand;
 import pl.edu.wit.application.port.primary.MemberService;
 
 import javax.validation.constraints.NotNull;
@@ -31,7 +31,7 @@ public class MemberController {
     }
 
     @PostMapping(value = "/{memberId}", consumes = APPLICATION_JSON_VALUE)
-    public void update(@PathVariable String memberId, @NotNull @RequestBody UpdateMemberCommand command) {
+    public void update(@PathVariable String memberId, @NotNull @RequestBody MemberUpdateCommand command) {
         memberService.update(memberId, command);
     }
 

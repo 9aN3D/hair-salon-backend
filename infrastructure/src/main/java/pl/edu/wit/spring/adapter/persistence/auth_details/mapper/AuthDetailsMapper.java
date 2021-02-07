@@ -4,10 +4,10 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Component;
-import pl.edu.wit.domain.dto.AuthDetailsDto;
-import pl.edu.wit.domain.model.Email;
-import pl.edu.wit.domain.model.auth_details.AuthDetails;
-import pl.edu.wit.domain.model.auth_details.AuthDetailsPassword;
+import pl.edu.wit.application.dto.AuthDetailsDto;
+import pl.edu.wit.application.domain.model.Email;
+import pl.edu.wit.application.domain.model.auth_details.AuthDetails;
+import pl.edu.wit.application.domain.model.auth_details.AuthDetailsPassword;
 import pl.edu.wit.spring.adapter.persistence.auth_details.model.AuthDetailsDocument;
 
 @Component

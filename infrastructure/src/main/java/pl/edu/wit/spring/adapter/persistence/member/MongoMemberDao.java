@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import pl.edu.wit.application.port.secondary.MemberDao;
 import pl.edu.wit.application.query.MemberFindQuery;
-import pl.edu.wit.domain.model.member.Member;
+import pl.edu.wit.application.domain.model.member.Member;
 import pl.edu.wit.spring.adapter.persistence.auth_details.MongoAuthDetailsRepository;
 import pl.edu.wit.spring.adapter.persistence.auth_details.mapper.AuthDetailsMapper;
 import pl.edu.wit.spring.adapter.persistence.member.mapper.MemberMapper;

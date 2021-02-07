@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import pl.edu.wit.application.dto.AccessTokenDto;
 import pl.edu.wit.application.port.secondary.AccessTokenProvider;
-import pl.edu.wit.domain.dto.AccessTokenDto;
-import pl.edu.wit.domain.exception.token.InvalidCredentialsException;
+import pl.edu.wit.application.exception.token.InvalidCredentialsException;
 
 import java.util.List;
 import java.util.Map;

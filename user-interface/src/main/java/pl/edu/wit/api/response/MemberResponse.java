@@ -2,7 +2,7 @@ package pl.edu.wit.api.response;
 
 import lombok.Builder;
 import lombok.Value;
-import pl.edu.wit.domain.dto.MemberDto;
+import pl.edu.wit.application.dto.MemberDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

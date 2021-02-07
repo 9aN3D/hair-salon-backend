@@ -6,8 +6,8 @@ import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import pl.edu.wit.domain.model.auth_details.AuthDetailsRole;
-import pl.edu.wit.domain.model.auth_details.AuthDetailsStatus;
+import pl.edu.wit.application.domain.model.auth_details.AuthDetailsRole;
+import pl.edu.wit.application.domain.model.auth_details.AuthDetailsStatus;
 
 @Data
 @QueryEntity
