@@ -6,6 +6,6 @@ public interface AuthDetailsService {
 
     Boolean existByEmail(String email);
 
-    AuthDetailsDto findOneByEmail(String email);
+    AuthDetailsDto findOneById(String id);
 
 }

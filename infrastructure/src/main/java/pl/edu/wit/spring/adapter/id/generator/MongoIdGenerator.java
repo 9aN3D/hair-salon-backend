@@ -12,4 +12,9 @@ public class MongoIdGenerator implements IdGenerator {
         return new ObjectId().toString();
     }
 
+    @Override
+    public Boolean isValid(String id) {
+        return ObjectId.isValid(id);
+    }
+
 }

@@ -23,7 +23,7 @@ public class MeController {
     @GetMapping
     @ResponseStatus(OK)
     public AuthDetailsDto me(@AuthenticationPrincipal Identity identity) {
-        return authDetailsService.findOneByEmail(identity.getId());
+        return authDetailsService.findOneById(identity.getId());
     }
 
 }

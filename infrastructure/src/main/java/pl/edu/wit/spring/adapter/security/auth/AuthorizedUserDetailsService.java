@@ -11,24 +11,40 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.edu.wit.application.domain.model.auth_details.AuthDetails;
 import pl.edu.wit.application.dto.AuthDetailsDto;
 import pl.edu.wit.application.port.secondary.AuthDetailsDao;
+import pl.edu.wit.application.port.secondary.IdGenerator;
+import pl.edu.wit.application.query.AuthDetailsFindQuery;
+
+import java.util.Optional;
 
 import static java.lang.String.format;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class AuthorizedUserDetailsService implements UserDetailsService {
 
-    private final AuthDetailsDao repository;
+    private final AuthDetailsDao authDetailsDao;
+    private final IdGenerator idGenerator;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return repository.findOne(username)
+    public UserDetails loadUserByUsername(String idOrEmail) throws UsernameNotFoundException {
+        return parseId(idOrEmail)
+                .map(AuthDetailsFindQuery::ofAuthDetailsId)
+                .map(authDetailsDao::findOne)
+                .orElseGet(() -> authDetailsDao.findOne(AuthDetailsFindQuery.ofEmail(idOrEmail)))
                 .map(AuthDetails::toDto)
                 .map(this::checkStatus)
                 .map(this::toUserDetails)
                 .orElseThrow(() -> new UsernameNotFoundException(
-                        format("Cannot find user by username: {%s}", username)));
+                        format("Cannot find user by id or email: {%s}", idOrEmail)));
+    }
+
+    private Optional<String> parseId(String idOrEmail) {
+        return idGenerator.isValid(idOrEmail)
+                ? of(idOrEmail)
+                : empty();
     }
 
     private AuthDetailsDto checkStatus(AuthDetailsDto authDetailsDto) {
@@ -44,7 +60,7 @@ public class AuthorizedUserDetailsService implements UserDetailsService {
 
     private UserDetails toUserDetails(AuthDetailsDto dto) {
         return User.builder()
-                .username(dto.getEmail())
+                .username(dto.getId())
                 .password(dto.getPassword())
                 .disabled(false)
                 .accountExpired(false)

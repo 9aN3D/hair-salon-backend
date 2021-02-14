@@ -4,4 +4,6 @@ public interface IdGenerator {
 
     String generate();
 
+    Boolean isValid(String id);
+
 }
