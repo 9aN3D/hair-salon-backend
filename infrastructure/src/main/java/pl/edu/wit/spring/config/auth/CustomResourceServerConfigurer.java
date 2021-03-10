@@ -28,6 +28,7 @@ public class CustomResourceServerConfigurer implements ResourceServerConfigurer 
                 .sessionManagement().sessionCreationPolicy(STATELESS)
                 .and().authorizeRequests()
                 .antMatchers(publicEndpoints()).permitAll()
+                .antMatchers(adminEndpoints()).access("hasAnyRole('ADMIN')")
                 .anyRequest().authenticated();
     }
 
@@ -36,6 +37,12 @@ public class CustomResourceServerConfigurer implements ResourceServerConfigurer 
                 "/oauth/token",
                 "/api/v1/tokens/**",
                 "/api/v1/registration/**"
+        };
+    }
+
+    private String[] adminEndpoints() {
+        return new String[]{
+                "/api/v1/admin/**",
         };
     }
 

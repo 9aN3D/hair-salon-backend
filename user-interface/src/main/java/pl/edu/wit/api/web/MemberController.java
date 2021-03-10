@@ -19,18 +19,18 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/api/v1/members", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1", produces = APPLICATION_JSON_VALUE)
 public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping(value = "/{authDetailsId}")
+    @GetMapping(value = "/members/{authDetailsId}")
     @ResponseStatus(OK)
     public MemberResponse get(@PathVariable String authDetailsId) {
         return MemberResponse.of(memberService.getOne(authDetailsId));
     }
 
-    @PostMapping(value = "/{memberId}", consumes = APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/members/{memberId}", consumes = APPLICATION_JSON_VALUE)
     public void update(@PathVariable String memberId, @NotNull @RequestBody MemberUpdateCommand command) {
         memberService.update(memberId, command);
     }
