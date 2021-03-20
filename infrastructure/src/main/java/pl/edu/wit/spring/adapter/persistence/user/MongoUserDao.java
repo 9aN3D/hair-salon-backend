@@ -1,15 +1,17 @@
 package pl.edu.wit.spring.adapter.persistence.user;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Repository;
 import pl.edu.wit.application.domain.model.user.User;
 import pl.edu.wit.application.dto.PageSlice;
 import pl.edu.wit.application.port.secondary.UserDao;
+import pl.edu.wit.application.query.MemberFindQuery;
 import pl.edu.wit.application.query.PageableParamsQuery;
 import pl.edu.wit.application.query.UserFindQuery;
 import pl.edu.wit.spring.adapter.persistence.PageableMapper;
+import pl.edu.wit.spring.adapter.persistence.member.model.QMemberDocument;
 import pl.edu.wit.spring.adapter.persistence.user.mapper.UserMapper;
 import pl.edu.wit.spring.adapter.persistence.user.model.QUserDocument;
 
@@ -39,20 +41,27 @@ public class MongoUserDao implements UserDao {
 
     @Override
     public PageSlice<User> findAll(UserFindQuery findQuery, PageableParamsQuery paramsQuery) {
+        var pageable = pageableMapper.toPageable(paramsQuery);
+        var page = ofNullable(buildPredicate(findQuery))
+                .map(predicate -> userRepository.findAll(predicate, pageable))
+                .orElseGet(() -> userRepository.findAll(pageable))
+                .map(userMapper::toDomain);
+        return pageableMapper.toPageSlice(page);
+    }
+
+    private Predicate buildPredicate(UserFindQuery findQuery) {
         var qUser = QUserDocument.userDocument;
         var builder = new BooleanBuilder();
+        buildLikeFullName(findQuery, qUser, builder);
+        return builder.getValue();
+    }
+
+    private void buildLikeFullName(UserFindQuery findQuery, QUserDocument qUser, BooleanBuilder builder) {
         ofNullable(findQuery.getFullName())
                 .map(String::trim)
                 .filter(String::isBlank)
                 .map(String::toLowerCase)
                 .ifPresent(fullName -> builder.and(qUser.name.lower().like(fullName)).or(qUser.surname.lower().like(fullName)));
-
-        var pageable = pageableMapper.toPageable(paramsQuery);
-        var page = ofNullable(builder.getValue())
-                .map(predicate -> userRepository.findAll(predicate, pageable))
-                .orElseGet(() -> userRepository.findAll(pageable))
-                .map(userMapper::toDomain);
-        return pageableMapper.toPageSlice(page);
     }
 
 }

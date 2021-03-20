@@ -10,12 +10,14 @@ import pl.edu.wit.application.domain.model.PossiblePhoneNumber;
 import pl.edu.wit.application.domain.model.auth_details.AuthDetailsPassword;
 import pl.edu.wit.application.domain.model.member.Member;
 import pl.edu.wit.application.dto.MemberDto;
+import pl.edu.wit.application.dto.PageSlice;
 import pl.edu.wit.application.exception.member.MemberNotFoundException;
 import pl.edu.wit.application.port.primary.MemberService;
 import pl.edu.wit.application.port.secondary.MemberDao;
 import pl.edu.wit.application.port.secondary.PasswordEncoder;
 import pl.edu.wit.application.port.secondary.PhoneNumberProvider;
 import pl.edu.wit.application.query.MemberFindQuery;
+import pl.edu.wit.application.query.PageableParamsQuery;
 
 import static java.lang.String.format;
 import static java.util.Optional.ofNullable;
@@ -49,6 +51,15 @@ public class AppMemberService implements MemberService {
         updateAuthDetails(member, command.toAuthDetailsUpdateCommand());
         memberDao.save(member);
         log.info("Updated member {member: {}}", member);
+    }
+
+    @Override
+    public PageSlice<MemberDto> findAll(MemberFindQuery findQuery, PageableParamsQuery pageableQuery) {
+        log.trace("Searching members {findQuery: {}, pageableQuery: {}}", findQuery, pageableQuery);
+        var page = memberDao.findAll(findQuery, pageableQuery)
+                .map(Member::toDto);
+        log.info("Searched members {contentTotalElements: {}, contentSize: {}}", page.getTotalElements(), page.getSize());
+        return page;
     }
 
     private void updatePhoneNumber(Member member, String phoneNumber) {

@@ -15,6 +15,10 @@ public class MemberFindQuery {
 
     private String memberId;
 
+    private String fullName;
+
+    private String phone;
+
     public static MemberFindQuery ofAuthDetailsId(String authDetailsId) {
         return MemberFindQuery.builder()
                 .authDetailsId(authDetailsId)

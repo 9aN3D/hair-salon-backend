@@ -6,6 +6,7 @@ import pl.edu.wit.application.dto.MemberDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Value
 @Builder
@@ -26,6 +27,9 @@ public class MemberResponse {
     @NotNull
     AuthDetailsResponse authDetails;
 
+    @NotNull
+    LocalDateTime registrationDateTime;
+
     public String getFullName() {
         return name + " " + surname;
     }
@@ -37,6 +41,7 @@ public class MemberResponse {
                 .surname(dto.getSurname())
                 .phone(dto.getPhoneNumber())
                 .authDetails(AuthDetailsResponse.of(dto.getAuthDetails()))
+                .registrationDateTime(dto.getRegistrationDateTime())
                 .build();
     }
 
