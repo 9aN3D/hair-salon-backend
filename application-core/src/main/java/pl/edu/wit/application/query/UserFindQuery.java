@@ -15,6 +15,8 @@ public class UserFindQuery {
 
     private String userId;
 
+    private String fullName;
+
     public static UserFindQuery ofAuthDetailsId(String authDetailsId) {
         return UserFindQuery.builder()
                 .authDetailsId(authDetailsId)

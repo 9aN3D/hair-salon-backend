@@ -26,7 +26,7 @@ public class MemberResponse {
     @NotNull
     AuthDetailsResponse authDetails;
 
-    String getFullName() {
+    public String getFullName() {
         return name + " " + surname;
     }
 

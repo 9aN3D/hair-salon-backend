@@ -66,7 +66,7 @@ public class AuthorizedUserDetailsService implements UserDetailsService {
                 .accountExpired(false)
                 .credentialsExpired(false)
                 .accountLocked(false)
-                .authorities(dto.getRole().toString())
+                .authorities("ROLE_".concat(dto.getRole().toString()))
                 .build();
     }
 

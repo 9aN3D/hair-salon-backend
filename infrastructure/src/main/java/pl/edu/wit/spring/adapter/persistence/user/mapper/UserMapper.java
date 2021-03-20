@@ -1,6 +1,5 @@
 package pl.edu.wit.spring.adapter.persistence.user.mapper;
 
-import lombok.Setter;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;

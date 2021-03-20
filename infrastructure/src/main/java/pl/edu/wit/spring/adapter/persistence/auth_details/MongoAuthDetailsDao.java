@@ -22,7 +22,7 @@ public class MongoAuthDetailsDao implements AuthDetailsDao {
 
     @Override
     public Optional<AuthDetails> findOne(AuthDetailsFindQuery query) {
-        var qAuthDetailsDocument = new QAuthDetailsDocument("authDetails");
+        var qAuthDetailsDocument = QAuthDetailsDocument.authDetailsDocument;
         var builder = new BooleanBuilder();
         ofNullable(query.getId()).ifPresent(id -> builder.and(qAuthDetailsDocument.id.eq(id)));
         ofNullable(query.getEmail()).ifPresent(email -> builder.and(qAuthDetailsDocument.email.eq(email)));

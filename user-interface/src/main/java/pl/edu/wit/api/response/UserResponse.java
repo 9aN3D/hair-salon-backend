@@ -23,10 +23,6 @@ public class UserResponse {
     @NotNull
     AuthDetailsResponse authDetails;
 
-    String getFullName() {
-        return name + " " + surname;
-    }
-
     public static UserResponse of(UserDto dto) {
         return UserResponse.builder()
                 .id(dto.getId())
