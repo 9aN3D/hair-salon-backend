@@ -2,19 +2,26 @@ package pl.edu.wit.application.domain.model.auth_details;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import pl.edu.wit.application.domain.model.NotBlankString;
 import pl.edu.wit.application.domain.model.Password;
-import pl.edu.wit.application.exception.auth_details.AuthDetailsPasswordNotValidException;
-import pl.edu.wit.application.domain.model.StringNotBlank;
+import pl.edu.wit.application.exception.ValidationException;
+
+import java.util.Optional;
 
 import static java.lang.String.format;
 
+@ToString
 @EqualsAndHashCode
 public class AuthDetailsPassword implements Password {
 
     private final String value;
+    private final Integer passwordMinLength = 6;
 
     public AuthDetailsPassword(String value) {
-        this.value = setValue(value);
+        this.value = notBlankValue(value)
+                .orElseThrow(() -> new ValidationException(
+                        format("Auth details password %s is not valid, minimum length %d", value, passwordMinLength)
+                ));
     }
 
     @Override
@@ -22,15 +29,18 @@ public class AuthDetailsPassword implements Password {
         return value;
     }
 
-    private String setValue(String value) {
-        var validatedValue = new StringNotBlank(value).validate();
-        int passwordMinLength = 6;
-        if (validatedValue.length() > passwordMinLength) {
-            return validatedValue;
-        }
-        throw new AuthDetailsPasswordNotValidException(
-                format("Auth details password is not valid, minimum length %d", passwordMinLength)
-        );
+    private Optional<String> notBlankValue(String value) {
+        return new NotBlankString(value)
+                .filter(this::hasNotSpace)
+                .filter(this::isValid);
+    }
+
+    private Boolean hasNotSpace(String value) {
+        return !value.contains(" ");
+    }
+
+    private Boolean isValid(String value) {
+        return value.length() > passwordMinLength;
     }
 
 }

@@ -10,16 +10,12 @@ public class NotBlankPhoneNumber implements PhoneNumber {
     private final String value;
 
     public NotBlankPhoneNumber(String value) {
-        this.value = setValue(value);
+        this.value = new NotBlankString(value).value();
     }
 
     @Override
     public String value() {
         return value;
-    }
-
-    private String setValue(String value) {
-        return new StringNotBlank(value).validate();
     }
 
 }

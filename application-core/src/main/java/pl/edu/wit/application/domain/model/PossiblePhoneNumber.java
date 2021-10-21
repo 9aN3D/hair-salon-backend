@@ -2,10 +2,12 @@ package pl.edu.wit.application.domain.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import pl.edu.wit.application.exception.PhoneNumberNotValidException;
+import pl.edu.wit.application.exception.ValidationException;
 import pl.edu.wit.application.port.secondary.PhoneNumberProvider;
 
-import static java.lang.String.format;
+import java.util.function.Predicate;
+
+import static java.util.Optional.ofNullable;
 
 @ToString
 @EqualsAndHashCode
@@ -14,7 +16,9 @@ public class PossiblePhoneNumber implements PhoneNumber {
     private final PhoneNumber phoneNumber;
 
     public PossiblePhoneNumber(PhoneNumber phoneNumber, PhoneNumberProvider provider) {
-        this.phoneNumber = setPhoneNumber(phoneNumber, provider);
+        this.phoneNumber = ofNullable(phoneNumber)
+                .filter(isPossibleNumberPredicate(provider))
+                .orElseThrow(() -> new ValidationException("Phone number is not possible"));
     }
 
     @Override
@@ -22,11 +26,10 @@ public class PossiblePhoneNumber implements PhoneNumber {
         return phoneNumber.value();
     }
 
-    private PhoneNumber setPhoneNumber(PhoneNumber phoneNumber, PhoneNumberProvider provider) {
-        if (provider.isPossibleNumber(phoneNumber.value())) {
-            return phoneNumber;
-        }
-        throw new PhoneNumberNotValidException(format("Phone number %s is not valid", phoneNumber.value()));
+    private static Predicate<PhoneNumber> isPossibleNumberPredicate(PhoneNumberProvider phoneNumberProvider) {
+        return number -> ofNullable(phoneNumberProvider)
+                .map(provider -> provider.isPossibleNumber(number.value()))
+                .orElse(false);
     }
 
 }

@@ -1,6 +1,6 @@
 package pl.edu.wit.application.port.secondary;
 
-import pl.edu.wit.application.domain.model.member.Member;
+import pl.edu.wit.application.dto.MemberDto;
 import pl.edu.wit.application.dto.PageSlice;
 import pl.edu.wit.application.query.MemberFindQuery;
 import pl.edu.wit.application.query.PageableParamsQuery;
@@ -9,10 +9,10 @@ import java.util.Optional;
 
 public interface MemberDao {
 
-    String save(Member member);
+    String save(MemberDto member);
 
-    Optional<Member> findOne(MemberFindQuery query);
+    Optional<MemberDto> findOne(MemberFindQuery query);
 
-    PageSlice<Member> findAll(MemberFindQuery findQuery, PageableParamsQuery pageableQuery);
+    PageSlice<MemberDto> findAll(MemberFindQuery findQuery, PageableParamsQuery pageableQuery);
 
 }

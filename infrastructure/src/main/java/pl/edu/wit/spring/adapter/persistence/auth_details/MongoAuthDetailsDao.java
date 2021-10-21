@@ -4,6 +4,7 @@ import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.wit.application.domain.model.auth_details.AuthDetails;
+import pl.edu.wit.application.dto.AuthDetailsDto;
 import pl.edu.wit.application.port.secondary.AuthDetailsDao;
 import pl.edu.wit.application.query.AuthDetailsFindQuery;
 import pl.edu.wit.spring.adapter.persistence.auth_details.mapper.AuthDetailsMapper;
@@ -21,7 +22,13 @@ public class MongoAuthDetailsDao implements AuthDetailsDao {
     private final AuthDetailsMapper mapper;
 
     @Override
-    public Optional<AuthDetails> findOne(AuthDetailsFindQuery query) {
+    public AuthDetailsDto save(AuthDetailsDto authDetails) {
+        var authDetailsDocument = mapper.toDocument(authDetails);
+        return mapper.toDto(repository.save(authDetailsDocument));
+    }
+
+    @Override
+    public Optional<AuthDetailsDto> findOne(AuthDetailsFindQuery query) {
         var qAuthDetailsDocument = QAuthDetailsDocument.authDetailsDocument;
         var builder = new BooleanBuilder();
         ofNullable(query.getId()).ifPresent(id -> builder.and(qAuthDetailsDocument.id.eq(id)));
@@ -29,7 +36,7 @@ public class MongoAuthDetailsDao implements AuthDetailsDao {
 
         return ofNullable(builder.getValue())
                 .flatMap(repository::findOne)
-                .map(mapper::toDomain);
+                .map(mapper::toDto);
     }
 
 }

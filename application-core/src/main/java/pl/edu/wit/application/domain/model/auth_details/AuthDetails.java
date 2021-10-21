@@ -3,13 +3,15 @@ package pl.edu.wit.application.domain.model.auth_details;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import pl.edu.wit.application.command.AuthDetailsUpdateCommand;
+import pl.edu.wit.application.command.auth_details.AuthDetailsUpdateCommand;
 import pl.edu.wit.application.domain.model.Email;
+import pl.edu.wit.application.domain.model.EncodedPassword;
+import pl.edu.wit.application.domain.model.NotBlankString;
 import pl.edu.wit.application.domain.model.Password;
 import pl.edu.wit.application.dto.AuthDetailsDto;
-import pl.edu.wit.application.exception.auth_details.AuthDetailsNotValidException;
+import pl.edu.wit.application.exception.ValidationException;
+import pl.edu.wit.application.port.secondary.PasswordEncoder;
 
-import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 
 @Builder
@@ -18,41 +20,31 @@ import static java.util.Optional.ofNullable;
 public class AuthDetails {
 
     private final String id;
-    private Email email;
-    private Password password;
-    private AuthDetailsStatus status;
-    private AuthDetailsRole role;
+    private final Email email;
+    private final Password password;
+    private final AuthDetailsStatus status;
+    private final AuthDetailsRole role;
 
-    public AuthDetails(String id,
-                       Email email,
-                       Password password,
-                       AuthDetailsStatus status,
-                       AuthDetailsRole role) {
-        this.id = setId(id);
-        this.email = setEmail(email);
-        this.password = setPassword(password);
-        this.status = setStatus(status);
-        this.role = setRole(role);
+    public AuthDetails(String id, Email email, Password password, AuthDetailsStatus status, AuthDetailsRole role) {
+        this.id = new NotBlankString(id).value();
+        this.email = ofNullable(email)
+                .orElseThrow(() -> new ValidationException("Auth details email cannot be null"));
+        this.password = ofNullable(password)
+                .orElseThrow(() -> new ValidationException("Auth details password cannot be null"));
+        this.status = ofNullable(status)
+                .orElseThrow(() -> new ValidationException("Auth details status cannot be null"));
+        this.role = ofNullable(role)
+                .orElseThrow(() -> new ValidationException("Auth details role cannot be null"));
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public Email getEmail() {
-        return email;
-    }
-
-    public Password getPassword() {
-        return password;
-    }
-
-    public AuthDetailsStatus getStatus() {
-        return status;
-    }
-
-    public AuthDetailsRole getRole() {
-        return role;
+    public AuthDetails(AuthDetailsDto dto) {
+        this(
+                dto.getId(),
+                new Email(dto.getEmail()),
+                new EncodedPassword(dto.getPassword()),
+                dto.getStatus(),
+                dto.getRole()
+        );
     }
 
     public AuthDetailsDto toDto() {
@@ -65,46 +57,22 @@ public class AuthDetails {
                 .build();
     }
 
-    public void update(AuthDetailsUpdateCommand command, Password password) {
-        email = ofNullable(command.getEmail()).map(Email::new).orElse(email);
-        status = ofNullable(command.getStatus()).orElse(status);
-        role = ofNullable(command.getRole()).orElse(role);
-        this.password = ofNullable(password).orElse(this.password);
+    public AuthDetails update(AuthDetailsUpdateCommand command, PasswordEncoder passwordEncoder) {
+        return AuthDetails.builder()
+                .id(id)
+                .email(ofNullable(command.getEmail()).map(Email::new).orElse(email))
+                .password(ofNullable(command.getPassword()).map(password -> preparePassword(password, passwordEncoder)).orElse(password))
+                .status(ofNullable(command.getStatus()).orElse(status))
+                .role(ofNullable(command.getRole()).orElse(role))
+                .build();
     }
 
-    private String setId(String id) {
-        if (nonNull(id)) {
-            return id;
-        }
-        throw new AuthDetailsNotValidException("Auth details id cannot be null");
+    public String id() {
+        return id;
     }
 
-    private Email setEmail(Email email) {
-        if (nonNull(email)) {
-            return email;
-        }
-        throw new AuthDetailsNotValidException("Auth details email cannot be null");
-    }
-
-    private Password setPassword(Password password) {
-        if (nonNull(password)) {
-            return password;
-        }
-        throw new AuthDetailsNotValidException("Auth details password cannot be null");
-    }
-
-    private AuthDetailsStatus setStatus(AuthDetailsStatus authDetailsStatus) {
-        if (nonNull(authDetailsStatus)) {
-            return authDetailsStatus;
-        }
-        throw new AuthDetailsNotValidException("Auth details status cannot be null");
-    }
-
-    private AuthDetailsRole setRole(AuthDetailsRole authDetailsRole) {
-        if (nonNull(authDetailsRole)) {
-            return authDetailsRole;
-        }
-        throw new AuthDetailsNotValidException("Auth details role cannot be null");
+    private Password preparePassword(String password, PasswordEncoder passwordEncoder) {
+        return new EncodedPassword(new AuthDetailsPassword(password), passwordEncoder);
     }
 
 }

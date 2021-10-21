@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import pl.edu.wit.application.command.AccessTokenGenerateCommand;
-import pl.edu.wit.application.command.AccessTokenRefreshCommand;
+import pl.edu.wit.application.command.token.AccessTokenGenerateCommand;
+import pl.edu.wit.application.command.token.AccessTokenRefreshCommand;
 import pl.edu.wit.application.dto.AccessTokenDto;
 import pl.edu.wit.application.port.primary.AccessTokenService;
 

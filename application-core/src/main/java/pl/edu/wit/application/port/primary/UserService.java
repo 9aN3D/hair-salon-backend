@@ -7,7 +7,7 @@ import pl.edu.wit.application.query.UserFindQuery;
 
 public interface UserService {
 
-    UserDto getOne(String authDetailsId);
+    UserDto findOne(String authDetailsId);
 
     PageSlice<UserDto> findAll(UserFindQuery findQuery, PageableParamsQuery paramsQuery);
 

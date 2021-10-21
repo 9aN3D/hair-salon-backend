@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import pl.edu.wit.api.mapper.PageableParamsMapper;
+import pl.edu.wit.api.facade.UserFacade;
 import pl.edu.wit.api.response.UserResponse;
 import pl.edu.wit.application.dto.PageSlice;
-import pl.edu.wit.application.port.primary.UserService;
 import pl.edu.wit.application.query.UserFindQuery;
 
 import javax.validation.constraints.NotNull;
@@ -23,20 +22,18 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(value = "/api/v1", produces = APPLICATION_JSON_VALUE)
 public class UserController {
 
-    private final UserService userService;
-    private final PageableParamsMapper pageableParamsMapper;
+    private final UserFacade userFacade;
 
     @GetMapping(value = "/admin/users/{authDetailsId}")
     @ResponseStatus(OK)
-    public UserResponse get(@PathVariable String authDetailsId) {
-        return UserResponse.of(userService.getOne(authDetailsId));
+    public UserResponse findOne(@PathVariable String authDetailsId) {
+        return userFacade.findOne(authDetailsId);
     }
 
     @GetMapping(value = "/admin/users")
     @ResponseStatus(OK)
     public PageSlice<UserResponse> findAll(@NotNull UserFindQuery findQuery, @NotNull Pageable pageable) {
-        return userService.findAll(findQuery, pageableParamsMapper.toPageableParamsQuery(pageable))
-                .map(UserResponse::of);
+        return userFacade.findAll(findQuery, pageable);
     }
 
 }

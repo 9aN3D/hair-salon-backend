@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import pl.edu.wit.application.command.MemberRegisterCommand;
+import pl.edu.wit.application.command.member.MemberRegisterCommand;
 import pl.edu.wit.application.port.primary.MemberRegistrationService;
 
 import static org.springframework.http.HttpStatus.OK;

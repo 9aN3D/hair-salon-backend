@@ -18,4 +18,12 @@ public class PageableParamsQuery {
 
     private PageSliceSort sort;
 
+    public static PageableParamsQuery maxPageableParamsQuery() {
+        return PageableParamsQuery.builder()
+                .page(0)
+                .size(Integer.MAX_VALUE)
+                .sort(PageSliceSort.empty())
+                .build();
+    }
+
 }

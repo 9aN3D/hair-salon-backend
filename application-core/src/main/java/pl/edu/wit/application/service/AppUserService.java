@@ -2,7 +2,6 @@ package pl.edu.wit.application.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import pl.edu.wit.application.domain.model.user.User;
 import pl.edu.wit.application.dto.PageSlice;
 import pl.edu.wit.application.dto.UserDto;
 import pl.edu.wit.application.exception.user.UserNotFoundException;
@@ -20,10 +19,9 @@ public class AppUserService implements UserService {
     private final UserDao userDao;
 
     @Override
-    public UserDto getOne(String authDetailsId) {
+    public UserDto findOne(String authDetailsId) {
         log.trace("Getting user {authDetailsId: {}}", authDetailsId);
         var userDto = userDao.findOne(UserFindQuery.ofAuthDetailsId(authDetailsId))
-                .map(User::toDto)
                 .orElseThrow(() -> new UserNotFoundException(
                         format("User not found by authDetailsId: %s", authDetailsId))
                 );
@@ -34,8 +32,7 @@ public class AppUserService implements UserService {
     @Override
     public PageSlice<UserDto> findAll(UserFindQuery findQuery, PageableParamsQuery paramsQuery) {
         log.trace("Searching users {findQuery: {}, paramsQuery: {}}", findQuery, paramsQuery);
-        var page = userDao.findAll(findQuery, paramsQuery)
-                .map(User::toDto);
+        var page = userDao.findAll(findQuery, paramsQuery);
         log.info("Searched users {contentTotalElements: {}, contentSize: {}}", page.getTotalElements(), page.getSize());
         return page;
     }

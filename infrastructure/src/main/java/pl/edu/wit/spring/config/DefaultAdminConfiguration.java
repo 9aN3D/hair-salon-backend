@@ -29,7 +29,7 @@ public class DefaultAdminConfiguration {
     private AuthDetailsDocument buildAuthDetailsDocument() {
         return AuthDetailsDocument.builder()
                 .email("admin@hairsalon.com")
-                .password("$2y$12$V0jiZzPjEGv/ZgTCw5o4z.55YJxj0dBNduWIPGb/2ygDDGo2.T5HG")
+                .password("$2y$12$EcjDiJwckWwH2mytPOa2weLxkFaZqMzhtoxoh6mOtmy8OsDSZmoD.")
                 .status(ACTIVE)
                 .role(ADMIN)
                 .build();

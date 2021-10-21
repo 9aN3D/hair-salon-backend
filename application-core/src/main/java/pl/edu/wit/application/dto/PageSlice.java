@@ -58,6 +58,10 @@ public class PageSlice<T> {
         );
     }
 
+    public Boolean hasContent() {
+        return !content.isEmpty();
+    }
+
     private <U> List<U> convertContent(Function<? super T, ? extends U> converter) {
         return content.stream()
                 .map(converter)

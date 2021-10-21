@@ -4,7 +4,7 @@ import pl.edu.wit.application.dto.AuthDetailsDto;
 
 public interface AuthDetailsService {
 
-    Boolean existByEmail(String email);
+    AuthDetailsDto save(String email, String password);
 
     AuthDetailsDto findOneById(String id);
 

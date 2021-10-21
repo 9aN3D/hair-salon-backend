@@ -36,7 +36,8 @@ public class CustomResourceServerConfigurer implements ResourceServerConfigurer 
         return new String[]{
                 "/oauth/token",
                 "/api/v1/tokens/**",
-                "/api/v1/registration/**"
+                "/api/v1/registration/**",
+                "/api/v1/products/categories/**"
         };
     }
 
