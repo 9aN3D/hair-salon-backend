@@ -1,4 +1,4 @@
-package pl.edu.wit.spring.config;
+package pl.edu.wit.spring.config.init;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ import static pl.edu.wit.application.domain.model.auth_details.AuthDetailsStatus
 
 @Component
 @RequiredArgsConstructor
-public class DefaultAdminConfiguration {
+public class AdminInitializer {
 
     private final MongoAuthDetailsRepository authDetailsRepository;
     private final MongoUserRepository userRepository;
