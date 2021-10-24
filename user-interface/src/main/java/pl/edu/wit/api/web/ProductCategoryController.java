@@ -1,5 +1,6 @@
 package pl.edu.wit.api.web;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,12 +33,14 @@ public class ProductCategoryController {
 
     @PostMapping(value = "/admin/products/categories", consumes = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
+    @SecurityRequirement(name = "hair-salon-API")
     public void create(@NotNull @RequestBody ProductCategoryCreateCommand command) {
         productCategoryFacade.create(command);
     }
 
     @PutMapping(value = "/admin/products/categories/{productCategoryId}", consumes = APPLICATION_JSON_VALUE)
     @ResponseStatus(NO_CONTENT)
+    @SecurityRequirement(name = "hair-salon-API")
     public void update(@PathVariable String productCategoryId, @NotNull @RequestBody ProductCategoryUpdateCommand command) {
         productCategoryFacade.update(productCategoryId, command);
     }

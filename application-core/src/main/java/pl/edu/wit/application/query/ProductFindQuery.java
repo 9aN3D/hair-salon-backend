@@ -21,6 +21,8 @@ public class ProductFindQuery {
 
     private Set<String> productCategoryIds;
 
+    private Set<String> productIds;
+
     public static ProductFindQuery ofProductId(String productId) {
         return ProductFindQuery.builder()
                 .productId(productId)

@@ -4,7 +4,6 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import pl.edu.wit.application.domain.model.product.Product;
 import pl.edu.wit.application.dto.PageSlice;
 import pl.edu.wit.application.dto.ProductDto;
 import pl.edu.wit.application.port.secondary.ProductDao;
@@ -58,7 +57,10 @@ public class MongoProductDao implements ProductDao {
         ofNullable(findQuery.getProductCategoryId()).ifPresent(productCategoryId -> builder.and(qProduct.category.id.eq(productCategoryId)));
         ofNullable(findQuery.getProductCategoryIds())
                 .filter(not(Set::isEmpty))
-                .ifPresent(productIds -> builder.and(qProduct.category.id.in(productIds)));
+                .ifPresent(categoryIds -> builder.and(qProduct.category.id.in(categoryIds)));
+        ofNullable(findQuery.getProductIds())
+                .filter(not(Set::isEmpty))
+                .ifPresent(productIds -> builder.and(qProduct.id.in(productIds)));
         buildLikeProductName(findQuery, qProduct, builder);
         return builder.getValue();
     }

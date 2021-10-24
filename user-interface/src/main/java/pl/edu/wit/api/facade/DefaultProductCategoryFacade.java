@@ -71,7 +71,7 @@ public class DefaultProductCategoryFacade implements ProductCategoryFacade {
     private Map<String, Set<ProductResponse>> collectProductCategoryIdToProducts(PageSlice<ProductResponse> productPage) {
         return productPage.getContent()
                 .stream()
-                .collect(groupingBy(ProductResponse::getCategoryId, toSet()));
+                .collect(groupingBy(product -> product.getCategory().getId(), toSet()));
     }
 
     private ProductCategoryResponse toProductCategoryResponse(ProductCategoryResponse productCategoryResponse, Map<String, Set<ProductResponse>> productCategoryIdToProducts) {

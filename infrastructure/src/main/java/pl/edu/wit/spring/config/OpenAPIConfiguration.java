@@ -12,7 +12,7 @@ public class OpenAPIConfiguration {
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .info(new Info().title("Hair salon API")
-                        .description("Stworzenie serwisu który umożliwiaja rezerwację terminu usługi bezpośredniej u fryzjera")
+                        .description("Serwis który umożliwiaja rezerwację terminu usługi bezpośredniej u fryzjera")
                         .version("1.0"));
     }
 

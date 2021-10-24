@@ -29,7 +29,7 @@ public class ProductResponse {
     Long durationInMinutes;
 
     @NotBlank
-    String categoryId;
+    ProductCategoryConciseResponse category;
 
     public static ProductResponse of(ProductDto dto) {
         return ProductResponse.builder()
@@ -37,7 +37,10 @@ public class ProductResponse {
                 .name(dto.getName())
                 .price(dto.getPrice())
                 .durationInMinutes(dto.getDurationInMinutes())
-                .categoryId(dto.getCategory().getId())
+                .category(ProductCategoryConciseResponse.builder()
+                        .id(dto.getCategory().getId())
+                        .name(dto.getCategory().getName())
+                        .build())
                 .build();
     }
 

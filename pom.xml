@@ -123,7 +123,11 @@
                 <artifactId>springdoc-openapi-ui</artifactId>
                 <version>${openapi-ui.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-data-rest</artifactId>
+                <version>${openapi-ui.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>

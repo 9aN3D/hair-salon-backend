@@ -1,5 +1,6 @@
 package pl.edu.wit.api.web;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,12 +33,14 @@ public class HairdresserController {
 
     @PostMapping(value = "/admin/hairdressers", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
+    @SecurityRequirement(name = "hair-salon-API")
     public String create(@NotNull @RequestBody HairdresserCreateCommand command) {
         return hairdresserFacade.create(command);
     }
 
     @PostMapping(value = "/admin/hairdressers/{hairdresserId}", consumes = MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(OK)
+    @SecurityRequirement(name = "hair-salon-API")
     public void uploadPhoto(@PathVariable String hairdresserId, @RequestPart MultipartFile file) {
         hairdresserFacade.uploadPhoto(hairdresserId, file);
     }

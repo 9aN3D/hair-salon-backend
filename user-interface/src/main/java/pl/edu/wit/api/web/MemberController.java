@@ -42,6 +42,7 @@ public class MemberController {
 
     @GetMapping(value = "/admin/members")
     @ResponseStatus(OK)
+    @SecurityRequirement(name = "hair-salon-API")
     public PageSlice<MemberResponse> findAll(@NotNull MemberFindQuery findQuery, @NotNull Pageable pageable) {
         return memberFacade.findAll(findQuery, pageable);
     }

@@ -40,6 +40,7 @@ public class CustomResourceServerConfigurer implements ResourceServerConfigurer 
                 "/api/v1/tokens/**",
                 "/api/v1/registration/**",
                 "/api/v1/products/categories/**",
+                "/api/v1/products/**",
                 "/api/v1/files/**",
                 "/api/v1/hairdressers/**"
         };
