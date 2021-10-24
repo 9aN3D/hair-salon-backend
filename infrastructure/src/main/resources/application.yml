@@ -6,6 +6,7 @@ spring:
       password: crm_user
       database: hair-salon-db
       auto-index-creation: false
+    redis.repositories.enabled: false
 
   application:
     name: hair-salon-backend
@@ -21,6 +22,13 @@ spring:
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
+
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
 
 logging:
   level:
@@ -42,3 +50,5 @@ security:
       access-token-validity-seconds: 1800
       auto-approve-scopes: openid
       resource-ids: hairSalonApiResource
+
+pl.edu.wit.file.storage.IMAGE.url: http://localhost:9000/api/v1/files/%s/image

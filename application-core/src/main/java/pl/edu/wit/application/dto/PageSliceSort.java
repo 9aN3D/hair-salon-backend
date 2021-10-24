@@ -12,7 +12,7 @@ public class PageSliceSort {
     String direction;
 
     public static PageSliceSort empty() {
-        return new PageSliceSort(null, null);
+        return new PageSliceSort("id", "ASC");
     }
 
 }

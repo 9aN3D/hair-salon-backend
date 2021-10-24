@@ -11,9 +11,9 @@ import pl.edu.wit.spring.adapter.persistence.product.model.ProductDocument;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
 
 @Component
 @RequiredArgsConstructor
@@ -37,7 +37,7 @@ public class ProductInitializer {
     private Map<String, ProductCategoryDocument> createProductCategories() {
         return productCategoryRepository.saveAll(prepareProductCategoryDocuments())
                 .stream()
-                .collect(Collectors.toMap(ProductCategoryDocument::getName, identity()));
+                .collect(toMap(ProductCategoryDocument::getName, identity()));
     }
 
     private List<ProductCategoryDocument> prepareProductCategoryDocuments() {

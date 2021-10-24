@@ -8,6 +8,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 import pl.edu.wit.spring.config.init.AdminInitializer;
+import pl.edu.wit.spring.config.init.HairdresserInitializer;
 import pl.edu.wit.spring.config.init.ProductInitializer;
 
 @SpringBootApplication
@@ -17,6 +18,7 @@ public class Application extends SpringBootServletInitializer implements Command
 
     private final AdminInitializer adminInitializer;
     private final ProductInitializer productInitializer;
+    private final HairdresserInitializer hairdresserInitializer;
 
     public static void main(String... args) {
         SpringApplication.run(Application.class, args);
@@ -26,6 +28,7 @@ public class Application extends SpringBootServletInitializer implements Command
     public void run(String... args) {
         adminInitializer.createIfNecessary();
         productInitializer.createIfNecessary();
+        hairdresserInitializer.createIfNecessary();
     }
 
     @Override

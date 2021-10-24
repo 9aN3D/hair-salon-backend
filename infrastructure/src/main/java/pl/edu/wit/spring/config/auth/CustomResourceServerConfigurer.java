@@ -37,7 +37,9 @@ public class CustomResourceServerConfigurer implements ResourceServerConfigurer 
                 "/oauth/token",
                 "/api/v1/tokens/**",
                 "/api/v1/registration/**",
-                "/api/v1/products/categories/**"
+                "/api/v1/products/categories/**",
+                "/api/v1/files/**",
+                "/api/v1/hairdressers/**"
         };
     }
 
