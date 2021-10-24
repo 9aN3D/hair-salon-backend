@@ -34,6 +34,8 @@ public class CustomResourceServerConfigurer implements ResourceServerConfigurer 
 
     private String[] publicEndpoints() {
         return new String[]{
+                "/swagger-ui/**",
+                "/api-docs/**",
                 "/oauth/token",
                 "/api/v1/tokens/**",
                 "/api/v1/registration/**",

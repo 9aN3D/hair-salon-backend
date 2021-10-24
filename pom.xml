@@ -41,6 +41,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <querydsl.version>4.4.0</querydsl.version>
         <libphonenumber.version>8.12.16</libphonenumber.version>
+        <openapi-ui.version>1.5.12</openapi-ui.version>
     </properties>
 
     <dependencyManagement>
@@ -117,6 +118,12 @@
                 <artifactId>libphonenumber</artifactId>
                 <version>${libphonenumber.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${openapi-ui.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
     <build>

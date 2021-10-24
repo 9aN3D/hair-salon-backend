@@ -51,4 +51,7 @@ security:
       auto-approve-scopes: openid
       resource-ids: hairSalonApiResource
 
+springdoc.api-docs:
+    path: /api-docs
+
 pl.edu.wit.file.storage.IMAGE.url: http://localhost:9000/api/v1/files/%s/image

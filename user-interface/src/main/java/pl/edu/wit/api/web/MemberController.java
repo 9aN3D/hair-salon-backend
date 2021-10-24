@@ -1,5 +1,6 @@
 package pl.edu.wit.api.web;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/v1", produces = APPLICATION_JSON_VALUE)
+@SecurityRequirement(name = "hair-salon-API")
 public class MemberController {
 
     private final MemberFacade memberFacade;
