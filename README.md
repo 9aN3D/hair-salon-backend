@@ -1,4 +1,4 @@
-#Hair salon backend
+# Hair salon backend
 
 ## Temat
 Projekt i implementacja aplikacji internetowej umożliwiająca rezerwację terminu usługi bezpośredniej u fryzjera.
@@ -10,3 +10,9 @@ Stworzenie serwisu który umożliwiaja rezerwację terminu usługi bezpośrednie
 * [local](http://localhost:9000/swagger-ui/index.html)
 
 api docs path: /api-docs
+
+## Wartswy
+
+* **application-core** - (Application Layer) 
+* **infrastructure** - (Infrastructure Layer)
+* **user-interface** - (User interface Layer)

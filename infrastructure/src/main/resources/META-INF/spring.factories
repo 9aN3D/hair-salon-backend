@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=pl.edu.wit.spring.Application
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=pl.edu.wit.Application

@@ -1,0 +1,20 @@
+package pl.edu.wit.id.generator.adapter;
+
+import org.bson.types.ObjectId;
+import org.springframework.stereotype.Component;
+import pl.edu.wit.common.port.secondary.IdGenerator;
+
+@Component
+public class MongoIdGenerator implements IdGenerator {
+
+    @Override
+    public String generate() {
+        return new ObjectId().toString();
+    }
+
+    @Override
+    public Boolean isValid(String id) {
+        return ObjectId.isValid(id);
+    }
+
+}
