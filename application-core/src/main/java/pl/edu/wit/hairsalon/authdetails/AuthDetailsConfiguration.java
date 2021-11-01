@@ -1,0 +1,20 @@
+package pl.edu.wit.hairsalon.authdetails;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import pl.edu.wit.hairsalon.sharedkernel.port.secondary.IdGenerator;
+
+@Configuration
+class AuthDetailsConfiguration {
+
+    @Bean
+    AuthDetailsFacade authDetailsFacade(AuthDetailsPort authDetailsPort,
+                                        IdGenerator idGenerator,
+                                        PasswordEncoderPort passwordEncoderPort) {
+        var creator = new AuthDetailsCreator(idGenerator, authDetailsPort, passwordEncoderPort);
+        var updater = new AuthDetailsUpdater(authDetailsPort, passwordEncoderPort);
+        var remover = new AuthDetailsRemover(authDetailsPort);
+        return new AppAuthDetailsFacade(authDetailsPort, creator, updater, remover);
+    }
+
+}
