@@ -41,7 +41,8 @@ class CustomResourceServerConfigurer implements ResourceServerConfigurer {
                 "/api/v1/registration/**",
                 "/api/v1/services/**",
                 "/api/v1/files/**",
-                "/api/v1/hairdressers/**"
+                "/api/v1/hairdressers/**",
+                "/api/v1/settings/**"
         };
     }
 

@@ -5,7 +5,6 @@ import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import pl.edu.wit.hairsalon.servicecategory.dto.ServiceCategoryDto;
-import pl.edu.wit.hairsalon.sharedkernel.CollectionHelper;
 import pl.edu.wit.hairsalon.sharedkernel.SelfValidator;
 import pl.edu.wit.hairsalon.sharedkernel.domain.NotBlankString;
 import pl.edu.wit.hairsalon.sharedkernel.exception.ValidationException;
@@ -13,6 +12,7 @@ import pl.edu.wit.hairsalon.sharedkernel.exception.ValidationException;
 import java.util.Set;
 
 import static java.util.Objects.requireNonNull;
+import static pl.edu.wit.hairsalon.sharedkernel.CollectionHelper.isNullOrEmpty;
 
 @Builder
 @ToString
@@ -29,7 +29,7 @@ class ServiceCategory implements SelfValidator<ServiceCategory> {
     public ServiceCategory validate() {
         validate(new NotBlankString(id), new NotBlankString(name));
         requireNonNull(status, "Service category status must not be null");
-        if (CollectionHelper.isNullOrEmpty(itemIds)) {
+        if (isNullOrEmpty(itemIds)) {
             throw new ValidationException("Category item ids must not be null or empty");
         }
         return this;
