@@ -22,6 +22,7 @@ class ServiceCategory implements SelfValidator<ServiceCategory> {
 
     private final String id;
     private final String name;
+    private final Integer order;
     private final ServiceCategoryStatus status;
     private final Set<String> itemIds;
 
@@ -29,6 +30,7 @@ class ServiceCategory implements SelfValidator<ServiceCategory> {
     public ServiceCategory validate() {
         validate(new NotBlankString(id), new NotBlankString(name));
         requireNonNull(status, "Service category status must not be null");
+        requireNonNull(order, "Service category order must not be null");
         if (isNullOrEmpty(itemIds)) {
             throw new ValidationException("Category item ids must not be null or empty");
         }
@@ -39,6 +41,7 @@ class ServiceCategory implements SelfValidator<ServiceCategory> {
         return ServiceCategoryDto.builder()
                 .id(id)
                 .name(name)
+                .order(order)
                 .status(status.toDto())
                 .itemIds(itemIds)
                 .build();

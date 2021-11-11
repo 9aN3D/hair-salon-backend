@@ -29,12 +29,16 @@ public class ServiceCategoryResponse {
     String name;
 
     @NotNull
+    Integer order;
+
+    @NotNull
     List<ServiceResponse> services = new ArrayList<>();
 
     public static ServiceCategoryResponse of(ServiceCategoryDto dto) {
         return ServiceCategoryResponse.builder()
                 .id(dto.getId())
                 .name(dto.getName())
+                .order(dto.getOrder())
                 .build();
     }
 

@@ -35,7 +35,7 @@ public class ServiceInitializer {
         var serviceIds = getHaircutServiceCreateCommands().stream()
                 .map(serviceFacade::create)
                 .collect(Collectors.toSet());
-        serviceCategoryFacade.create(new ServiceCategoryCreateCommand("Strzyżenie", ACTIVE, serviceIds));
+        serviceCategoryFacade.create(new ServiceCategoryCreateCommand("Strzyżenie", 1, ACTIVE, serviceIds));
     }
 
     private Set<ServiceCreateCommand> getHaircutServiceCreateCommands() {
@@ -53,7 +53,7 @@ public class ServiceInitializer {
         var serviceIds = getCareServiceCreateCommands().stream()
                 .map(serviceFacade::create)
                 .collect(Collectors.toSet());
-        serviceCategoryFacade.create(new ServiceCategoryCreateCommand("Pielęgnacja", ACTIVE, serviceIds));
+        serviceCategoryFacade.create(new ServiceCategoryCreateCommand("Pielęgnacja", 2, ACTIVE, serviceIds));
     }
 
     private Set<ServiceCreateCommand> getCareServiceCreateCommands() {
@@ -68,7 +68,7 @@ public class ServiceInitializer {
         var serviceIds = getOtherServiceCreateCommands().stream()
                 .map(serviceFacade::create)
                 .collect(Collectors.toSet());
-        serviceCategoryFacade.create(new ServiceCategoryCreateCommand("Inne", ACTIVE, serviceIds));
+        serviceCategoryFacade.create(new ServiceCategoryCreateCommand("Inne", 3, ACTIVE, serviceIds));
     }
 
     private Set<ServiceCreateCommand> getOtherServiceCreateCommands() {

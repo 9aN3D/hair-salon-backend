@@ -24,6 +24,8 @@ class ServiceCategoryDocument {
     @Indexed
     private String name;
 
+    private Integer order;
+
     private ServiceCategoryStatusDto status;
 
     private Set<String> serviceIds;

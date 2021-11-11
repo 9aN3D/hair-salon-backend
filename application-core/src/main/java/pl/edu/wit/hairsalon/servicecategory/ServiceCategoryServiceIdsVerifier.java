@@ -1,0 +1,37 @@
+package pl.edu.wit.hairsalon.servicecategory;
+
+import lombok.RequiredArgsConstructor;
+import pl.edu.wit.hairsalon.servicecategory.command.ServiceCategoryCreateCommand;
+import pl.edu.wit.hairsalon.servicecategory.command.ServiceCategoryUpdateCommand;
+import pl.edu.wit.hairsalon.servicecategory.exception.ServiceCategoryCreateException;
+
+import java.util.Set;
+
+import static java.lang.String.format;
+import static java.util.Optional.ofNullable;
+
+@RequiredArgsConstructor
+class ServiceCategoryServiceIdsVerifier implements ServiceCategoryCommandVerifier {
+
+    private final ServiceCategoryItemIds serviceCategoryItemIds;
+
+    @Override
+    public void verify(ServiceCategoryCreateCommand command) {
+        throwIfServiceIdsNotExists(command.getServiceIds());
+    }
+
+    @Override
+    public void verify(ServiceCategoryUpdateCommand command) {
+        ofNullable(command.getServiceIds())
+                .ifPresent(this::throwIfServiceIdsNotExists);
+    }
+
+    private void throwIfServiceIdsNotExists(Set<String> serviceIds) {
+        if (serviceCategoryItemIds.isExists(serviceIds)) {
+            throw new ServiceCategoryCreateException(
+                    format("Service ids is not correct: %s", serviceIds)
+            );
+        }
+    }
+
+}

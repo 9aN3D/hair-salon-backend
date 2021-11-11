@@ -26,6 +26,8 @@ public class ServiceCategoryFindQuery {
 
     private Set<String> serviceIds;
 
+    private Integer order;
+
     public static ServiceCategoryFindQuery withName(String name) {
         return ServiceCategoryFindQuery.builder()
                 .name(name)
@@ -50,6 +52,12 @@ public class ServiceCategoryFindQuery {
                 .build();
     }
 
+    public static ServiceCategoryFindQuery withOrder(Integer order) {
+        return ServiceCategoryFindQuery.builder()
+                .order(order)
+                .build();
+    }
+
     public void ifNamePresent(Consumer<String> action) {
         if (nonNull(name) && !name.isBlank()) {
             action.accept(name);
@@ -71,6 +79,12 @@ public class ServiceCategoryFindQuery {
     public void ifServiceIdsPresent(Consumer<Set<String>> action) {
         if (nonNullOrEmpty(serviceIds)) {
             action.accept(serviceIds);
+        }
+    }
+
+    public void ifOrderPresent(Consumer<Integer> action) {
+        if (nonNull(order)) {
+            action.accept(order);
         }
     }
 

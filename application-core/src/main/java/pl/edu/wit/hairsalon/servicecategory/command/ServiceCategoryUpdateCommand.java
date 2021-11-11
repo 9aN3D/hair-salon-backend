@@ -14,8 +14,8 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class ServiceCategoryUpdateCommand extends ServiceCategoryBaseCommand {
 
-    public ServiceCategoryUpdateCommand(String name, ServiceCategoryStatusDto status, Set<String> serviceIds) {
-        super(name, status, serviceIds);
+    public ServiceCategoryUpdateCommand(String name, Integer order, ServiceCategoryStatusDto status, Set<String> serviceIds) {
+        super(name, order, status, serviceIds);
     }
 
 }

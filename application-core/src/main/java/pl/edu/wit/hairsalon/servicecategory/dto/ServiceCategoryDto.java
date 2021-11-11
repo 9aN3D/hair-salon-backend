@@ -15,6 +15,8 @@ public class ServiceCategoryDto {
 
     String name;
 
+    Integer order;
+
     ServiceCategoryStatusDto status;
 
     Set<String> itemIds;

@@ -62,6 +62,7 @@ class MongoServiceCategoryAdapter implements ServiceCategoryPort {
         findQuery.ifNamePresent(name -> builder.and(qServiceCategory.name.like(name)));
         findQuery.ifStatusPresent(status -> builder.and(qServiceCategory.status.eq(status)));
         findQuery.ifServiceIdsPresent(serviceIds -> builder.and(qServiceCategory.serviceIds.any().in(serviceIds)));
+        findQuery.ifOrderPresent(order -> builder.and(qServiceCategory.order.eq(order)));
         return ofNullable(builder.getValue());
     }
 
