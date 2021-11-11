@@ -39,6 +39,15 @@ class ReservationHairdresser implements SelfValidator<ReservationHairdresser> {
         );
     }
 
+    ReservationHairdresser(ReservationHairdresserDto arg) {
+        this(
+                arg.getId(),
+                new ReservationHairdresserFullName(arg.getFullName()),
+                arg.getPhotoId()
+        );
+        addAllServices(arg.getServices());
+    }
+
     String id() {
         return hairdresserId;
     }

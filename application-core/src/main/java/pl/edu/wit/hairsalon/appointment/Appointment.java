@@ -5,16 +5,12 @@ import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentDto;
-import pl.edu.wit.hairsalon.appointment.query.AppointmentFindQuery;
 import pl.edu.wit.hairsalon.sharedkernel.SelfValidator;
 import pl.edu.wit.hairsalon.sharedkernel.domain.DateRange;
 import pl.edu.wit.hairsalon.sharedkernel.domain.NotBlankString;
-import pl.edu.wit.hairsalon.sharedkernel.exception.ValidationException;
 
 import java.time.LocalDateTime;
-import java.util.function.Function;
 
-import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 @Builder
@@ -32,17 +28,6 @@ class Appointment implements SelfValidator<Appointment> {
     private final LocalDateTime statusModificationDateTime;
     private final String hairdresserId;
     private final AppointmentNotification notification;
-
-    Appointment verifyReservedTimes(Function<AppointmentFindQuery, Long> countFunction) {
-        requireNonNull(countFunction, "Count function must not be null");
-        var findQuery = AppointmentFindQuery.withReserved(times.toDto(), hairdresserId);
-        if (countFunction.apply(findQuery) != 0) {
-            throw new ValidationException(
-                    format("These appointment times have already reserved, {hairdresserId=%s, times=%s}", hairdresserId, times)
-            );
-        }
-        return this;
-    }
 
     AppointmentDto toDto() {
         return AppointmentDto.builder()

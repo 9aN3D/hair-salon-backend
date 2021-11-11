@@ -8,6 +8,7 @@ import pl.edu.wit.hairsalon.appointment.query.AppointmentFindQuery;
 import pl.edu.wit.hairsalon.hairdresser.dto.HairdresserDto;
 import pl.edu.wit.hairsalon.reservation.dto.ReservationCalculationDto;
 import pl.edu.wit.hairsalon.reservation.exception.ReservationCalculationException;
+import pl.edu.wit.hairsalon.scheduledevent.query.ScheduledEventFindQuery;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
 import pl.edu.wit.hairsalon.sharedkernel.SelfValidator;
 import pl.edu.wit.hairsalon.sharedkernel.domain.DateRange;
@@ -70,10 +71,10 @@ class ReservationCalculation implements SelfValidator<ReservationCalculation> {
         return this;
     }
 
-    ReservationCalculation verifyReservedTimes(Function<AppointmentFindQuery, Long> countFunction) {
+    ReservationCalculation verifyReservedTimes(Function<ScheduledEventFindQuery, Long> countFunction) {
         requireNonNull(countFunction, "Count function must not be null");
         if (times.isNotEmpty()) {
-            var findQuery = AppointmentFindQuery.withReserved(times.toDto(), hairdresser.id());
+            var findQuery = ScheduledEventFindQuery.of(times.toDto(), hairdresser.id());
             if (countFunction.apply(findQuery) != 0) {
                 throw new ReservationCalculationException(
                         format("These appointment times have already reserved, {hairdresserId=%s, times=%s}", hairdresser.id(), times)

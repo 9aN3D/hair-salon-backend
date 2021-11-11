@@ -8,7 +8,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import pl.edu.wit.hairsalon.appointment.AppointmentFacade;
 import pl.edu.wit.hairsalon.hairdresser.HairdresserFacade;
 import pl.edu.wit.hairsalon.hairdresser.dto.HairdresserDto;
 import pl.edu.wit.hairsalon.hairdresser.dto.HairdresserFullNameDto;
@@ -19,6 +18,7 @@ import pl.edu.wit.hairsalon.member.dto.MemberDto;
 import pl.edu.wit.hairsalon.member.dto.MemberFullNameDto;
 import pl.edu.wit.hairsalon.reservation.command.ReservationCalculateCommand;
 import pl.edu.wit.hairsalon.reservation.exception.ReservationCalculationException;
+import pl.edu.wit.hairsalon.scheduledevent.ScheduledEventFacade;
 import pl.edu.wit.hairsalon.service.ServiceFacade;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
 import pl.edu.wit.hairsalon.sharedkernel.dto.MoneyDto;
@@ -55,20 +55,20 @@ class ReservationFacadeTest {
     private final LocalDateTime START_DATE_TIME = now().plusMinutes(1);
     private ReservationFacade reservationFacade;
     @Mock
-    private AppointmentFacade appointmentFacade;
+    private ScheduledEventFacade scheduledEventFacade;
     @Mock
     private HairdresserFacade hairdresserFacade;
 
     @BeforeEach
     void init(@Mock MemberFacade memberFacade,
               @Mock ServiceFacade serviceFacade) {
-        ReservationCalculator reservationCalculator = new ReservationCalculator(memberFacade, hairdresserFacade, serviceFacade, appointmentFacade);
-        reservationFacade = new AppReservationFacade(new InMemoryReservationPort(), new ReservationCreator(), reservationCalculator);
+        ReservationCalculator reservationCalculator = new ReservationCalculator(memberFacade, hairdresserFacade, serviceFacade, scheduledEventFacade);
+        reservationFacade = new AppReservationFacade(null, null, reservationCalculator);
 
         Mockito.lenient().when(memberFacade.findOne(any())).thenReturn(buildMemberDto());
         Mockito.lenient().when(hairdresserFacade.findOne(HAIRDRESSER_ID)).thenReturn(buildHairdresserDto());
         Mockito.lenient().when(serviceFacade.findAll(any(), any())).thenReturn(buildPageService());
-        Mockito.lenient().when(appointmentFacade.count(any())).thenReturn(Long.valueOf(0));
+        Mockito.lenient().when(scheduledEventFacade.count(any())).thenReturn(Long.valueOf(0));
     }
 
     @Test
@@ -109,7 +109,7 @@ class ReservationFacadeTest {
 
     @Test
     void shouldThrowReservationCalculationExceptionWhenAppointmentCountNotEqualZero() {
-        Mockito.when(appointmentFacade.count(any())).thenReturn(Long.valueOf(1));
+        Mockito.when(scheduledEventFacade.count(any())).thenReturn(Long.valueOf(1));
         var calculateCommand = ReservationCalculateCommand.builder()
                 .hairdresserId(HAIRDRESSER_ID)
                 .startDateTime(START_DATE_TIME)

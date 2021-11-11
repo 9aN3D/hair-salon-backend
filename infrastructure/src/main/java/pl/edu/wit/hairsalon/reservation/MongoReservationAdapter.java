@@ -15,6 +15,12 @@ class MongoReservationAdapter implements ReservationPort {
     private final ReservationMapper mapper;
 
     @Override
+    public ReservationDto save(ReservationDto reservation) {
+        var reservationDocument = mapper.toDocument(reservation);
+        return mapper.toDto(repository.save(reservationDocument));
+    }
+
+    @Override
     public ReservationDto findOneOrThrow(String reservationId) {
         return repository.findById(reservationId)
                 .map(mapper::toDto)

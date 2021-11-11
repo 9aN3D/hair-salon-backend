@@ -25,7 +25,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 @SecurityRequirement(name = "hair-salon-API")
 @RequestMapping(value = "/api/v1/reservations")
-class Reservation {
+class ReservationController {
 
     private final ReservationResponseAdapter reservationAdapter;
 

@@ -26,7 +26,7 @@ class AppointmentServices implements SelfValidator<AppointmentServices> {
     AppointmentServices addAll(List<ServiceDto> args) {
         requireNonNull(args, "Appointment services must not be null");
         this.services.addAll(toAppointmentService(args));
-        return null;
+        return this;
     }
 
     AppointmentServices add(AppointmentService arg) {

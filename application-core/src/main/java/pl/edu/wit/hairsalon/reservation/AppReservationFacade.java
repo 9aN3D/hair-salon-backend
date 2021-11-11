@@ -2,8 +2,8 @@ package pl.edu.wit.hairsalon.reservation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import pl.edu.wit.hairsalon.reservation.command.ReservationMakeCommand;
 import pl.edu.wit.hairsalon.reservation.command.ReservationCalculateCommand;
+import pl.edu.wit.hairsalon.reservation.command.ReservationMakeCommand;
 import pl.edu.wit.hairsalon.reservation.dto.ReservationCalculationDto;
 import pl.edu.wit.hairsalon.reservation.dto.ReservationDto;
 
