@@ -39,7 +39,7 @@ class HairdresserUpdater {
 
     private Set<String> getServices(HairdresserDto dto, HairdresserUpdateCommand command) {
         return ofNullable(command.getServices())
-                .orElseGet(dto::getServices);
+                .orElseGet(dto::getServiceIds);
     }
 
 }

@@ -17,4 +17,6 @@ public interface MemberPort {
 
     Page<MemberDto> findAll(MemberFindQuery findQuery, Pageable pageable);
 
+    boolean exist(MemberFindQuery findQuery);
+
 }

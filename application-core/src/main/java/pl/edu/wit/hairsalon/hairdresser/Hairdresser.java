@@ -32,7 +32,7 @@ class Hairdresser implements SelfValidator<Hairdresser> {
                 dto.getId(),
                 new HairdresserFullName(dto.getFullName()),
                 dto.getPhotoId(),
-                dto.getServices()
+                dto.getServiceIds()
         );
     }
 
@@ -48,7 +48,7 @@ class Hairdresser implements SelfValidator<Hairdresser> {
                 .id(id)
                 .fullName(fullName.toDto())
                 .photoId(photoId)
-                .services(services)
+                .serviceIds(services)
                 .build();
     }
 

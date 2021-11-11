@@ -49,11 +49,20 @@ class AppMemberFacade implements MemberFacade {
     @Override
     public Page<MemberDto> findAll(MemberFindQuery findQuery, Pageable pageable) {
         log.trace("Searching members {findQuery: {}, pageable: {}}", findQuery, pageable);
-        requireNonNull(findQuery, "Member find query id command must not be null");
+        requireNonNull(findQuery, "Member find query must not be null");
         requireNonNull(pageable, "Pageable must not be null");
         var page = memberPort.findAll(findQuery, pageable);
         log.info("Searched members {numberOfElements: {}}", page.getNumberOfElements());
         return page;
+    }
+
+    @Override
+    public boolean exist(MemberFindQuery findQuery) {
+        log.trace("Searching exist members {findQuery: {}}", findQuery);
+        requireNonNull(findQuery, "Member find query must not be null");
+        var isExist = memberPort.exist(findQuery);
+        log.info("Searched exist members {result: {}}", isExist);
+        return isExist;
     }
 
 }

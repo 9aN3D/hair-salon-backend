@@ -2,8 +2,8 @@ package pl.edu.wit.hairsalon.hairdresser.dto;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import lombok.Value;
+import pl.edu.wit.hairsalon.service.dto.ServiceDto;
 
 import java.util.Set;
 
@@ -18,6 +18,6 @@ public class HairdresserDto {
 
     String photoId;
 
-    Set<String> services;
+    Set<String> serviceIds;
 
 }

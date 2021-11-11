@@ -18,15 +18,15 @@ import pl.edu.wit.hairsalon.authdetails.dto.AuthDetailsStatusDto;
 class AuthDetailsDocument {
 
     @Id
-    String id;
+    private String id;
 
     @Indexed
-    String email;
+    private String email;
 
-    String password;
+    private String password;
 
-    AuthDetailsStatusDto status;
+    private AuthDetailsStatusDto status;
 
-    AuthDetailsRoleDto role;
+    private AuthDetailsRoleDto role;
 
 }

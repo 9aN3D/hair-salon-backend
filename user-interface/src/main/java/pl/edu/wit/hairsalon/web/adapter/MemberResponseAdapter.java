@@ -15,8 +15,8 @@ public class MemberResponseAdapter {
 
     private final MemberFacade memberFacade;
 
-    public MemberResponse findOne(String authDetailsId) {
-        return MemberResponse.of(memberFacade.findOne(authDetailsId));
+    public MemberResponse findOne(String memberId) {
+        return MemberResponse.of(memberFacade.findOne(memberId));
     }
 
     public void update(String memberId, MemberUpdateCommand command) {

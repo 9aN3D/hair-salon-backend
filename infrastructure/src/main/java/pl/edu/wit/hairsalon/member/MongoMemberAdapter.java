@@ -49,6 +49,11 @@ class MongoMemberAdapter implements MemberPort {
                 .map(memberMapper::toDto);
     }
 
+    @Override
+    public boolean exist(MemberFindQuery findQuery) {
+        return getOneFromRepository(findQuery).isPresent();
+    }
+
     private Optional<MemberDto> getOneFromRepository(MemberFindQuery query) {
         return buildPredicate(query)
                 .flatMap(memberRepository::findOne)

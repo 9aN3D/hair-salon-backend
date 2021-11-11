@@ -28,13 +28,25 @@ public class ServiceResponse {
     @NotNull
     Long durationInMinutes;
 
+    String categoryName;
+
     public static ServiceResponse of(ServiceDto dto) {
+        return getServiceResponseBuilder(dto)
+                .build();
+    }
+
+    public static ServiceResponse of(ServiceDto dto, String categoryName) {
+        return getServiceResponseBuilder(dto)
+                .categoryName(categoryName)
+                .build();
+    }
+
+    private static ServiceResponseBuilder getServiceResponseBuilder(ServiceDto dto) {
         return ServiceResponse.builder()
                 .id(dto.getId())
                 .name(dto.getName())
                 .price(dto.getPrice())
-                .durationInMinutes(dto.getDurationInMinutes())
-                .build();
+                .durationInMinutes(dto.getDurationInMinutes());
     }
 
 }

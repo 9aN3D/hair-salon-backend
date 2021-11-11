@@ -20,6 +20,6 @@ class HairdresserDocument {
 
     private String photoId;
 
-    private Set<String> services;
+    private Set<String> serviceIds;
 
 }

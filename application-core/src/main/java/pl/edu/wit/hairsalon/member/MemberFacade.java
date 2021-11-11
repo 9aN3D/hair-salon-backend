@@ -17,4 +17,6 @@ public interface MemberFacade {
 
     Page<MemberDto> findAll(MemberFindQuery findQuery, Pageable pageable);
 
+    boolean exist(MemberFindQuery findQuery);
+
 }
