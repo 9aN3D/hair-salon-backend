@@ -18,6 +18,7 @@ class AppAppointmentFacade implements AppointmentFacade {
     private final AppointmentPort appointmentPort;
     private final AppointmentCreator creator;
     private final AppointmentUpdater updater;
+    private final AppointmentResignation resignation;
 
     @Override
     public String create(AppointmentCreateCommand command) {
@@ -38,10 +39,10 @@ class AppAppointmentFacade implements AppointmentFacade {
     }
 
     @Override
-    public AppointmentDto findOne(String appointmentId) {
-        log.trace("Getting appointment {id: {}}", appointmentId);
-        requireNonNull(appointmentId, "Appointment id must not be null");
-        var appointment = appointmentPort.findOneOrThrow(appointmentId);
+    public AppointmentDto findOne(AppointmentFindQuery findQuery) {
+        log.trace("Getting appointment {findQuery: {}}", findQuery);
+        requireNonNull(findQuery, "Appointment find query must not be null");
+        var appointment = appointmentPort.findOneOrThrow(findQuery);
         log.info("Got appointment {dto: {}}", appointment);
         return appointment;
     }
@@ -63,6 +64,15 @@ class AppAppointmentFacade implements AppointmentFacade {
         var appointmentCount = appointmentPort.count(findQuery);
         log.info("Counted appointments {result: {}}", appointmentCount);
         return appointmentCount;
+    }
+
+    @Override
+    public void resign(String memberId, String appointmentId) {
+        log.trace("Resigning appointment {memberId: {}, appointmentId: {}}", memberId, appointmentId);
+        requireNonNull(memberId, "Member id must not be null");
+        requireNonNull(appointmentId, "Appointment Id must not be null");
+        var resignedAppointment = resignation.resign(memberId, appointmentId);
+        log.info("Resigned appointment {result: {}}", resignedAppointment);
     }
 
 }

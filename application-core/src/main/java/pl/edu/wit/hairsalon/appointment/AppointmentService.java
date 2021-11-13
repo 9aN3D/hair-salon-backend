@@ -26,6 +26,15 @@ class AppointmentService implements SelfValidator<AppointmentService> {
     private final Money price;
     private final Duration duration;
 
+    AppointmentService(AppointmentServiceDto arg) {
+        this(
+                arg.getServiceId(),
+                arg.getName(),
+                Money.of(arg.getPrice()),
+                Duration.ofMinutes(arg.getDurationInMinutes())
+        );
+    }
+
     AppointmentService(ServiceDto arg) {
         this(
                 arg.getId(),

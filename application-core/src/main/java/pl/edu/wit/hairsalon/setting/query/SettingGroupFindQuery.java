@@ -14,4 +14,10 @@ public class SettingGroupFindQuery {
 
     private SettingGroupDto group;
 
+    public static SettingGroupFindQuery ofSalonAddressGroup() {
+        return SettingGroupFindQuery.builder()
+                .group(SettingGroupDto.SALON_ADDRESS)
+                .build();
+    }
+
 }

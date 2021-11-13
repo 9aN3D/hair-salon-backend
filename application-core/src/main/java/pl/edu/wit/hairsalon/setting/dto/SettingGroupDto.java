@@ -33,6 +33,14 @@ public enum SettingGroupDto {
             SALON_CONTACT_EMAIL,
             SALON_START_HOUR_WORK,
             SALON_END_HOUR_WORK
+    )),
+    SALON_ADDRESS(Set.of(
+            SALON_ADDRESS_STREET_NAME,
+            SALON_ADDRESS_STREET_NUMBER,
+            SALON_ADDRESS_APARTMENT_NUMBER,
+            SALON_ADDRESS_POSTAL_CODE,
+            SALON_ADDRESS_CITY,
+            SALON_ADDRESS_COUNTRY
     ));
 
     private final Set<SettingIdDto> settingIds;

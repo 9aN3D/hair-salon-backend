@@ -23,6 +23,13 @@ class AppointmentServices implements SelfValidator<AppointmentServices> {
 
     private final List<AppointmentService> services = new ArrayList<>();
 
+    AppointmentServices(AppointmentServicesDto arg) {
+        services.addAll(arg.getServices()
+                .stream()
+                .map(AppointmentService::new)
+                .collect(toList()));
+    }
+
     AppointmentServices addAll(List<ServiceDto> args) {
         requireNonNull(args, "Appointment services must not be null");
         this.services.addAll(toAppointmentService(args));

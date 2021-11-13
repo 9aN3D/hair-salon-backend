@@ -52,21 +52,21 @@ class MongoScheduledEventAdapter implements ScheduledEventPort {
     private Optional<Predicate> buildPredicate(ScheduledEventFindQuery findQuery) {
         var qScheduledEvent = QScheduledEventDocument.scheduledEventDocument;
         var builder = new BooleanBuilder();
-        findQuery.ifIncludesStartAndEndDateTimesPresent(includesTime -> builder.and(between(qScheduledEvent.times, includesTime)));
+        findQuery.ifIncludesStartAndEndDateTimesPresent(includesTime -> builder.and(includes(qScheduledEvent.times, includesTime)));
         findQuery.ifOverlapsTimesPresent(includesTime -> builder.and(overlaps(qScheduledEvent.times, includesTime)));
         findQuery.ifHairdresserIdPresent(hairdresserId -> builder.and(qScheduledEvent.hairdresserId.eq(hairdresserId)));
         findQuery.ifReservationIdPresent(reservationId -> builder.and(qScheduledEvent.reservationId.eq(reservationId)));
         return ofNullable(builder.getValue());
     }
 
-    private BooleanExpression between(QDateRangeDto qDateRangeDto, DateRangeDto arg) {
+    private BooleanExpression includes(QDateRangeDto qDateRangeDto, DateRangeDto arg) {
         return qDateRangeDto.start.between(arg.getStart(), arg.getEnd()).and(qDateRangeDto.end.between(arg.getStart(), arg.getEnd()));
     }
 
     public BooleanExpression overlaps(QDateRangeDto qDateRangeDto, DateRangeDto arg) {
         return qDateRangeDto.start.between(arg.getStart(), arg.getEnd())
                 .or(qDateRangeDto.end.between(arg.getStart(), arg.getEnd()))
-                .or(between(qDateRangeDto, arg));
+                .or(includes(qDateRangeDto, arg));
     }
 
 }

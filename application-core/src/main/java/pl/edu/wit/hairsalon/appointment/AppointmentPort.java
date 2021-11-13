@@ -9,7 +9,7 @@ public interface AppointmentPort {
 
     AppointmentDto save(AppointmentDto appointment);
 
-    AppointmentDto findOneOrThrow(String appointmentId);
+    AppointmentDto findOneOrThrow(AppointmentFindQuery findQuery);
 
     Page<AppointmentDto> findAll(AppointmentFindQuery findQuery, Pageable pageable);
 

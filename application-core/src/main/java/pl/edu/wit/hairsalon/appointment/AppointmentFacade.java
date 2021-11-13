@@ -13,10 +13,12 @@ public interface AppointmentFacade {
 
     void update(String appointmentId, AppointmentUpdateCommand command);
 
-    AppointmentDto findOne(String appointmentId);
+    AppointmentDto findOne(AppointmentFindQuery findQuery);
 
     Page<AppointmentDto> findAll(AppointmentFindQuery findQuery, Pageable pageable);
 
     long count(AppointmentFindQuery findQuery);
+
+    void resign(String memberId, String appointmentId);
 
 }

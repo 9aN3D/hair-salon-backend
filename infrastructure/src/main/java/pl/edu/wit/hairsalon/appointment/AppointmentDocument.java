@@ -33,6 +33,8 @@ class AppointmentDocument {
 
     private AppointmentStatusDto status;
 
+    private LocalDateTime creationDateTime;
+
     private LocalDateTime statusModificationDateTime;
 
     private String hairdresserId;

@@ -32,6 +32,7 @@ class AppointmentCreator {
                 .times(new DateRange(command.getTimes()))
                 .services(new AppointmentServices().addAll(command.getServices()))
                 .status(RESERVED)
+                .creationDateTime(command.getCreationDateTime())
                 .statusModificationDateTime(LocalDateTime.now())
                 .hairdresserId(command.getHairdresserId())
                 .notification(new AppointmentNotification(REMINDER))

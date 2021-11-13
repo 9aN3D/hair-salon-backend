@@ -25,6 +25,7 @@ class AppointmentHandler implements ReservationMadeEventHandler {
                 .hairdresserId(reservation.getHairdresser().getId())
                 .memberId(reservation.getMemberId())
                 .services(reservation.getSelectedServices())
+                .creationDateTime(reservation.getCreationDateTime())
                 .build();
     }
 

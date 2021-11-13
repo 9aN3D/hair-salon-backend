@@ -3,7 +3,6 @@ package pl.edu.wit.hairsalon.appointment;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.DateTimePath;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +13,6 @@ import pl.edu.wit.hairsalon.appointment.query.AppointmentFindQuery;
 import pl.edu.wit.hairsalon.sharedkernel.dto.DateRangeDto;
 import pl.edu.wit.hairsalon.sharedkernel.dto.QDateRangeDto;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static java.lang.String.format;
@@ -34,11 +32,12 @@ class MongoAppointmentAdapter implements AppointmentPort {
     }
 
     @Override
-    public AppointmentDto findOneOrThrow(String appointmentId) {
-        return repository.findById(appointmentId)
+    public AppointmentDto findOneOrThrow(AppointmentFindQuery findQuery) {
+        return buildPredicate(findQuery)
+                .flatMap(repository::findOne)
                 .map(mapper::toDto)
                 .orElseThrow(() -> new AppointmentNotFoundException(
-                        format("Appointment not found by id: %s", appointmentId)
+                        format("Appointment not found by findQuery: %s", findQuery)
                 ));
     }
 
@@ -63,15 +62,16 @@ class MongoAppointmentAdapter implements AppointmentPort {
         findQuery.ifIncludesTimesPresent(includesTime -> builder.and(includes(qAppointment.times, includesTime)));
         findQuery.ifHairdresserIdPresent(hairdresserId -> builder.and(qAppointment.hairdresserId.eq(hairdresserId)));
         findQuery.ifStatusesPresent(statuses -> builder.and(qAppointment.status.in(statuses)));
+        findQuery.ifMemberIdPresent(memberId -> builder.and(qAppointment.memberId.eq(memberId)));
+        findQuery.ifAppointmentIdPresent(appointmentId -> builder.and(qAppointment.id.eq(appointmentId)));
+        findQuery.ifStartTimeGreaterThanEqualPresent(startDateTime -> builder.and(qAppointment.times.start.goe(startDateTime)));
+        findQuery.ifStartTimeLessThanPresent(startDateTime -> builder.and(qAppointment.times.start.lt(startDateTime)));
+        findQuery.ifOrExceptStatusesPresent(statuses -> builder.or(qAppointment.status.notIn(statuses)));
         return ofNullable(builder.getValue());
     }
 
     private BooleanExpression includes(QDateRangeDto qDateRangeDto, DateRangeDto arg) {
-        return includes(qDateRangeDto.start, arg.getStart()).and(includes(qDateRangeDto.end, arg.getEnd()));
-    }
-
-    private BooleanExpression includes(DateTimePath<LocalDateTime> dateTimePath, LocalDateTime arg) {
-        return dateTimePath.after(arg).and(dateTimePath.before(arg));
+        return qDateRangeDto.start.between(arg.getStart(), arg.getEnd()).and(qDateRangeDto.end.between(arg.getStart(), arg.getEnd()));
     }
 
 }

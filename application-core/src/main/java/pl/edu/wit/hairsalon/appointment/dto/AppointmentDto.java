@@ -24,6 +24,8 @@ public class AppointmentDto {
 
     AppointmentStatusDto status;
 
+    LocalDateTime creationDateTime;
+
     LocalDateTime statusModificationDateTime;
 
     String hairdresserId;

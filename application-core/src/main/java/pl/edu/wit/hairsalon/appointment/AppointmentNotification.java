@@ -22,6 +22,10 @@ class AppointmentNotification implements SelfValidator<AppointmentNotification> 
         this(name, false);
     }
 
+    AppointmentNotification(AppointmentNotificationDto arg) {
+        this(AppointmentNotificationName.valueOf(arg.getName().name()), arg.isSent());
+    }
+
     AppointmentNotificationDto toDto() {
         return AppointmentNotificationDto.builder()
                 .name(name.toDto())

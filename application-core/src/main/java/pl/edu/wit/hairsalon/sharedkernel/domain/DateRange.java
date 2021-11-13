@@ -6,6 +6,7 @@ import pl.edu.wit.hairsalon.sharedkernel.dto.DateRangeDto;
 import pl.edu.wit.hairsalon.sharedkernel.exception.ValidationException;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
@@ -56,6 +57,14 @@ public class DateRange implements Comparable<DateRange>, SelfValidator<DateRange
         return new DateRangeDto(start, end);
     }
 
+    public String formatStart(String pattern) {
+        return format(start, pattern);
+    }
+
+    public String formatEnd(String pattern) {
+        return format(end, pattern);
+    }
+
     @Override
     public DateRange validate() {
         requireNonNull(start, "Date range start must not be null");
@@ -90,6 +99,11 @@ public class DateRange implements Comparable<DateRange>, SelfValidator<DateRange
         return start.equals(arg.start)
                 ? end.compareTo(arg.end)
                 : start.compareTo(arg.start);
+    }
+
+    private String format(LocalDateTime dateTime, String pattern) {
+        var dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
+        return dateTime.format(dateTimeFormatter);
     }
 
 }
