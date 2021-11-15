@@ -19,6 +19,7 @@ class AppAppointmentFacade implements AppointmentFacade {
     private final AppointmentCreator creator;
     private final AppointmentUpdater updater;
     private final AppointmentResignation resignation;
+    private final AppointmentReminders reminders;
 
     @Override
     public String create(AppointmentCreateCommand command) {
@@ -73,6 +74,13 @@ class AppAppointmentFacade implements AppointmentFacade {
         requireNonNull(appointmentId, "Appointment Id must not be null");
         var resignedAppointment = resignation.resign(memberId, appointmentId);
         log.info("Resigned appointment {result: {}}", resignedAppointment);
+    }
+
+    @Override
+    public void reminds(Pageable pageable) {
+        log.trace("Reminding appointments {pageable: {}}", pageable);
+        var appointmentCount = reminders.remind(pageable);
+        log.info("Reminded appointments {result: {}}", appointmentCount);
     }
 
 }

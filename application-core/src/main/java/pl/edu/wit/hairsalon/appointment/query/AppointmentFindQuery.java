@@ -37,6 +37,14 @@ public class AppointmentFindQuery {
 
     private Set<AppointmentStatusDto> orExceptStatuses;
 
+    private Boolean notificationSent;
+
+    public static AppointmentFindQuery with(String appointmentId) {
+        return AppointmentFindQuery.builder()
+                .appointmentId(appointmentId)
+                .build();
+    }
+
     public static AppointmentFindQuery with(String memberId, String appointmentId) {
         return AppointmentFindQuery.builder()
                 .memberId(memberId)
@@ -110,6 +118,12 @@ public class AppointmentFindQuery {
     public void ifOrExceptStatusesPresent(Consumer<Set<AppointmentStatusDto>> action) {
         if (nonNullOrEmpty(orExceptStatuses)) {
             action.accept(orExceptStatuses);
+        }
+    }
+
+    public void ifNotificationSentPresent(Consumer<Boolean> action) {
+        if (nonNull(notificationSent)) {
+            action.accept(notificationSent);
         }
     }
 

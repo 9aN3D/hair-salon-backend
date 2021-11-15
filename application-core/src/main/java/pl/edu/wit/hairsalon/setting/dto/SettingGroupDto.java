@@ -5,6 +5,13 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Set;
 
+import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.NOTIFICATIONS_EMAIL_LOGIN;
+import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.NOTIFICATIONS_EMAIL_OUTCOMING;
+import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.NOTIFICATIONS_EMAIL_PASSWORD;
+import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.NOTIFICATIONS_EMAIL_REQUIRE_SECURE_CONNECTION;
+import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.NOTIFICATIONS_EMAIL_SMTP_HOST;
+import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.NOTIFICATIONS_EMAIL_SMTP_PORT;
+import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.NOTIFICATIONS_SMS_API_TOKEN;
 import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.SALON_ADDRESS_APARTMENT_NUMBER;
 import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.SALON_ADDRESS_CITY;
 import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.SALON_ADDRESS_COUNTRY;
@@ -41,6 +48,17 @@ public enum SettingGroupDto {
             SALON_ADDRESS_POSTAL_CODE,
             SALON_ADDRESS_CITY,
             SALON_ADDRESS_COUNTRY
+    )),
+    NOTIFICATION_EMAIL(Set.of(
+            NOTIFICATIONS_EMAIL_LOGIN,
+            NOTIFICATIONS_EMAIL_PASSWORD,
+            NOTIFICATIONS_EMAIL_SMTP_HOST,
+            NOTIFICATIONS_EMAIL_SMTP_PORT,
+            NOTIFICATIONS_EMAIL_REQUIRE_SECURE_CONNECTION,
+            NOTIFICATIONS_EMAIL_OUTCOMING
+    )),
+    NOTIFICATION_SMS(Set.of(
+            NOTIFICATIONS_SMS_API_TOKEN
     ));
 
     private final Set<SettingIdDto> settingIds;

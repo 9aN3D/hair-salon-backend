@@ -39,4 +39,11 @@ class AppointmentNotification implements SelfValidator<AppointmentNotification> 
         return this;
     }
 
+    AppointmentNotification changeSent() {
+        return AppointmentNotification.builder()
+                .name(name)
+                .sent(true)
+                .build();
+    }
+
 }

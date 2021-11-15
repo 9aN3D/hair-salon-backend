@@ -67,6 +67,7 @@ class MongoAppointmentAdapter implements AppointmentPort {
         findQuery.ifStartTimeGreaterThanEqualPresent(startDateTime -> builder.and(qAppointment.times.start.goe(startDateTime)));
         findQuery.ifStartTimeLessThanPresent(startDateTime -> builder.and(qAppointment.times.start.lt(startDateTime)));
         findQuery.ifOrExceptStatusesPresent(statuses -> builder.or(qAppointment.status.notIn(statuses)));
+        findQuery.ifNotificationSentPresent(notificationSent -> builder.and(qAppointment.notification.sent.eq(notificationSent)));
         return ofNullable(builder.getValue());
     }
 

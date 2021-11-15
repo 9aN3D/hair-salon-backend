@@ -104,4 +104,19 @@ class Appointment implements SelfValidator<Appointment> {
                 .build();
     }
 
+    Appointment changeNotificationSent() {
+        return Appointment.builder()
+                .id(id)
+                .reservationId(reservationId)
+                .memberId(memberId)
+                .times(times)
+                .services(services)
+                .status(status)
+                .creationDateTime(creationDateTime)
+                .statusModificationDateTime(LocalDateTime.now())
+                .hairdresserId(hairdresserId)
+                .notification(notification.changeSent())
+                .build();
+    }
+
 }

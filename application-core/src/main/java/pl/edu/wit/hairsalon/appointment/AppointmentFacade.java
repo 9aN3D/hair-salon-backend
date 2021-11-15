@@ -1,6 +1,7 @@
 package pl.edu.wit.hairsalon.appointment;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import pl.edu.wit.hairsalon.appointment.command.AppointmentCreateCommand;
 import pl.edu.wit.hairsalon.appointment.command.AppointmentUpdateCommand;
@@ -20,5 +21,7 @@ public interface AppointmentFacade {
     long count(AppointmentFindQuery findQuery);
 
     void resign(String memberId, String appointmentId);
+
+    void reminds(Pageable pageable);
 
 }

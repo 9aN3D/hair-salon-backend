@@ -16,7 +16,6 @@ class AppointmentCreator {
 
     private final AppointmentPort appointmentPort;
     private final IdGenerator idGenerator;
-    //private final NotificationFacade notificationFacade; TODO create AppointmentNotification
 
     AppointmentDto create(AppointmentCreateCommand command) {
         var appointment = createNewAppointment(command)

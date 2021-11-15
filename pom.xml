@@ -42,6 +42,8 @@
         <querydsl.version>4.4.0</querydsl.version>
         <libphonenumber.version>8.12.16</libphonenumber.version>
         <openapi-ui.version>1.5.12</openapi-ui.version>
+        <javax-mail.version>1.6.2</javax-mail.version>
+        <smsapi.version>2.5</smsapi.version>
     </properties>
 
     <dependencyManagement>
@@ -134,8 +136,34 @@
                 <artifactId>springdoc-openapi-data-rest</artifactId>
                 <version>${openapi-ui.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.sun.mail</groupId>
+                <artifactId>javax.mail</artifactId>
+                <version>${javax-mail.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>pl.smsapi</groupId>
+                <artifactId>smsapi-lib</artifactId>
+                <version>${smsapi.version}</version>
+            </dependency>
         </dependencies>
+
     </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </releases>
+            <id>smsapi</id>
+            <name>smsapi</name>
+            <url>https://labs.smsapi.com/maven/</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
+
     <build>
         <plugins>
             <plugin>

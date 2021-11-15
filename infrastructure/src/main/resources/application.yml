@@ -52,6 +52,11 @@ security:
       resource-ids: hairSalonApiResource
 
 springdoc.api-docs:
-    path: /api-docs
+  path: /api-docs
 
-pl.edu.wit.file.storage.IMAGE.url: http://localhost:9000/api/v1/files/%s/image
+pl.edu.wit:
+  file.storage.IMAGE.url: http://localhost:9000/api/v1/files/%s/image
+
+  smsapi:
+    token: NZFsQnb0YPhxjqeUT1U3J5FFf6Tl9YuSnra2EfJq
+    proxy-url: https://api.smsapi.pl/

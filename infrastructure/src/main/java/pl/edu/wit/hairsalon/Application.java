@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import pl.edu.wit.hairsalon.common.init.AdminInitializer;
 import pl.edu.wit.hairsalon.common.init.HairdresserInitializer;
 import pl.edu.wit.hairsalon.common.init.ServiceInitializer;
@@ -14,6 +15,7 @@ import pl.edu.wit.hairsalon.common.init.ServiceInitializer;
 import static io.swagger.v3.oas.annotations.enums.SecuritySchemeIn.HEADER;
 import static io.swagger.v3.oas.annotations.enums.SecuritySchemeType.HTTP;
 
+@EnableScheduling
 @SpringBootApplication
 @RequiredArgsConstructor
 @SecurityScheme(name = "hair-salon-API", scheme = "Bearer", type = HTTP, bearerFormat = "JWT", in = HEADER)
