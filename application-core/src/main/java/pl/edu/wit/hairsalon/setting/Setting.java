@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import pl.edu.wit.hairsalon.setting.dto.SettingDto;
 import pl.edu.wit.hairsalon.setting.dto.SettingIdDto;
-import pl.edu.wit.hairsalon.sharedkernel.SelfValidator;
-import pl.edu.wit.hairsalon.sharedkernel.domain.NotBlankString;
+import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
+import pl.edu.wit.hairsalon.sharedKernel.domain.NotBlankString;
 
 import static java.util.Objects.requireNonNull;
 

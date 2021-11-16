@@ -1,6 +1,6 @@
 package pl.edu.wit.hairsalon.appointment.exception;
 
-import pl.edu.wit.hairsalon.sharedkernel.exception.DomainException;
+import pl.edu.wit.hairsalon.sharedKernel.exception.DomainException;
 
 public class AppointmentNotFoundException extends DomainException {
 

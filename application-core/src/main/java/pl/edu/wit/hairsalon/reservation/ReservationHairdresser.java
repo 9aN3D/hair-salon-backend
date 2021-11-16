@@ -7,9 +7,9 @@ import lombok.ToString;
 import pl.edu.wit.hairsalon.hairdresser.dto.HairdresserDto;
 import pl.edu.wit.hairsalon.reservation.dto.ReservationHairdresserDto;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
-import pl.edu.wit.hairsalon.sharedkernel.SelfValidator;
-import pl.edu.wit.hairsalon.sharedkernel.domain.NotBlankString;
-import pl.edu.wit.hairsalon.sharedkernel.exception.ValidationException;
+import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
+import pl.edu.wit.hairsalon.sharedKernel.domain.NotBlankString;
+import pl.edu.wit.hairsalon.sharedKernel.exception.ValidationException;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,15 +5,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import pl.edu.wit.hairsalon.service.ServiceFacade;
 import pl.edu.wit.hairsalon.service.command.ServiceCreateCommand;
-import pl.edu.wit.hairsalon.servicecategory.ServiceCategoryFacade;
-import pl.edu.wit.hairsalon.servicecategory.command.ServiceCategoryCreateCommand;
-import pl.edu.wit.hairsalon.servicecategory.query.ServiceCategoryFindQuery;
+import pl.edu.wit.hairsalon.serviceCategory.ServiceCategoryFacade;
+import pl.edu.wit.hairsalon.serviceCategory.command.ServiceCategoryCreateCommand;
+import pl.edu.wit.hairsalon.serviceCategory.query.ServiceCategoryFindQuery;
 
 import java.math.BigDecimal;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static pl.edu.wit.hairsalon.servicecategory.dto.ServiceCategoryStatusDto.ACTIVE;
+import static pl.edu.wit.hairsalon.serviceCategory.dto.ServiceCategoryStatusDto.ACTIVE;
 
 @Component
 @RequiredArgsConstructor

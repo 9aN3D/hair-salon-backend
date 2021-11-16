@@ -2,7 +2,7 @@ package pl.edu.wit.hairsalon.notification;
 
 import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.notification.command.NotificationSendCommand;
-import pl.edu.wit.hairsalon.sharedkernel.port.secondary.IdGenerator;
+import pl.edu.wit.hairsalon.sharedKernel.port.secondary.IdGenerator;
 
 import static java.time.LocalDateTime.now;
 import static pl.edu.wit.hairsalon.notification.NotificationStatus.SENT;

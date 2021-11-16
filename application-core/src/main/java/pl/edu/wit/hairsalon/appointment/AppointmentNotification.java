@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentNotificationDto;
-import pl.edu.wit.hairsalon.sharedkernel.SelfValidator;
+import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
 
 import java.util.Objects;
 

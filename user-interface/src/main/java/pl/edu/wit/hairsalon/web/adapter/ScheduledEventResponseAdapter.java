@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import pl.edu.wit.hairsalon.scheduledevent.ScheduledEventFacade;
-import pl.edu.wit.hairsalon.scheduledevent.query.ScheduledEventFindQuery;
+import pl.edu.wit.hairsalon.scheduledEvent.ScheduledEventFacade;
+import pl.edu.wit.hairsalon.scheduledEvent.query.ScheduledEventFindQuery;
 import pl.edu.wit.hairsalon.web.response.ScheduledEventResponse;
 
 @Service

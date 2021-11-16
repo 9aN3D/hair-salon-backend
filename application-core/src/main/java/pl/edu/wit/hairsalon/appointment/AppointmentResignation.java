@@ -3,7 +3,7 @@ package pl.edu.wit.hairsalon.appointment;
 import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentDto;
 import pl.edu.wit.hairsalon.appointment.query.AppointmentFindQuery;
-import pl.edu.wit.hairsalon.scheduledevent.ScheduledEventFacade;
+import pl.edu.wit.hairsalon.scheduledEvent.ScheduledEventFacade;
 
 @RequiredArgsConstructor
 class AppointmentResignation {

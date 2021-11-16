@@ -3,9 +3,9 @@ package pl.edu.wit.hairsalon.web.response;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
-import pl.edu.wit.hairsalon.authdetails.dto.AuthDetailsDto;
-import pl.edu.wit.hairsalon.authdetails.dto.AuthDetailsRoleDto;
-import pl.edu.wit.hairsalon.authdetails.dto.AuthDetailsStatusDto;
+import pl.edu.wit.hairsalon.authDetails.dto.AuthDetailsDto;
+import pl.edu.wit.hairsalon.authDetails.dto.AuthDetailsRoleDto;
+import pl.edu.wit.hairsalon.authDetails.dto.AuthDetailsStatusDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

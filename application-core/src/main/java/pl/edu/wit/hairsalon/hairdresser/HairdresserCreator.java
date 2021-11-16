@@ -3,7 +3,7 @@ package pl.edu.wit.hairsalon.hairdresser;
 import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.hairdresser.command.HairdresserCreateCommand;
 import pl.edu.wit.hairsalon.hairdresser.dto.HairdresserDto;
-import pl.edu.wit.hairsalon.sharedkernel.port.secondary.IdGenerator;
+import pl.edu.wit.hairsalon.sharedKernel.port.secondary.IdGenerator;
 
 @RequiredArgsConstructor
 class HairdresserCreator {

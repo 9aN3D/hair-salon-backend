@@ -8,17 +8,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.edu.wit.hairsalon.authdetails.AuthDetailsPort;
-import pl.edu.wit.hairsalon.authdetails.dto.AuthDetailsDto;
-import pl.edu.wit.hairsalon.authdetails.query.AuthDetailsFindQuery;
-import pl.edu.wit.hairsalon.sharedkernel.port.secondary.IdGenerator;
+import pl.edu.wit.hairsalon.authDetails.AuthDetailsPort;
+import pl.edu.wit.hairsalon.authDetails.dto.AuthDetailsDto;
+import pl.edu.wit.hairsalon.authDetails.query.AuthDetailsFindQuery;
+import pl.edu.wit.hairsalon.sharedKernel.port.secondary.IdGenerator;
 
 import java.util.Optional;
 
 import static java.lang.String.format;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
-import static pl.edu.wit.hairsalon.authdetails.query.AuthDetailsFindQuery.ofEmail;
+import static pl.edu.wit.hairsalon.authDetails.query.AuthDetailsFindQuery.ofEmail;
 
 @Service
 @Transactional

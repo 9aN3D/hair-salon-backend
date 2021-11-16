@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.wit.hairsalon.reservation.command.ReservationCalculateCommand;
 import pl.edu.wit.hairsalon.reservation.command.ReservationMakeCommand;
-import pl.edu.wit.hairsalon.sharedkernel.dto.Identity;
+import pl.edu.wit.hairsalon.sharedKernel.dto.Identity;
 import pl.edu.wit.hairsalon.web.adapter.ReservationResponseAdapter;
 import pl.edu.wit.hairsalon.web.response.ReservationCalculationResponse;
 

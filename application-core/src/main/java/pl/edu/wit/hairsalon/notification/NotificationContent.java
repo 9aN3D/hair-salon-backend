@@ -1,7 +1,7 @@
 package pl.edu.wit.hairsalon.notification;
 
 import pl.edu.wit.hairsalon.notification.dto.NotificationContentDto;
-import pl.edu.wit.hairsalon.sharedkernel.SelfValidator;
+import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
 
 interface NotificationContent extends SelfValidator<NotificationContent> {
 

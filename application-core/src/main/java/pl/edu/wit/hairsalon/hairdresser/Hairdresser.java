@@ -5,9 +5,9 @@ import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import pl.edu.wit.hairsalon.hairdresser.dto.HairdresserDto;
-import pl.edu.wit.hairsalon.sharedkernel.SelfValidator;
-import pl.edu.wit.hairsalon.sharedkernel.domain.NotBlankString;
-import pl.edu.wit.hairsalon.uploadablefile.command.FileUploadCommand;
+import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
+import pl.edu.wit.hairsalon.sharedKernel.domain.NotBlankString;
+import pl.edu.wit.hairsalon.uploadableFile.command.FileUploadCommand;
 
 import java.util.Set;
 import java.util.function.Consumer;

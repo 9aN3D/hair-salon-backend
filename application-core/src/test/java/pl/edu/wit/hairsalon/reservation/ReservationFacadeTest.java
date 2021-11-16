@@ -18,10 +18,10 @@ import pl.edu.wit.hairsalon.member.dto.MemberDto;
 import pl.edu.wit.hairsalon.member.dto.MemberFullNameDto;
 import pl.edu.wit.hairsalon.reservation.command.ReservationCalculateCommand;
 import pl.edu.wit.hairsalon.reservation.exception.ReservationCalculationException;
-import pl.edu.wit.hairsalon.scheduledevent.ScheduledEventFacade;
+import pl.edu.wit.hairsalon.scheduledEvent.ScheduledEventFacade;
 import pl.edu.wit.hairsalon.service.ServiceFacade;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
-import pl.edu.wit.hairsalon.sharedkernel.dto.MoneyDto;
+import pl.edu.wit.hairsalon.sharedKernel.dto.MoneyDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -37,7 +37,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static pl.edu.wit.hairsalon.member.dto.MemberAgreementDto.MARKETING;
 import static pl.edu.wit.hairsalon.member.dto.MemberAgreementDto.PERSONAL_DATA;
 import static pl.edu.wit.hairsalon.member.dto.MemberAgreementDto.RESERVATION_RECEIPT;
-import static pl.edu.wit.hairsalon.sharedkernel.dto.CurrencyDto.PLN;
+import static pl.edu.wit.hairsalon.sharedKernel.dto.CurrencyDto.PLN;
 
 @ExtendWith(MockitoExtension.class)
 class ReservationFacadeTest {

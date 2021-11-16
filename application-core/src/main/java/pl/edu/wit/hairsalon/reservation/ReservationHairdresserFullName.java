@@ -3,8 +3,8 @@ package pl.edu.wit.hairsalon.reservation;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import pl.edu.wit.hairsalon.sharedkernel.domain.FullName;
-import pl.edu.wit.hairsalon.sharedkernel.dto.FullNameDto;
+import pl.edu.wit.hairsalon.sharedKernel.domain.FullName;
+import pl.edu.wit.hairsalon.sharedKernel.dto.FullNameDto;
 
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)

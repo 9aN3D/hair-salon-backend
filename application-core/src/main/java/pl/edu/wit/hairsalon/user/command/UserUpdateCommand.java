@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import pl.edu.wit.hairsalon.authdetails.command.AuthDetailsUpdateCommand;
+import pl.edu.wit.hairsalon.authDetails.command.AuthDetailsUpdateCommand;
 
 @Data
 @NoArgsConstructor

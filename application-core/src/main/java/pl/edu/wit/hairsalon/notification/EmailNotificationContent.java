@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import pl.edu.wit.hairsalon.notification.dto.EmailNotificationContentDto;
-import pl.edu.wit.hairsalon.sharedkernel.domain.NotBlankString;
+import pl.edu.wit.hairsalon.sharedKernel.domain.NotBlankString;
 
 import java.io.File;
 

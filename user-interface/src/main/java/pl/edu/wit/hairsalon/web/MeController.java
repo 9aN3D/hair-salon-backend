@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import pl.edu.wit.hairsalon.authdetails.AuthDetailsFacade;
-import pl.edu.wit.hairsalon.authdetails.dto.AuthDetailsDto;
-import pl.edu.wit.hairsalon.sharedkernel.dto.Identity;
+import pl.edu.wit.hairsalon.authDetails.AuthDetailsFacade;
+import pl.edu.wit.hairsalon.authDetails.dto.AuthDetailsDto;
+import pl.edu.wit.hairsalon.sharedKernel.dto.Identity;
 
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;

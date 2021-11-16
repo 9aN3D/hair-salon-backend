@@ -6,11 +6,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.edu.wit.hairsalon.service.ServiceFacade;
-import pl.edu.wit.hairsalon.servicecategory.ServiceCategoryFacade;
-import pl.edu.wit.hairsalon.servicecategory.command.ServiceCategoryCreateCommand;
-import pl.edu.wit.hairsalon.servicecategory.command.ServiceCategoryUpdateCommand;
-import pl.edu.wit.hairsalon.servicecategory.dto.ServiceCategoryDto;
-import pl.edu.wit.hairsalon.servicecategory.query.ServiceCategoryFindQuery;
+import pl.edu.wit.hairsalon.serviceCategory.ServiceCategoryFacade;
+import pl.edu.wit.hairsalon.serviceCategory.command.ServiceCategoryCreateCommand;
+import pl.edu.wit.hairsalon.serviceCategory.command.ServiceCategoryUpdateCommand;
+import pl.edu.wit.hairsalon.serviceCategory.dto.ServiceCategoryDto;
+import pl.edu.wit.hairsalon.serviceCategory.query.ServiceCategoryFindQuery;
 import pl.edu.wit.hairsalon.web.response.ServiceCategoryResponse;
 import pl.edu.wit.hairsalon.web.response.ServiceResponse;
 

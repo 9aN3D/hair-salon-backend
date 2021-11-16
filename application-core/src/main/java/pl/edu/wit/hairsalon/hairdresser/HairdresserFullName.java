@@ -4,8 +4,8 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.hairdresser.dto.HairdresserFullNameDto;
-import pl.edu.wit.hairsalon.sharedkernel.SelfValidator;
-import pl.edu.wit.hairsalon.sharedkernel.domain.NotBlankString;
+import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
+import pl.edu.wit.hairsalon.sharedKernel.domain.NotBlankString;
 
 @Builder
 @EqualsAndHashCode

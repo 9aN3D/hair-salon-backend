@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentNotificationDto;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentServicesDto;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentStatusDto;
-import pl.edu.wit.hairsalon.sharedkernel.dto.DateRangeDto;
+import pl.edu.wit.hairsalon.sharedKernel.dto.DateRangeDto;
 
 import javax.persistence.Id;
 import java.time.LocalDateTime;

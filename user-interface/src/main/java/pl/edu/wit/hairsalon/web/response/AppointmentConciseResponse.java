@@ -7,7 +7,7 @@ import lombok.Value;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentDto;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentServiceDto;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentStatusDto;
-import pl.edu.wit.hairsalon.sharedkernel.dto.DateRangeDto;
+import pl.edu.wit.hairsalon.sharedKernel.dto.DateRangeDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

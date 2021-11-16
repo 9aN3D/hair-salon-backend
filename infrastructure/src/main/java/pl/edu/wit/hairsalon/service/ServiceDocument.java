@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import pl.edu.wit.hairsalon.sharedkernel.dto.MoneyDto;
+import pl.edu.wit.hairsalon.sharedKernel.dto.MoneyDto;
 
 @Data
 @Builder

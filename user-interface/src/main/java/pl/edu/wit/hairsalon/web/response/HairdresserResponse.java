@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Value;
 import pl.edu.wit.hairsalon.hairdresser.dto.HairdresserDto;
 import pl.edu.wit.hairsalon.reservation.dto.ReservationHairdresserDto;
-import pl.edu.wit.hairsalon.uploadablefile.dto.UploadableFileDto;
+import pl.edu.wit.hairsalon.uploadableFile.dto.UploadableFileDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

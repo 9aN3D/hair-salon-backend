@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentStatusDto;
-import pl.edu.wit.hairsalon.sharedkernel.dto.DateRangeDto;
+import pl.edu.wit.hairsalon.sharedKernel.dto.DateRangeDto;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 
 import static java.util.Objects.nonNull;
 import static pl.edu.wit.hairsalon.appointment.dto.AppointmentStatusDto.RESERVED;
-import static pl.edu.wit.hairsalon.sharedkernel.CollectionHelper.nonNullOrEmpty;
+import static pl.edu.wit.hairsalon.sharedKernel.CollectionHelper.nonNullOrEmpty;
 
 @Data
 @Builder

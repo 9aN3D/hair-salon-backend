@@ -7,10 +7,10 @@ import pl.edu.wit.hairsalon.reservation.ReservationFacade;
 import pl.edu.wit.hairsalon.reservation.command.ReservationMakeCommand;
 import pl.edu.wit.hairsalon.reservation.command.ReservationCalculateCommand;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
-import pl.edu.wit.hairsalon.servicecategory.ServiceCategoryFacade;
-import pl.edu.wit.hairsalon.servicecategory.dto.ServiceCategoryDto;
-import pl.edu.wit.hairsalon.servicecategory.query.ServiceCategoryFindQuery;
-import pl.edu.wit.hairsalon.uploadablefile.UploadableFileFacade;
+import pl.edu.wit.hairsalon.serviceCategory.ServiceCategoryFacade;
+import pl.edu.wit.hairsalon.serviceCategory.dto.ServiceCategoryDto;
+import pl.edu.wit.hairsalon.serviceCategory.query.ServiceCategoryFindQuery;
+import pl.edu.wit.hairsalon.uploadableFile.UploadableFileFacade;
 import pl.edu.wit.hairsalon.web.response.HairdresserResponse;
 import pl.edu.wit.hairsalon.web.response.ReservationCalculationResponse;
 import pl.edu.wit.hairsalon.web.response.ServiceResponse;
@@ -24,7 +24,7 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
-import static pl.edu.wit.hairsalon.sharedkernel.CollectionHelper.isNullOrEmpty;
+import static pl.edu.wit.hairsalon.sharedKernel.CollectionHelper.isNullOrEmpty;
 
 @Service
 @RequiredArgsConstructor

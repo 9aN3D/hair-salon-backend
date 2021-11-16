@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import pl.edu.wit.hairsalon.sharedkernel.dto.MoneyDto;
+import pl.edu.wit.hairsalon.sharedKernel.dto.MoneyDto;
 
 @Value
 @Builder

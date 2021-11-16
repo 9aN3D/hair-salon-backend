@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import pl.edu.wit.hairsalon.authdetails.command.AuthDetailsCreateCommand;
 import pl.edu.wit.hairsalon.member.dto.MemberAgreementDto;
 
 import java.util.Set;

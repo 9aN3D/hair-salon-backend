@@ -6,9 +6,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentDto;
 import pl.edu.wit.hairsalon.appointment.exception.AppointmentResignException;
-import pl.edu.wit.hairsalon.sharedkernel.SelfValidator;
-import pl.edu.wit.hairsalon.sharedkernel.domain.DateRange;
-import pl.edu.wit.hairsalon.sharedkernel.domain.NotBlankString;
+import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
+import pl.edu.wit.hairsalon.sharedKernel.domain.DateRange;
+import pl.edu.wit.hairsalon.sharedKernel.domain.NotBlankString;
 
 import java.time.LocalDateTime;
 import java.util.function.Consumer;

@@ -3,9 +3,9 @@ package pl.edu.wit.hairsalon.member;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.member.dto.MemberAgreementDto;
-import pl.edu.wit.hairsalon.sharedkernel.CollectionHelper;
-import pl.edu.wit.hairsalon.sharedkernel.SelfValidator;
-import pl.edu.wit.hairsalon.sharedkernel.exception.ValidationException;
+import pl.edu.wit.hairsalon.sharedKernel.CollectionHelper;
+import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
+import pl.edu.wit.hairsalon.sharedKernel.exception.ValidationException;
 
 import java.util.EnumSet;
 import java.util.Set;

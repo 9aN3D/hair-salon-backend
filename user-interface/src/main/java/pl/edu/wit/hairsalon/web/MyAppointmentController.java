@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.wit.hairsalon.appointment.query.AppointmentFindQuery;
-import pl.edu.wit.hairsalon.sharedkernel.dto.Identity;
+import pl.edu.wit.hairsalon.sharedKernel.dto.Identity;
 import pl.edu.wit.hairsalon.web.adapter.AppointmentResponseAdapter;
 import pl.edu.wit.hairsalon.web.response.AppointmentConciseResponse;
 import pl.edu.wit.hairsalon.web.response.AppointmentResponse;

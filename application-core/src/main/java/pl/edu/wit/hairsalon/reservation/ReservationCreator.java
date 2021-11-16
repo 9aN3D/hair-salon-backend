@@ -1,13 +1,13 @@
 package pl.edu.wit.hairsalon.reservation;
 
 import lombok.RequiredArgsConstructor;
-import pl.edu.wit.hairsalon.eventbus.DomainEventPublisher;
+import pl.edu.wit.hairsalon.eventBus.DomainEventPublisher;
 import pl.edu.wit.hairsalon.reservation.command.ReservationMakeCommand;
 import pl.edu.wit.hairsalon.reservation.dto.ReservationCalculationDto;
 import pl.edu.wit.hairsalon.reservation.dto.ReservationDto;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
-import pl.edu.wit.hairsalon.sharedkernel.domain.DateRange;
-import pl.edu.wit.hairsalon.sharedkernel.port.secondary.IdGenerator;
+import pl.edu.wit.hairsalon.sharedKernel.domain.DateRange;
+import pl.edu.wit.hairsalon.sharedKernel.port.secondary.IdGenerator;
 
 import java.util.List;
 

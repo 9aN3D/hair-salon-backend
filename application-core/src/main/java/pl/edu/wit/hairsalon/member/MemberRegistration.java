@@ -1,13 +1,12 @@
 package pl.edu.wit.hairsalon.member;
 
 import lombok.RequiredArgsConstructor;
-import pl.edu.wit.hairsalon.authdetails.AuthDetailsFacade;
-import pl.edu.wit.hairsalon.authdetails.dto.AuthDetailsDto;
+import pl.edu.wit.hairsalon.authDetails.AuthDetailsFacade;
+import pl.edu.wit.hairsalon.authDetails.dto.AuthDetailsDto;
 import pl.edu.wit.hairsalon.member.command.MemberRegisterCommand;
 import pl.edu.wit.hairsalon.member.dto.MemberDto;
 
 import static java.time.LocalDateTime.now;
-import static pl.edu.wit.hairsalon.authdetails.dto.AuthDetailsRoleDto.MEMBER;
 
 @RequiredArgsConstructor
 class MemberRegistration {

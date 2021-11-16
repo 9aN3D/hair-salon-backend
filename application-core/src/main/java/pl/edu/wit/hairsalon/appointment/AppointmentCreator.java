@@ -3,8 +3,8 @@ package pl.edu.wit.hairsalon.appointment;
 import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.appointment.command.AppointmentCreateCommand;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentDto;
-import pl.edu.wit.hairsalon.sharedkernel.domain.DateRange;
-import pl.edu.wit.hairsalon.sharedkernel.port.secondary.IdGenerator;
+import pl.edu.wit.hairsalon.sharedKernel.domain.DateRange;
+import pl.edu.wit.hairsalon.sharedKernel.port.secondary.IdGenerator;
 
 import java.time.LocalDateTime;
 

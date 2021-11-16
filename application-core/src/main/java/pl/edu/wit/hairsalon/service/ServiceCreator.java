@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.service.command.ServiceCreateCommand;
 import pl.edu.wit.hairsalon.service.exception.ServiceAlreadyExists;
 import pl.edu.wit.hairsalon.service.query.ServiceFindQuery;
-import pl.edu.wit.hairsalon.sharedkernel.domain.Money;
-import pl.edu.wit.hairsalon.sharedkernel.port.secondary.IdGenerator;
+import pl.edu.wit.hairsalon.sharedKernel.domain.Money;
+import pl.edu.wit.hairsalon.sharedKernel.port.secondary.IdGenerator;
 
 import java.time.Duration;
 

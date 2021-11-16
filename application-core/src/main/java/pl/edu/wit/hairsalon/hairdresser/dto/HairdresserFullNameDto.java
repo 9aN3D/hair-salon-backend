@@ -3,7 +3,7 @@ package pl.edu.wit.hairsalon.hairdresser.dto;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import pl.edu.wit.hairsalon.sharedkernel.dto.FullNameDto;
+import pl.edu.wit.hairsalon.sharedKernel.dto.FullNameDto;
 
 @Value
 @EqualsAndHashCode(callSuper = true)

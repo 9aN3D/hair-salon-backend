@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import pl.edu.wit.hairsalon.scheduledevent.query.ScheduledEventFindQuery;
+import pl.edu.wit.hairsalon.scheduledEvent.query.ScheduledEventFindQuery;
 import pl.edu.wit.hairsalon.web.adapter.ScheduledEventResponseAdapter;
 import pl.edu.wit.hairsalon.web.response.ScheduledEventResponse;
 

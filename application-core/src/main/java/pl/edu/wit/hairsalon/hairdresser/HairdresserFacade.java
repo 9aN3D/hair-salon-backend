@@ -6,7 +6,7 @@ import pl.edu.wit.hairsalon.hairdresser.command.HairdresserCreateCommand;
 import pl.edu.wit.hairsalon.hairdresser.command.HairdresserUpdateCommand;
 import pl.edu.wit.hairsalon.hairdresser.dto.HairdresserDto;
 import pl.edu.wit.hairsalon.hairdresser.query.HairdresserFindQuery;
-import pl.edu.wit.hairsalon.uploadablefile.command.FileUploadCommand;
+import pl.edu.wit.hairsalon.uploadableFile.command.FileUploadCommand;
 
 public interface HairdresserFacade {
 

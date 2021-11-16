@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import pl.edu.wit.hairsalon.servicecategory.dto.ServiceCategoryDto;
+import pl.edu.wit.hairsalon.serviceCategory.dto.ServiceCategoryDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
-import static pl.edu.wit.hairsalon.sharedkernel.CollectionHelper.nonNullOrEmpty;
+import static pl.edu.wit.hairsalon.sharedKernel.CollectionHelper.nonNullOrEmpty;
 
 @Value
 @Builder

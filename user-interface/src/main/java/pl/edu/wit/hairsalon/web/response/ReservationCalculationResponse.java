@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import pl.edu.wit.hairsalon.sharedkernel.dto.DateRangeDto;
+import pl.edu.wit.hairsalon.sharedKernel.dto.DateRangeDto;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;

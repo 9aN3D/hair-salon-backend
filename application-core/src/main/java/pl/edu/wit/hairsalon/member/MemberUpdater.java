@@ -1,9 +1,9 @@
 package pl.edu.wit.hairsalon.member;
 
 import lombok.RequiredArgsConstructor;
-import pl.edu.wit.hairsalon.authdetails.AuthDetailsFacade;
-import pl.edu.wit.hairsalon.authdetails.command.AuthDetailsUpdateCommand;
-import pl.edu.wit.hairsalon.authdetails.dto.AuthDetailsDto;
+import pl.edu.wit.hairsalon.authDetails.AuthDetailsFacade;
+import pl.edu.wit.hairsalon.authDetails.command.AuthDetailsUpdateCommand;
+import pl.edu.wit.hairsalon.authDetails.dto.AuthDetailsDto;
 import pl.edu.wit.hairsalon.member.command.MemberUpdateCommand;
 import pl.edu.wit.hairsalon.member.dto.MemberContactDto;
 import pl.edu.wit.hairsalon.member.dto.MemberDto;

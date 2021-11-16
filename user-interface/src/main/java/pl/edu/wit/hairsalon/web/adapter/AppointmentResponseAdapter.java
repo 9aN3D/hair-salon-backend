@@ -10,9 +10,9 @@ import pl.edu.wit.hairsalon.hairdresser.HairdresserFacade;
 import pl.edu.wit.hairsalon.setting.SettingFacade;
 import pl.edu.wit.hairsalon.setting.dto.SettingDto;
 import pl.edu.wit.hairsalon.setting.query.SettingGroupFindQuery;
-import pl.edu.wit.hairsalon.socialintegration.SocialIntegrationFacade;
-import pl.edu.wit.hairsalon.socialintegration.command.LinkAddingCalendarEventGenerateCommand;
-import pl.edu.wit.hairsalon.uploadablefile.UploadableFileFacade;
+import pl.edu.wit.hairsalon.socialIntegration.SocialIntegrationFacade;
+import pl.edu.wit.hairsalon.socialIntegration.command.LinkAddingCalendarEventGenerateCommand;
+import pl.edu.wit.hairsalon.uploadableFile.UploadableFileFacade;
 import pl.edu.wit.hairsalon.web.response.AppointmentConciseResponse;
 import pl.edu.wit.hairsalon.web.response.AppointmentResponse;
 import pl.edu.wit.hairsalon.web.response.HairdresserResponse;
@@ -25,7 +25,7 @@ import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.SALON_ADDRESS_POSTAL
 import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.SALON_ADDRESS_STREET_NAME;
 import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.SALON_ADDRESS_STREET_NUMBER;
 import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.SALON_NAME;
-import static pl.edu.wit.hairsalon.socialintegration.dto.SocialProviderDto.GOOGLE;
+import static pl.edu.wit.hairsalon.socialIntegration.dto.SocialProviderDto.GOOGLE;
 
 @Service
 @RequiredArgsConstructor

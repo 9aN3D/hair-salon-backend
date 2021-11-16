@@ -8,8 +8,8 @@ import pl.edu.wit.hairsalon.notification.dto.NotificationDto;
 import pl.edu.wit.hairsalon.notification.dto.NotificationStatusDto;
 import pl.edu.wit.hairsalon.notification.dto.SmsShipmentDto;
 import pl.edu.wit.hairsalon.notification.dto.SmsShipmentStatusDto;
-import pl.edu.wit.hairsalon.sharedkernel.SelfValidator;
-import pl.edu.wit.hairsalon.sharedkernel.domain.NotBlankString;
+import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
+import pl.edu.wit.hairsalon.sharedKernel.domain.NotBlankString;
 
 import java.time.LocalDateTime;
 

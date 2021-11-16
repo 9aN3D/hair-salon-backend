@@ -6,10 +6,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentServiceDto;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
-import pl.edu.wit.hairsalon.sharedkernel.SelfValidator;
-import pl.edu.wit.hairsalon.sharedkernel.domain.Money;
-import pl.edu.wit.hairsalon.sharedkernel.domain.NotBlankString;
-import pl.edu.wit.hairsalon.sharedkernel.exception.ValidationException;
+import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
+import pl.edu.wit.hairsalon.sharedKernel.domain.Money;
+import pl.edu.wit.hairsalon.sharedKernel.domain.NotBlankString;
+import pl.edu.wit.hairsalon.sharedKernel.exception.ValidationException;
 
 import java.time.Duration;
 

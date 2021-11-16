@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import pl.edu.wit.hairsalon.servicecategory.command.ServiceCategoryCreateCommand;
-import pl.edu.wit.hairsalon.servicecategory.command.ServiceCategoryUpdateCommand;
-import pl.edu.wit.hairsalon.servicecategory.query.ServiceCategoryFindQuery;
+import pl.edu.wit.hairsalon.serviceCategory.command.ServiceCategoryCreateCommand;
+import pl.edu.wit.hairsalon.serviceCategory.command.ServiceCategoryUpdateCommand;
+import pl.edu.wit.hairsalon.serviceCategory.query.ServiceCategoryFindQuery;
 import pl.edu.wit.hairsalon.web.adapter.ServiceCategoryResponseAdapter;
 import pl.edu.wit.hairsalon.web.response.ServiceCategoryResponse;
 

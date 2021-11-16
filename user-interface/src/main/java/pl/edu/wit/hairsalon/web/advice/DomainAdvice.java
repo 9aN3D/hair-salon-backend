@@ -6,9 +6,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.NativeWebRequest;
 import pl.edu.wit.hairsalon.reservation.exception.ReservationCalculationException;
-import pl.edu.wit.hairsalon.sharedkernel.exception.DomainException;
+import pl.edu.wit.hairsalon.sharedKernel.exception.DomainException;
 import pl.edu.wit.hairsalon.web.response.Problem;
-import pl.edu.wit.hairsalon.web.response.Violation;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CONFLICT;

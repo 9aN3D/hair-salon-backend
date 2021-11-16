@@ -2,8 +2,8 @@ package pl.edu.wit.hairsalon.hairdresser;
 
 import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.hairdresser.dto.HairdresserDto;
-import pl.edu.wit.hairsalon.uploadablefile.UploadableFileFacade;
-import pl.edu.wit.hairsalon.uploadablefile.command.FileUploadCommand;
+import pl.edu.wit.hairsalon.uploadableFile.UploadableFileFacade;
+import pl.edu.wit.hairsalon.uploadableFile.command.FileUploadCommand;
 
 import static pl.edu.wit.hairsalon.hairdresser.query.HairdresserFindQuery.ofHairdresserId;
 

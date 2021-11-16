@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.wit.hairsalon.member.command.MemberUpdateCommand;
 import pl.edu.wit.hairsalon.member.query.MemberFindQuery;
-import pl.edu.wit.hairsalon.sharedkernel.dto.Identity;
+import pl.edu.wit.hairsalon.sharedKernel.dto.Identity;
 import pl.edu.wit.hairsalon.web.adapter.MemberResponseAdapter;
 import pl.edu.wit.hairsalon.web.response.MemberResponse;
 

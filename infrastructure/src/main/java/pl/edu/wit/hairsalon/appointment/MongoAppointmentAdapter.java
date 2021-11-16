@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentDto;
 import pl.edu.wit.hairsalon.appointment.exception.AppointmentNotFoundException;
 import pl.edu.wit.hairsalon.appointment.query.AppointmentFindQuery;
-import pl.edu.wit.hairsalon.sharedkernel.dto.DateRangeDto;
-import pl.edu.wit.hairsalon.sharedkernel.dto.QDateRangeDto;
+import pl.edu.wit.hairsalon.sharedKernel.dto.DateRangeDto;
+import pl.edu.wit.hairsalon.sharedKernel.dto.QDateRangeDto;
 
 import java.util.Optional;
 

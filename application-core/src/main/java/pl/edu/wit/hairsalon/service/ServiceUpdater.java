@@ -3,7 +3,7 @@ package pl.edu.wit.hairsalon.service;
 import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.service.command.ServiceUpdateCommand;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
-import pl.edu.wit.hairsalon.sharedkernel.domain.Money;
+import pl.edu.wit.hairsalon.sharedKernel.domain.Money;
 
 import java.time.Duration;
 

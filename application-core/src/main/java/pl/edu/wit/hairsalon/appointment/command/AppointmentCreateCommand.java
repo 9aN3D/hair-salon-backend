@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
-import pl.edu.wit.hairsalon.sharedkernel.dto.DateRangeDto;
+import pl.edu.wit.hairsalon.sharedKernel.dto.DateRangeDto;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -3,7 +3,7 @@ package pl.edu.wit.hairsalon.web.adapter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
-import pl.edu.wit.hairsalon.uploadablefile.UploadableFileFacade;
+import pl.edu.wit.hairsalon.uploadableFile.UploadableFileFacade;
 
 @Service
 @RequiredArgsConstructor

@@ -3,7 +3,7 @@ package pl.edu.wit.hairsalon.reservation.dto;
 import lombok.Builder;
 import lombok.Value;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
-import pl.edu.wit.hairsalon.sharedkernel.dto.FullNameDto;
+import pl.edu.wit.hairsalon.sharedKernel.dto.FullNameDto;
 
 import java.util.List;
 

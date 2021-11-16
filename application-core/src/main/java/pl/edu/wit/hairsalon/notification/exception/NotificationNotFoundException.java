@@ -1,6 +1,6 @@
 package pl.edu.wit.hairsalon.notification.exception;
 
-import pl.edu.wit.hairsalon.sharedkernel.exception.DomainException;
+import pl.edu.wit.hairsalon.sharedKernel.exception.DomainException;
 
 public class NotificationNotFoundException extends DomainException {
 

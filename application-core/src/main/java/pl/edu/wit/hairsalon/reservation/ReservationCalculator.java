@@ -7,7 +7,7 @@ import pl.edu.wit.hairsalon.member.MemberFacade;
 import pl.edu.wit.hairsalon.member.dto.MemberDto;
 import pl.edu.wit.hairsalon.reservation.command.ReservationCalculateCommand;
 import pl.edu.wit.hairsalon.reservation.dto.ReservationCalculationDto;
-import pl.edu.wit.hairsalon.scheduledevent.ScheduledEventFacade;
+import pl.edu.wit.hairsalon.scheduledEvent.ScheduledEventFacade;
 import pl.edu.wit.hairsalon.service.ServiceFacade;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
 import pl.edu.wit.hairsalon.service.query.ServiceFindQuery;

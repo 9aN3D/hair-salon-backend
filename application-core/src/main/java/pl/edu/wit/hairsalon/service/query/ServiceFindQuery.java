@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import static java.util.Objects.nonNull;
-import static pl.edu.wit.hairsalon.sharedkernel.CollectionHelper.nonNullOrEmpty;
+import static pl.edu.wit.hairsalon.sharedKernel.CollectionHelper.nonNullOrEmpty;
 
 @Data
 @Builder

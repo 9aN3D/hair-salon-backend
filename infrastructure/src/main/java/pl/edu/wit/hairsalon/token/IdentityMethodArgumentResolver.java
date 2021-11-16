@@ -12,7 +12,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import pl.edu.wit.hairsalon.sharedkernel.dto.Identity;
+import pl.edu.wit.hairsalon.sharedKernel.dto.Identity;
 
 import java.util.Optional;
 

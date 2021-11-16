@@ -4,16 +4,15 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import pl.edu.wit.hairsalon.appointment.query.AppointmentFindQuery;
 import pl.edu.wit.hairsalon.hairdresser.dto.HairdresserDto;
 import pl.edu.wit.hairsalon.reservation.dto.ReservationCalculationDto;
 import pl.edu.wit.hairsalon.reservation.exception.ReservationCalculationException;
-import pl.edu.wit.hairsalon.scheduledevent.query.ScheduledEventFindQuery;
+import pl.edu.wit.hairsalon.scheduledEvent.query.ScheduledEventFindQuery;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
-import pl.edu.wit.hairsalon.sharedkernel.SelfValidator;
-import pl.edu.wit.hairsalon.sharedkernel.domain.DateRange;
-import pl.edu.wit.hairsalon.sharedkernel.domain.Money;
-import pl.edu.wit.hairsalon.sharedkernel.exception.ValidationException;
+import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
+import pl.edu.wit.hairsalon.sharedKernel.domain.DateRange;
+import pl.edu.wit.hairsalon.sharedKernel.domain.Money;
+import pl.edu.wit.hairsalon.sharedKernel.exception.ValidationException;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -32,7 +31,7 @@ import static java.time.LocalDateTime.now;
 import static java.util.Objects.requireNonNull;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
-import static pl.edu.wit.hairsalon.sharedkernel.CollectionHelper.nonNullOrEmpty;
+import static pl.edu.wit.hairsalon.sharedKernel.CollectionHelper.nonNullOrEmpty;
 
 @Builder
 @ToString

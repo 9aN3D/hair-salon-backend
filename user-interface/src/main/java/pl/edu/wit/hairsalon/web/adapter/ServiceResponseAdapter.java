@@ -2,23 +2,13 @@ package pl.edu.wit.hairsalon.web.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.edu.wit.hairsalon.service.ServiceFacade;
 import pl.edu.wit.hairsalon.service.command.ServiceCreateCommand;
 import pl.edu.wit.hairsalon.service.command.ServiceUpdateCommand;
-import pl.edu.wit.hairsalon.service.dto.ServiceDto;
 import pl.edu.wit.hairsalon.service.query.ServiceFindQuery;
-import pl.edu.wit.hairsalon.servicecategory.ServiceCategoryFacade;
-import pl.edu.wit.hairsalon.servicecategory.dto.ServiceCategoryDto;
-import pl.edu.wit.hairsalon.servicecategory.query.ServiceCategoryFindQuery;
 import pl.edu.wit.hairsalon.web.response.ServiceResponse;
-
-import java.util.stream.Collectors;
-
-import static java.lang.Integer.MAX_VALUE;
-import static java.util.stream.Collectors.*;
 
 @Service
 @RequiredArgsConstructor

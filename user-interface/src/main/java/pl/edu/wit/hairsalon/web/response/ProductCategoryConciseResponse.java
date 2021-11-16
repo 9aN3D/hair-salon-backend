@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import pl.edu.wit.hairsalon.servicecategory.dto.ServiceCategoryDto;
+import pl.edu.wit.hairsalon.serviceCategory.dto.ServiceCategoryDto;
 
 import javax.validation.constraints.NotBlank;
 

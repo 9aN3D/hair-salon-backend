@@ -2,7 +2,7 @@ package pl.edu.wit.hairsalon.web.response;
 
 import lombok.Builder;
 import lombok.Value;
-import pl.edu.wit.hairsalon.scheduledevent.dto.ScheduledEventDto;
+import pl.edu.wit.hairsalon.scheduledEvent.dto.ScheduledEventDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

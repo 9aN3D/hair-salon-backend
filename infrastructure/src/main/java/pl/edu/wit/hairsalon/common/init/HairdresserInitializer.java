@@ -11,7 +11,7 @@ import pl.edu.wit.hairsalon.hairdresser.query.HairdresserFindQuery;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
 import pl.edu.wit.hairsalon.service.ServiceFacade;
 import pl.edu.wit.hairsalon.service.query.ServiceFindQuery;
-import pl.edu.wit.hairsalon.uploadablefile.command.FileUploadCommand;
+import pl.edu.wit.hairsalon.uploadableFile.command.FileUploadCommand;
 
 import java.io.FileInputStream;
 import java.util.Iterator;
