@@ -35,7 +35,7 @@ public class AppointmentFindQuery {
 
     private LocalDateTime startTimeLessThan;
 
-    private Set<AppointmentStatusDto> orExceptStatuses;
+    private Set<AppointmentStatusDto> exceptStatuses;
 
     private Boolean notificationSent;
 
@@ -115,9 +115,9 @@ public class AppointmentFindQuery {
         }
     }
 
-    public void ifOrExceptStatusesPresent(Consumer<Set<AppointmentStatusDto>> action) {
-        if (nonNullOrEmpty(orExceptStatuses)) {
-            action.accept(orExceptStatuses);
+    public void ifExceptStatusesPresent(Consumer<Set<AppointmentStatusDto>> action) {
+        if (nonNullOrEmpty(exceptStatuses)) {
+            action.accept(exceptStatuses);
         }
     }
 

@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @RequiredArgsConstructor
 @SecurityRequirement(name = "hair-salon-API")
 @RequestMapping(value = "/api/v1/admin/appointments")
-public class AppointmentController {
+class AppointmentController {
 
     private final AppointmentFacade appointmentFacade;
 
