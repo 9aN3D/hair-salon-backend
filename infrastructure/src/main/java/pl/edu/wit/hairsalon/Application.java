@@ -2,6 +2,7 @@ package pl.edu.wit.hairsalon;
 
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +16,7 @@ import pl.edu.wit.hairsalon.common.init.ServiceInitializer;
 import static io.swagger.v3.oas.annotations.enums.SecuritySchemeIn.HEADER;
 import static io.swagger.v3.oas.annotations.enums.SecuritySchemeType.HTTP;
 
+@Slf4j
 @EnableScheduling
 @SpringBootApplication
 @RequiredArgsConstructor
@@ -31,6 +33,7 @@ class Application extends SpringBootServletInitializer implements CommandLineRun
 
     @Override
     public void run(String... args) {
+        log.info("CommandLineRunner started");
         adminInitializer.createIfNecessary();
         serviceInitializer.createIfNecessary();
         hairdresserInitializer.createIfNecessary();

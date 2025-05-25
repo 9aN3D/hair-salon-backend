@@ -31,6 +31,9 @@ class MailSenderConfiguration {
 
     private JavaMailSender initMailSender(Map<SettingIdDto, String> notificationSettings) {
         var mailSender = new JavaMailSenderImpl();
+        if (notificationSettings.isEmpty()) {
+            return mailSender;
+        }
         setMailParams(notificationSettings, mailSender);
         setMailProperties(notificationSettings, mailSender);
         return mailSender;
@@ -41,7 +44,7 @@ class MailSenderConfiguration {
         mailSender.setPassword(notificationSettings.get(NOTIFICATIONS_EMAIL_PASSWORD));
         mailSender.setDefaultEncoding("UTF-8");
         mailSender.setHost(notificationSettings.get(NOTIFICATIONS_EMAIL_SMTP_HOST));
-        mailSender.setPort(parseInt(notificationSettings.get(NOTIFICATIONS_EMAIL_SMTP_PORT)));
+        mailSender.setPort(parseInt(notificationSettings.getOrDefault(NOTIFICATIONS_EMAIL_SMTP_PORT, "25")));
     }
 
     private void setMailProperties(Map<SettingIdDto, String> notificationSettings, JavaMailSenderImpl mailSender) {

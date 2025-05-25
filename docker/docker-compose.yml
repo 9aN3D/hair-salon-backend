@@ -1,21 +1,31 @@
 version: '3.7'
+name: hairsalon
 
 services:
 
-  mongodb:
-    build: mongodb
-    container_name: "mongodb"
-    environment:
-      - MONGO_DATA_DIR=/data/db
-      - MONGO_LOG_DIR=/dev/null
-    volumes:
-      - ./mongodb-data/db:/data/db
-      - ./mongodb-data/mongo-backup:/data/mongo-backup
+  mongo:
+    image: mongo:latest
     ports:
       - "27017:27017"
-    command: mongod --auth
+    restart: always
+    volumes:
+      - "mongodb_data_container:/data/db"
+    networks:
+      - hairSalonNet
 
   redis:
     image: redis
+    volumes:
+      - "redis_data:/data"
     ports:
       - "6379:6379"
+
+networks:
+  hairSalonNet:
+    driver: bridge
+
+volumes:
+  mongodb_data_container:
+    driver: local
+  redis_data:
+    driver: local

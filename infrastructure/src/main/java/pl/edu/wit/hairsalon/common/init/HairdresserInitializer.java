@@ -32,11 +32,11 @@ public class HairdresserInitializer {
     public void createIfNecessary() {
         var hairdresserPage = hairdresserFacade.findAll(new HairdresserFindQuery(), PageRequest.of(0, 1));
         if (!hairdresserPage.hasContent()) {
-            var fileUploadCommandIterator = prepareFileUploadCommandIterator();
+            //var fileUploadCommandIterator = prepareFileUploadCommandIterator();
             prepareHairdresserCreateCommands()
                     .stream()
-                    .map(hairdresserFacade::create)
-                    .forEach(hairdresserId -> hairdresserFacade.uploadPhoto(hairdresserId, fileUploadCommandIterator.next()));
+                    .forEach(hairdresserFacade::create);
+                    //.forEach(hairdresserId -> hairdresserFacade.uploadPhoto(hairdresserId, fileUploadCommandIterator.next()));
         }
     }
 
