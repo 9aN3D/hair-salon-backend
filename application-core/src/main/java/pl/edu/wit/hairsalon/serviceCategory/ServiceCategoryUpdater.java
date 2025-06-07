@@ -25,7 +25,7 @@ class ServiceCategoryUpdater {
 
     public ServiceCategory buildServiceCategory(ServiceCategoryDto dto, ServiceCategoryUpdateCommand command) {
         return ServiceCategory.builder()
-                .id(dto.getId())
+                .id(dto.id())
                 .name(getName(dto, command))
                 .status(getStatus(dto, command))
                 .itemIds(getServiceIds(dto, command))
@@ -35,18 +35,18 @@ class ServiceCategoryUpdater {
     private Set<String> getServiceIds(ServiceCategoryDto dto, ServiceCategoryUpdateCommand command) {
         return ofNullable(command.getServiceIds())
                 .filter(not(Set::isEmpty))
-                .orElseGet(dto::getItemIds);
+                .orElseGet(dto::itemIds);
     }
 
     private String getName(ServiceCategoryDto dto, ServiceCategoryUpdateCommand command) {
         return ofNullable(command.getName())
-                .orElseGet(dto::getName);
+                .orElseGet(dto::name);
     }
 
     private ServiceCategoryStatus getStatus(ServiceCategoryDto dto, ServiceCategoryUpdateCommand command) {
         return ofNullable(command.getStatus())
                 .map(ServiceCategoryStatus::valueOf)
-                .orElseGet(() -> valueOf(dto.getStatus()));
+                .orElseGet(() -> valueOf(dto.status()));
     }
 
 }

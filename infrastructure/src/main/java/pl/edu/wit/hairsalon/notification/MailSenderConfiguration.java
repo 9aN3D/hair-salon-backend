@@ -61,7 +61,7 @@ class MailSenderConfiguration {
 
     private Map<SettingIdDto, String> getEmailNotificationSettings(SettingPort settingPort) {
         return settingPort.findAll(SettingGroupDto.NOTIFICATION_EMAIL).stream()
-                .collect(Collectors.toMap(SettingDto::getId, SettingDto::getValue));
+                .collect(Collectors.toMap(SettingDto::id, SettingDto::value));
     }
 
 }

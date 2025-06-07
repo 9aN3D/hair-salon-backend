@@ -63,7 +63,7 @@ public class ServiceCategoryResponseAdapter {
     private Set<String> collectServiceIds(Page<ServiceCategoryDto> serviceCategoryPage) {
         return serviceCategoryPage.getContent()
                 .stream()
-                .map(ServiceCategoryDto::getItemIds)
+                .map(ServiceCategoryDto::itemIds)
                 .flatMap(Collection::stream)
                 .collect(toSet());
     }
@@ -76,7 +76,7 @@ public class ServiceCategoryResponseAdapter {
 
     private ServiceCategoryResponse toServiceCategoryResponse(ServiceCategoryDto serviceCategory, Map<String, ServiceResponse> serviceCategoryIdToServices) {
         var serviceCategoryResponse = ServiceCategoryResponse.of(serviceCategory);
-        serviceCategoryResponse.addServices(serviceCategory.getItemIds()
+        serviceCategoryResponse.addServices(serviceCategory.itemIds()
                 .stream()
                 .map(serviceCategoryIdToServices::get)
                 .filter(Objects::nonNull)

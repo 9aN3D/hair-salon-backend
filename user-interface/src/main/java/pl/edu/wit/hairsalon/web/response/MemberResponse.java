@@ -6,8 +6,8 @@ import pl.edu.wit.hairsalon.member.dto.MemberContactDto;
 import pl.edu.wit.hairsalon.member.dto.MemberDto;
 import pl.edu.wit.hairsalon.member.dto.MemberFullNameDto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Value
@@ -28,10 +28,10 @@ public class MemberResponse {
 
     public static MemberResponse of(MemberDto dto) {
         return MemberResponse.builder()
-                .id(dto.getId())
-                .fullName(dto.getFullName())
-                .contact(dto.getContact())
-                .registrationDateTime(dto.getRegistrationDateTime())
+                .id(dto.id())
+                .fullName(dto.fullName())
+                .contact(dto.contact())
+                .registrationDateTime(dto.registrationDateTime())
                 .build();
     }
 

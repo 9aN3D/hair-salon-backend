@@ -18,7 +18,7 @@ import pl.edu.wit.hairsalon.hairdresser.query.HairdresserFindQuery;
 import pl.edu.wit.hairsalon.web.adapter.HairdresserResponseAdapter;
 import pl.edu.wit.hairsalon.web.response.HairdresserResponse;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;

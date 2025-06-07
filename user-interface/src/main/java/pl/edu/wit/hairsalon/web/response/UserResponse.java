@@ -6,7 +6,7 @@ import pl.edu.wit.hairsalon.user.dto.UserContactDto;
 import pl.edu.wit.hairsalon.user.dto.UserDto;
 import pl.edu.wit.hairsalon.user.dto.UserFullNameDto;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 @Value
 @Builder
@@ -23,9 +23,9 @@ public class UserResponse {
 
     public static UserResponse of(UserDto dto) {
         return UserResponse.builder()
-                .id(dto.getId())
-                .fullName(dto.getFullName())
-                .contact(dto.getContact())
+                .id(dto.id())
+                .fullName(dto.fullName())
+                .contact(dto.contact())
                 .build();
     }
 

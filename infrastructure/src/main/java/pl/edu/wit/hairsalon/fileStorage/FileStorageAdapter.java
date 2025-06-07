@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import pl.edu.wit.hairsalon.uploadableFile.FileStoragePort;
 import pl.edu.wit.hairsalon.uploadableFile.dto.FileTypeDto;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.util.Map;
 
 import static java.util.Optional.ofNullable;

@@ -6,7 +6,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
-import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.convert.MongoConverter;
@@ -31,8 +31,7 @@ class MongoConfiguration {
         var init = System.currentTimeMillis();
         var mappingContext = this.mongoConverter.getMappingContext();
 
-        if (mappingContext instanceof MongoMappingContext) {
-            var mongoMappingContext = (MongoMappingContext) mappingContext;
+        if (mappingContext instanceof MongoMappingContext mongoMappingContext) {
             for (var persistentEntity : mongoMappingContext.getPersistentEntities()) {
                 var clazz = persistentEntity.getType();
                 if (clazz.isAnnotationPresent(Document.class)) {
@@ -47,8 +46,8 @@ class MongoConfiguration {
     }
 
     @Bean
-    GridFsTemplate gridFsTemplate(MongoDbFactory mongoDbFactory, MappingMongoConverter mappingMongoConverter) {
-        return new GridFsTemplate(mongoDbFactory, mappingMongoConverter);
+    GridFsTemplate gridFsTemplate(MongoDatabaseFactory mongoDatabaseFactory, MappingMongoConverter mappingMongoConverter) {
+        return new GridFsTemplate(mongoDatabaseFactory, mappingMongoConverter);
     }
 
 }

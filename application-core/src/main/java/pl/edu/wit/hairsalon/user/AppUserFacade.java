@@ -25,7 +25,7 @@ class AppUserFacade implements UserFacade {
         requireNonNull(command, "User create command must not be null");
         var createdUser = creator.create(command);
         log.info("Created user {userDto: {}}", createdUser);
-        return createdUser.getId();
+        return createdUser.id();
     }
 
     @Override

@@ -25,7 +25,7 @@ class AppSettingFacade implements SettingFacade {
         requireNonNull(command, "Setting create command must not be null");
         var createdSetting = creator.create(command);
         log.info("Created setting {createdSetting: {}}", createdSetting);
-        return createdSetting.getId();
+        return createdSetting.id();
     }
 
     @Override

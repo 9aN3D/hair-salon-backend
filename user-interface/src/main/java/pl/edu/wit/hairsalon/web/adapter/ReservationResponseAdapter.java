@@ -59,9 +59,9 @@ public class ReservationResponseAdapter {
 
     private String getServiceCategoryName(List<ServiceCategoryDto> serviceCategories, String serviceId) {
         return serviceCategories.stream()
-                .filter(serviceCategory -> serviceCategory.getItemIds().contains(serviceId))
+                .filter(serviceCategory -> serviceCategory.itemIds().contains(serviceId))
                 .findFirst()
-                .map(ServiceCategoryDto::getName)
+                .map(ServiceCategoryDto::name)
                 .orElse("");
 
     }

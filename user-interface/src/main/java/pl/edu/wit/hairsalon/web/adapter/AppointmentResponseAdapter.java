@@ -71,9 +71,9 @@ public class AppointmentResponseAdapter {
     }
 
     private String prepareLocation() {
-        var salonName = settingFacade.findOne(SALON_NAME).getValue();
+        var salonName = settingFacade.findOne(SALON_NAME).value();
         var settingIdToValueMap = settingFacade.findAll(SettingGroupFindQuery.ofSalonAddressGroup()).stream()
-                .collect(Collectors.toMap(SettingDto::getId, SettingDto::getValue));
+                .collect(Collectors.toMap(SettingDto::id, SettingDto::value));
         return new StringBuilder()
                 .append(settingIdToValueMap.getOrDefault(SALON_ADDRESS_CITY, ""))
                 .append(" ")

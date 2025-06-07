@@ -20,7 +20,7 @@ import pl.edu.wit.hairsalon.web.response.AppointmentConciseResponse;
 import pl.edu.wit.hairsalon.web.response.AppointmentResponse;
 import pl.edu.wit.hairsalon.web.response.LinkAddingGoogleCalendarEventResponse;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;

@@ -32,11 +32,11 @@ public class HairdresserInitializer {
     public void createIfNecessary() {
         var hairdresserPage = hairdresserFacade.findAll(new HairdresserFindQuery(), PageRequest.of(0, 1));
         if (!hairdresserPage.hasContent()) {
-            //var fileUploadCommandIterator = prepareFileUploadCommandIterator();
+            var fileUploadCommandIterator = prepareFileUploadCommandIterator();
             prepareHairdresserCreateCommands()
                     .stream()
-                    .forEach(hairdresserFacade::create);
-                    //.forEach(hairdresserId -> hairdresserFacade.uploadPhoto(hairdresserId, fileUploadCommandIterator.next()));
+                    .map(hairdresserFacade::create)
+                    .forEach(hairdresserId -> hairdresserFacade.uploadPhoto(hairdresserId, fileUploadCommandIterator.next()));
         }
     }
 
@@ -92,19 +92,19 @@ public class HairdresserInitializer {
                         .originalFilename("barber_1.jpeg")
                         .size(233632L)
                         .contentType("image/jpeg")
-                        .content(new FileInputStream("/home/kovachv/Pictures/dyplom/barber_1.jpeg"))
+                        .content(new FileInputStream("/Users/vkovalchuk/study/dyplom/img/barber_1.jpeg"))
                         .build(),
                 FileUploadCommand.builder()
                         .originalFilename("barber_2.jpeg")
                         .size(222758L)
                         .contentType("image/jpeg")
-                        .content(new FileInputStream("/home/kovachv/Pictures/dyplom/barber_2.jpeg"))
+                        .content(new FileInputStream("/Users/vkovalchuk/study/dyplom/img/barber_2.jpeg"))
                         .build(),
                 FileUploadCommand.builder()
                         .originalFilename("barber_3.jpeg")
                         .size(144085L)
                         .contentType("image/jpeg")
-                        .content(new FileInputStream("/home/kovachv/Pictures/dyplom/barber_3.jpeg"))
+                        .content(new FileInputStream("/Users/vkovalchuk/study/dyplom/img/barber_3.jpeg"))
                         .build()
         ).iterator();
     }

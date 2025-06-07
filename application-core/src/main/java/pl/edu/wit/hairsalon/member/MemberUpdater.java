@@ -42,7 +42,7 @@ class MemberUpdater {
             return memberDto;
         } catch (Exception ex) {
             if (command.isNotBlankEmail() || command.isNotBlankPassword()) {
-                authDetailsFacade.update(previousAuthDetails.getId(), AuthDetailsUpdateCommand.builder()
+                authDetailsFacade.update(previousAuthDetails.id(), AuthDetailsUpdateCommand.builder()
                         .email(command.getEmail())
                         .password(command.getPassword())
                         .build());
@@ -53,11 +53,11 @@ class MemberUpdater {
 
     public Member buildMember(MemberDto memberDto, MemberUpdateCommand command, AuthDetailsDto authDetailsDto) {
         return Member.builder()
-                .id(memberDto.getId())
-                .fullName(getFullName(memberDto.getFullName(), command))
-                .contact(getContact(memberDto.getContact(), command, authDetailsDto))
+                .id(memberDto.id())
+                .fullName(getFullName(memberDto.fullName(), command))
+                .contact(getContact(memberDto.contact(), command, authDetailsDto))
                 .agreements(getAgreements(memberDto, command))
-                .registrationDateTime(memberDto.getRegistrationDateTime())
+                .registrationDateTime(memberDto.registrationDateTime())
                 .build();
     }
 
@@ -73,7 +73,7 @@ class MemberUpdater {
     private MemberContact getContact(MemberContactDto contact, MemberUpdateCommand command, AuthDetailsDto authDetailsDto) {
         return MemberContact.builder()
                 .email(nonNull(command.getEmail())
-                        ? authDetailsDto.getEmail()
+                        ? authDetailsDto.email()
                         : contact.getEmail())
                 .phoneNumber(ofNullable(command.getPhone())
                         .map(PhoneNumber::new)
@@ -86,7 +86,7 @@ class MemberUpdater {
         return ofNullable(command.getAgreements())
                 .filter(not(Set::isEmpty))
                 .map(MemberAgreements::of)
-                .orElseGet(() -> MemberAgreements.of(memberDto.getAgreements()));
+                .orElseGet(() -> MemberAgreements.of(memberDto.agreements()));
     }
 
 }

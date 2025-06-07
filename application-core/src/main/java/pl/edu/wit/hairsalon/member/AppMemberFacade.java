@@ -25,7 +25,7 @@ class AppMemberFacade implements MemberFacade {
         requireNonNull(command, "Member register command must not be null");
         var registeredMemberDto = memberRegistration.register(command);
         log.info("Registered member {registeredMemberDto: {}}", registeredMemberDto);
-        return registeredMemberDto.getId();
+        return registeredMemberDto.id();
     }
 
     @Override

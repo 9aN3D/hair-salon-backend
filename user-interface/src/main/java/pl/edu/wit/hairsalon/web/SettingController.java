@@ -16,7 +16,7 @@ import pl.edu.wit.hairsalon.setting.dto.SettingDto;
 import pl.edu.wit.hairsalon.setting.dto.SettingIdDto;
 import pl.edu.wit.hairsalon.setting.query.SettingGroupFindQuery;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.util.Map;
 
 import static java.util.stream.Collectors.toMap;
@@ -55,7 +55,7 @@ class SettingController {
     @ResponseStatus(OK)
     Map<SettingIdDto, String> findAll(@NotNull SettingGroupFindQuery findQuery) {
         return settingFacade.findAll(findQuery).stream()
-                .collect(toMap(SettingDto::getId, SettingDto::getValue));
+                .collect(toMap(SettingDto::id, SettingDto::value));
     }
 
 }

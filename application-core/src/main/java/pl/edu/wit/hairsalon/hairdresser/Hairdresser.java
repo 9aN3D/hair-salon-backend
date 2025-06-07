@@ -29,10 +29,10 @@ class Hairdresser implements SelfValidator<Hairdresser> {
 
     public Hairdresser(HairdresserDto dto) {
         this(
-                dto.getId(),
-                new HairdresserFullName(dto.getFullName()),
-                dto.getPhotoId(),
-                dto.getServiceIds()
+                dto.id(),
+                new HairdresserFullName(dto.fullName()),
+                dto.photoId(),
+                dto.serviceIds()
         );
     }
 

@@ -1,13 +1,12 @@
 package pl.edu.wit.hairsalon.notification;
 
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import pl.edu.wit.hairsalon.notification.dto.EmailNotificationContentDto;
-
-import javax.mail.MessagingException;
 
 @Slf4j
 @Service

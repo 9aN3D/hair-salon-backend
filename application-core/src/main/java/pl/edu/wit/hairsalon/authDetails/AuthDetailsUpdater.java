@@ -23,7 +23,7 @@ class AuthDetailsUpdater {
 
     private AuthDetails buildAuthDetails(AuthDetailsDto authDetailsDto, AuthDetailsUpdateCommand command) {
         return AuthDetails.builder()
-                .id(authDetailsDto.getId())
+                .id(authDetailsDto.id())
                 .email(getEmail(authDetailsDto, command))
                 .password(getPassword(authDetailsDto, command))
                 .status(getAuthDetailsStatus(authDetailsDto, command))
@@ -34,7 +34,7 @@ class AuthDetailsUpdater {
     private Email getEmail(AuthDetailsDto authDetailsDto, AuthDetailsUpdateCommand command) {
         return new Email(
                 ofNullable(command.getEmail())
-                        .orElseGet(authDetailsDto::getEmail)
+                        .orElseGet(authDetailsDto::email)
         );
     }
 
@@ -42,18 +42,18 @@ class AuthDetailsUpdater {
         return ofNullable(command.getPassword())
                 .map(Password::new)
                 .map(newPassword -> newPassword.encode(passwordEncoderPort))
-                .orElseGet(() -> new Password(authDetailsDto.getEmail()));
+                .orElseGet(() -> new Password(authDetailsDto.email()));
     }
 
     private AuthDetailsStatus getAuthDetailsStatus(AuthDetailsDto authDetailsDto, AuthDetailsUpdateCommand command) {
         return AuthDetailsStatus.valueOf(
                 ofNullable(command.getStatus())
-                        .orElseGet(authDetailsDto::getStatus).name()
+                        .orElseGet(authDetailsDto::status).name()
         );
     }
 
     private AuthDetailsRole getAuthDetailsRole(AuthDetailsDto authDetailsDto) {
-        return AuthDetailsRole.valueOf(authDetailsDto.getRole());
+        return AuthDetailsRole.valueOf(authDetailsDto.role());
     }
 
 }

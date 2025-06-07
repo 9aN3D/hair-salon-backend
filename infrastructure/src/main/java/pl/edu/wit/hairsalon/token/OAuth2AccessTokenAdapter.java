@@ -2,113 +2,63 @@ package pl.edu.wit.hairsalon.token;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 import pl.edu.wit.hairsalon.token.dto.AccessTokenDto;
 import pl.edu.wit.hairsalon.token.exception.InvalidCredentialsException;
 
-import java.util.List;
-import java.util.Map;
-
 import static java.lang.String.format;
-import static java.util.Objects.isNull;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 class OAuth2AccessTokenAdapter implements AccessTokenPort {
 
-    private final RestTemplate restTemplate;
-    private final ResourceServerProperties resourceServerProperties;
+    private final AuthenticationManager authManager;
+    private final JwtTokenProvider jwtProvider;
+    private final UserDetailsService userDetailsService;
+    private final RefreshTokenService refreshService;
 
     @Override
     public AccessTokenDto generate(String email, String password) {
-        var loginMap = prepareGenerateRequestEntityBody(email, password);
-        var headers = prepareHeaders();
-        var requestEntity = new HttpEntity<>(loginMap, headers);
-        var responseEntity = exchange(requestEntity);
-        return handleGenerateTokenResponse(responseEntity, email);
+        try {
+            var authentication = authManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+            var user = (UserDetails) authentication.getPrincipal(); //TODO
+            //var user = userDetailsService.loadUserByUsername(email);
+            var accessToken = jwtProvider.generateAccessToken(user);
+            var refreshToken = jwtProvider.generateRefreshToken(user.getUsername());
+            refreshService.saveRefreshToken(user.getUsername(), refreshToken);
+
+            return AccessTokenDto.builder()
+                    .value(accessToken)
+                    .refreshToken(refreshToken)
+                    .build();
+        } catch (Exception ex) {
+            log.warn("An error has occurred authorizing user: { username: {}, reason: {} }", email, ex.getMessage(), ex);
+            throw new InvalidCredentialsException(format("Unable to log user in: {username: %s}", email));
+        }
     }
 
     @Override
     public AccessTokenDto refresh(String refreshToken) {
-        var loginMap = prepareRefreshRequestEntityBody(refreshToken);
-        var headers = prepareHeaders();
-        var requestEntity = new HttpEntity<>(loginMap, headers);
-        var responseEntity = exchange(requestEntity);
-        return handleRefreshTokenResponse(responseEntity);
-    }
-
-    private MultiValueMap<String, String> prepareGenerateRequestEntityBody(String email, String password) {
-        return new LinkedMultiValueMap<>() {{
-            put("grant_type", List.of("password"));
-            put("username", List.of(email));
-            put("password", List.of(password));
-        }};
-    }
-
-    private HttpHeaders prepareHeaders() {
-        var headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        return headers;
-    }
-
-    private ResponseEntity<Map> exchange(HttpEntity<MultiValueMap<String, String>> requestEntity) {
-        return restTemplate.exchange(resourceServerProperties.getTokenInfoUri(), HttpMethod.POST, requestEntity, Map.class);
-    }
-
-    private AccessTokenDto handleGenerateTokenResponse(ResponseEntity<Map> responseEntity, String email) {
-        if (isNull(responseEntity) || isNull(responseEntity.getBody())) {
-            return handleEmptyResponse(email);
+        if (!jwtProvider.isTokenValid(refreshToken)) {
+            throw new InvalidCredentialsException("Unable to refresh token");
         }
-        if (responseEntity.getStatusCode().is2xxSuccessful()) {
-            log.info("Got access token: {username: {}}}", email);
-            return toAccessTokenDto(responseEntity.getBody());
+
+        var username = jwtProvider.getUsernameFromToken(refreshToken);
+
+        if (!refreshService.isValid(username, refreshToken)) {
+            throw new InvalidCredentialsException("Unable to refresh token");
         }
-        log.warn("Unable to log user {response: {}}", responseEntity.getBody());
-        throw new InvalidCredentialsException(format("Unable to log in user: {username: %s}", email));
-    }
 
-    private AccessTokenDto handleEmptyResponse(String username) {
-        var errorMessage = format("Unable to log in user: {username: %s}. Response body is empty", username);
-        log.warn(errorMessage);
-        throw new InvalidCredentialsException(errorMessage);
-    }
-
-    private AccessTokenDto toAccessTokenDto(Map body) {
+        var user = userDetailsService.loadUserByUsername(username);
         return AccessTokenDto.builder()
-                .value((String) body.get("access_token"))
-                .refreshToken((String) body.get("refresh_token"))
-                .tokenType((String) body.get("token_type"))
-                .expiresIn((Integer) body.get("expires_in"))
+                .value(jwtProvider.generateAccessToken(user))
+                .refreshToken(refreshToken)
                 .build();
-    }
-
-    private MultiValueMap<String, String> prepareRefreshRequestEntityBody(String refreshToken) {
-        return new LinkedMultiValueMap<>() {{
-            add("grant_type", "refresh_token");
-            add("refresh_token", refreshToken);
-        }};
-    }
-
-    private AccessTokenDto handleRefreshTokenResponse(ResponseEntity<Map> responseEntity) {
-        if (isNull(responseEntity) || isNull(responseEntity.getBody())) {
-            throw new InvalidCredentialsException("Unable to refresh token. Response body is empty");
-        }
-        if (responseEntity.getStatusCode().is2xxSuccessful()) {
-            log.info("Successful token refresh");
-            return toAccessTokenDto(responseEntity.getBody());
-        }
-        log.warn("Unable to refresh token {response: {}}", responseEntity.getBody());
-        throw new InvalidCredentialsException("Unable to refresh token");
     }
 
 }
