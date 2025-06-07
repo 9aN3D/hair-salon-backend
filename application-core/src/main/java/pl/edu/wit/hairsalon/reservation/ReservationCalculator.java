@@ -26,7 +26,7 @@ class ReservationCalculator {
     ReservationCalculationDto calculate(String memberId, ReservationCalculateCommand command) {
         getMember(memberId);
         var hairdresser = hairdresserFacade.findOne(command.getHairdresserId());
-        var hairdresserServices = getHairdresserServices(hairdresser.getServiceIds());
+        var hairdresserServices = getHairdresserServices(hairdresser.serviceIds());
         return new ReservationCalculation(hairdresser, command.getStartDateTime())
                 .addReservationHairdresserServices(hairdresserServices)
                 .validate()

@@ -19,7 +19,7 @@ import pl.edu.wit.hairsalon.service.query.ServiceFindQuery;
 import pl.edu.wit.hairsalon.web.adapter.ServiceResponseAdapter;
 import pl.edu.wit.hairsalon.web.response.ServiceResponse;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;

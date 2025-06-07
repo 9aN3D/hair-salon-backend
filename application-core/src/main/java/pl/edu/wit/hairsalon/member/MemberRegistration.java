@@ -33,14 +33,14 @@ class MemberRegistration {
             memberPort.save(memberDto);
             return memberDto;
         } catch (Exception ex) {
-            authDetailsFacade.remove(savedAuthDetails.getId());
+            authDetailsFacade.remove(savedAuthDetails.id());
             throw ex;
         }
     }
 
     private Member createNewMember(MemberRegisterCommand command, AuthDetailsDto savedAuthDetails) {
         return Member.builder()
-                .id(savedAuthDetails.getId())
+                .id(savedAuthDetails.id())
                 .fullName(getFullName(command))
                 .contact(getContact(command))
                 .agreements(MemberAgreements.of(command.getAgreements()))

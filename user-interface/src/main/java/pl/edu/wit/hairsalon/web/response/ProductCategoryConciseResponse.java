@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Value;
 import pl.edu.wit.hairsalon.serviceCategory.dto.ServiceCategoryDto;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 @Value
 @Builder
@@ -22,8 +22,8 @@ public class ProductCategoryConciseResponse {
 
     static ProductCategoryConciseResponse of(ServiceCategoryDto serviceCategoryDto) {
         return ProductCategoryConciseResponse.builder()
-                .id(serviceCategoryDto.getId())
-                .name(serviceCategoryDto.getName())
+                .id(serviceCategoryDto.id())
+                .name(serviceCategoryDto.name())
                 .build();
     }
 

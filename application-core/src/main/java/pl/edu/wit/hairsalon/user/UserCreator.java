@@ -29,14 +29,14 @@ class UserCreator {
                     .validate();
             return userPort.save(user.toDto());
         } catch (Exception ex) {
-            authDetailsFacade.remove(savedAuthDetails.getId());
+            authDetailsFacade.remove(savedAuthDetails.id());
             throw ex;
         }
     }
 
     private User createNewUser(UserCreateCommand command, AuthDetailsDto savedAuthDetails) {
         return User.builder()
-                .id(savedAuthDetails.getId())
+                .id(savedAuthDetails.id())
                 .fullName(getFullName(command))
                 .contact(getContact(command))
                 .registrationDateTime(now())

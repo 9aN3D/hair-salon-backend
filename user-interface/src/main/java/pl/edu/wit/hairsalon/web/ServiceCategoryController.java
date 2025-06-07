@@ -18,7 +18,7 @@ import pl.edu.wit.hairsalon.serviceCategory.query.ServiceCategoryFindQuery;
 import pl.edu.wit.hairsalon.web.adapter.ServiceCategoryResponseAdapter;
 import pl.edu.wit.hairsalon.web.response.ServiceCategoryResponse;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;

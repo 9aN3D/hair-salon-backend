@@ -16,7 +16,7 @@ import pl.edu.wit.hairsalon.sharedKernel.dto.Identity;
 import pl.edu.wit.hairsalon.web.adapter.ReservationResponseAdapter;
 import pl.edu.wit.hairsalon.web.response.ReservationCalculationResponse;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;

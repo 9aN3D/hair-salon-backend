@@ -13,10 +13,6 @@ spring:
     ansi:
       enabled: always
 
-  redis:
-    host: localhost
-    port: 6379
-
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
@@ -31,23 +27,25 @@ spring:
 logging:
   level:
     pl.edu.wit: TRACE
+    org.springframework.security: TRACE
 
 server:
   port: 9000
+  
+  #security:
+  #  oauth2:
+  #    resource:
+  #      id: hairSalonApiResource
+  #      token-info-uri: http://localhost:9000/oauth/token
+  #    client:
+  #      client-id: testClientId
+  #      client-secret: testClientSecret
+  #      scope: opneid
+  #      authorized-grant-types: refresh_token,password
+  #      access-token-validity-seconds: 1800
+  #      auto-approve-scopes: openid
+  #      resource-ids: hairSalonApiResource
 
-security:
-  oauth2:
-    resource:
-      id: hairSalonApiResource
-      token-info-uri: http://localhost:9000/oauth/token
-    client:
-      client-id: testClientId
-      client-secret: testClientSecret
-      scope: opneid
-      authorized-grant-types: refresh_token,password
-      access-token-validity-seconds: 1800
-      auto-approve-scopes: openid
-      resource-ids: hairSalonApiResource
 
 springdoc.api-docs:
   path: /api-docs
@@ -58,3 +56,9 @@ pl.edu.wit:
   smsapi:
     token: NZFsQnb0YPhxjqeUT1U3J5FFf6Tl9YuSnra2EfJq
     proxy-url: https://api.smsapi.pl/
+  
+  oauth:
+    client:
+      client-password: XKcV9xjcZ1iMQC8SM20cQxvJra6ZBWedbRerWTvIHFfa2rCboDiwhGSAFeMQnIIF
+      access-token-validity: PT15M
+      refresh-token-validity: P7D

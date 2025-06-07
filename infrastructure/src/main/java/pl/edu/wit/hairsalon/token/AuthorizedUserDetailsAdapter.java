@@ -1,6 +1,7 @@
 package pl.edu.wit.hairsalon.token;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,8 +21,8 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static pl.edu.wit.hairsalon.authDetails.query.AuthDetailsFindQuery.ofEmail;
 
+@Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor
 class AuthorizedUserDetailsAdapter implements UserDetailsService {
 
@@ -30,6 +31,7 @@ class AuthorizedUserDetailsAdapter implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String idOrEmail) throws UsernameNotFoundException {
+        log.info("Loading user by username {}", idOrEmail);
         return parseId(idOrEmail)
                 .map(AuthDetailsFindQuery::withId)
                 .map(authDetailsPort::findOne)
@@ -47,25 +49,22 @@ class AuthorizedUserDetailsAdapter implements UserDetailsService {
     }
 
     private AuthDetailsDto checkStatus(AuthDetailsDto authDetailsDto) {
-        switch (authDetailsDto.getStatus()) {
-            case BANNED:
-                throw new UserBannedException("User is banned by administrator");
-            case NOT_ACTIVE:
-                throw new UserNotActiveException("User is not active yet");
-            default:
-                return authDetailsDto;
-        }
+        return switch (authDetailsDto.status()) {
+            case BANNED -> throw new UserBannedException("User is banned by administrator");
+            case NOT_ACTIVE -> throw new UserNotActiveException("User is not active yet");
+            default -> authDetailsDto;
+        };
     }
 
     private UserDetails toUserDetails(AuthDetailsDto dto) {
         return User.builder()
-                .username(dto.getId())
-                .password(dto.getPassword())
+                .username(dto.id())
+                .password(dto.password())
                 .disabled(false)
                 .accountExpired(false)
                 .credentialsExpired(false)
                 .accountLocked(false)
-                .authorities("ROLE_".concat(dto.getRole().toString()))
+                .authorities("ROLE_".concat(dto.role().toString()))
                 .build();
     }
 

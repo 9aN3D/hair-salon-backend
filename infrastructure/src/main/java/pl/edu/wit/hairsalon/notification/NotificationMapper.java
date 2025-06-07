@@ -1,11 +1,12 @@
 package pl.edu.wit.hairsalon.notification;
 
+import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 import pl.edu.wit.hairsalon.notification.dto.NotificationDto;
 
 @Component
-@Mapper(componentModel = "spring")
+@Mapper(builder = @Builder(disableBuilder = true),componentModel = "spring")
 abstract class NotificationMapper {
 
     NotificationDocument toDocument(NotificationDto dto) {

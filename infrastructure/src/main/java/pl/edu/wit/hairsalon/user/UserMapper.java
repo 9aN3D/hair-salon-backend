@@ -1,11 +1,12 @@
 package pl.edu.wit.hairsalon.user;
 
+import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 import pl.edu.wit.hairsalon.user.dto.UserDto;
 
 @Component
-@Mapper(componentModel = "spring")
+@Mapper(builder = @Builder(disableBuilder = true), componentModel = "spring")
 abstract class UserMapper {
 
     abstract UserDto toDto(UserDocument userDocument);

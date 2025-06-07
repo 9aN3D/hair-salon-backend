@@ -26,7 +26,7 @@ class AppointmentNotificationSender {
     void send(String appointmentId) {
         var appointmentDto = appointmentPort.findOneOrThrow(AppointmentFindQuery.with(appointmentId));
         var member = memberFacade.findOne(appointmentDto.getMemberId());
-        var salonName = settingFacade.findOne(SettingIdDto.SALON_NAME).getValue();
+        var salonName = settingFacade.findOne(SettingIdDto.SALON_NAME).value();
         var appointment = new Appointment(appointmentDto).validate();
         notificationFacade.send(buildSmsNotificationSendCommand(appointmentDto, member, salonName));
         notificationFacade.send(buildEmailNotificationSendCommand(appointmentDto, member, salonName));
@@ -35,10 +35,10 @@ class AppointmentNotificationSender {
 
     private NotificationSendCommand buildEmailNotificationSendCommand(AppointmentDto appointment, MemberDto member, String salonName) {
         return NotificationSendCommand.builder()
-                .recipientId(member.getId())
+                .recipientId(member.id())
                 .type(EMAIL)
                 .content(EmailNotificationContentDto.builder()
-                        .to(member.getContact().getEmail())
+                        .to(member.contact().getEmail())
                         .subject("Przypomienia o wizycie")
                         .body(prepareNotificationContentBody(appointment, salonName))
                         .build())
@@ -47,10 +47,10 @@ class AppointmentNotificationSender {
 
     private NotificationSendCommand buildSmsNotificationSendCommand(AppointmentDto appointment, MemberDto member, String salonName) {
         return NotificationSendCommand.builder()
-                .recipientId(member.getId())
+                .recipientId(member.id())
                 .type(SMS)
                 .content(SmsNotificationContentDto.builder()
-                        .to(member.getContact().getPhone())
+                        .to(member.contact().getPhone())
                         .body(prepareNotificationContentBody(appointment, salonName))
                         .build())
                 .build();

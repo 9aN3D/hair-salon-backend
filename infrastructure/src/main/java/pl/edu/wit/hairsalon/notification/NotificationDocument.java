@@ -4,12 +4,12 @@ import com.querydsl.core.annotations.QueryEntity;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import pl.edu.wit.hairsalon.notification.dto.NotificationContentDto;
 import pl.edu.wit.hairsalon.notification.dto.NotificationStatusDto;
 import pl.edu.wit.hairsalon.notification.dto.NotificationTypeDto;
 
-import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Data

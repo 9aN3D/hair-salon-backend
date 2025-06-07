@@ -8,14 +8,15 @@ import pl.edu.wit.hairsalon.hairdresser.dto.HairdresserDto;
 import pl.edu.wit.hairsalon.reservation.dto.ReservationHairdresserDto;
 import pl.edu.wit.hairsalon.uploadableFile.dto.UploadableFileDto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
 import static java.util.Comparator.comparing;
+import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
@@ -46,12 +47,12 @@ public class HairdresserResponse {
 
     public static HairdresserResponse of(HairdresserDto dto, Function<String, UploadableFileDto> findUploadableFileFunction) {
         return HairdresserResponse.builder()
-                .id(dto.getId())
-                .name(dto.getFullName().getName())
-                .surname(dto.getFullName().getSurname())
-                .fullName(dto.getFullName().toString())
-                .profilePictureUrl(findUploadableFileFunction.apply(dto.getPhotoId()).getDownloadUrl())
-                .serviceIds(dto.getServiceIds())
+                .id(dto.id())
+                .name(dto.fullName().getName())
+                .surname(dto.fullName().getSurname())
+                .fullName(dto.fullName().toString())
+                .profilePictureUrl(nonNull(dto.photoId()) ? findUploadableFileFunction.apply(dto.photoId()).getDownloadUrl() : null)
+                .serviceIds(dto.serviceIds())
                 .build();
     }
 
@@ -61,7 +62,7 @@ public class HairdresserResponse {
                 .name(dto.getFullName().getName())
                 .surname(dto.getFullName().getSurname())
                 .fullName(dto.getFullName().toString())
-                .profilePictureUrl(findUploadableFileFunction.apply(dto.getPhotoId()).getDownloadUrl())
+                .profilePictureUrl(nonNull(dto.getPhotoId()) ? findUploadableFileFunction.apply(dto.getPhotoId()).getDownloadUrl() : null)
                 .serviceIds(services.stream()
                         .map(ServiceResponse::getId)
                         .collect(toSet()))

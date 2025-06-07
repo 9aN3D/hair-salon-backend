@@ -12,7 +12,7 @@ class AuthDetailsRemover {
 
     void remove(String id) {
         authDetailsPort.findOne(withId(id))
-                .map(AuthDetailsDto::getId)
+                .map(AuthDetailsDto::id)
                 .ifPresent(authDetailsPort::delete);
     }
 

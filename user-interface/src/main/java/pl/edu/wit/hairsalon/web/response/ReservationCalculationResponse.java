@@ -1,12 +1,12 @@
 package pl.edu.wit.hairsalon.web.response;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import pl.edu.wit.hairsalon.sharedKernel.dto.DateRangeDto;
 
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 

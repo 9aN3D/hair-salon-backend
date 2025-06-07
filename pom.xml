@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.6.RELEASE</version>
+        <version>3.5.0</version>
         <relativePath/>
     </parent>
     <packaging>pom</packaging>
@@ -24,26 +24,24 @@
     <description>hair-salon-backend</description>
 
     <properties>
-        <java.version>11</java.version>
-        <spring-boot.version>2.2.6.RELEASE</spring-boot.version>
-        <spring-core.version>5.2.19.RELEASE</spring-core.version>
-        <spring-security-oauth2.version>2.1.7.RELEASE</spring-security-oauth2.version>
-        <oauth2.version>2.3.6.RELEASE</oauth2.version>
-        <junit.version>5.6.2</junit.version>
-        <lombok.version>1.18.12</lombok.version>
-        <guava.version>31.0.1-jre</guava.version>
-        <org.mapstruct.version>1.3.1.Final</org.mapstruct.version>
-        <org.slf4j.version>1.7.30</org.slf4j.version>
-        <org.apache.maven.plugins.compiler.version>3.8.1</org.apache.maven.plugins.compiler.version>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <java.version>21</java.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <spring-boot.version>3.5.0</spring-boot.version>
+        <junit.version>5.10.2</junit.version>
+        <lombok.version>1.18.30</lombok.version>
+        <guava.version>32.1.3-jre</guava.version>
+        <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <org.slf4j.version>2.0.13</org.slf4j.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <querydsl.version>4.4.0</querydsl.version>
-        <libphonenumber.version>8.12.16</libphonenumber.version>
-        <openapi-ui.version>1.5.12</openapi-ui.version>
+        <querydsl.version>5.0.0</querydsl.version>
+        <libphonenumber.version>8.13.33</libphonenumber.version>
+        <openapi-ui.version>1.7.0</openapi-ui.version>
         <javax-mail.version>1.6.2</javax-mail.version>
         <smsapi.version>2.5</smsapi.version>
+        <jsonwebtoken.version>0.11.5</jsonwebtoken.version>
     </properties>
 
     <dependencyManagement>
@@ -57,6 +55,11 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${org.mapstruct.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.mapstruct</groupId>
@@ -83,22 +86,6 @@
                 <artifactId>spring-boot-starter-test</artifactId>
                 <version>${spring-boot.version}</version>
                 <scope>test</scope>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.junit.vintage</groupId>
-                        <artifactId>junit-vintage-engine</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.security.oauth</groupId>
-                <artifactId>spring-security-oauth2</artifactId>
-                <version>${oauth2.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.security.oauth.boot</groupId>
-                <artifactId>spring-security-oauth2-autoconfigure</artifactId>
-                <version>${spring-security-oauth2.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.querydsl</groupId>
@@ -136,8 +123,28 @@
                 <artifactId>smsapi-lib</artifactId>
                 <version>${smsapi.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <!-- JWT: JJWT (io.jsonwebtoken) -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jsonwebtoken.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jsonwebtoken.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${jsonwebtoken.version}</version>
+            </dependency>
         </dependencies>
-
     </dependencyManagement>
 
     <repositories>
@@ -159,13 +166,18 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${org.apache.maven.plugins.compiler.version}</version>
+                <version>3.11.0</version>
                 <configuration>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
                             <version>${org.mapstruct.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>${lombok-mapstruct-binding.version}</version>
                         </path>
                         <!-- other annotation processors -->
                         <path>

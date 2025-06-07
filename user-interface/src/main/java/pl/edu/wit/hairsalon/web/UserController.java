@@ -13,7 +13,7 @@ import pl.edu.wit.hairsalon.user.query.UserFindQuery;
 import pl.edu.wit.hairsalon.web.adapter.UserResponseAdapter;
 import pl.edu.wit.hairsalon.web.response.UserResponse;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;

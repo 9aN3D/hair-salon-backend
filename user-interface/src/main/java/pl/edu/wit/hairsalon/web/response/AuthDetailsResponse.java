@@ -7,8 +7,8 @@ import pl.edu.wit.hairsalon.authDetails.dto.AuthDetailsDto;
 import pl.edu.wit.hairsalon.authDetails.dto.AuthDetailsRoleDto;
 import pl.edu.wit.hairsalon.authDetails.dto.AuthDetailsStatusDto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Value
 @Builder
@@ -29,10 +29,10 @@ public class AuthDetailsResponse {
 
     public static AuthDetailsResponse of(AuthDetailsDto dto) {
         return AuthDetailsResponse.builder()
-                .id(dto.getId())
-                .email(dto.getEmail())
-                .status(dto.getStatus())
-                .role(dto.getRole())
+                .id(dto.id())
+                .email(dto.email())
+                .status(dto.status())
+                .role(dto.role())
                 .build();
     }
 

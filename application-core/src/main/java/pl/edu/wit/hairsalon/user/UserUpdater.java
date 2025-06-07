@@ -36,7 +36,7 @@ class UserUpdater {
             return userPort.save(user.toDto());
         } catch (Exception ex) {
             if (command.isNotBlankEmail() || command.isNotBlankPassword()) {
-                authDetailsFacade.update(previousAuthDetails.getId(), AuthDetailsUpdateCommand.builder()
+                authDetailsFacade.update(previousAuthDetails.id(), AuthDetailsUpdateCommand.builder()
                         .email(command.getEmail())
                         .password(command.getPassword())
                         .build());
@@ -47,10 +47,10 @@ class UserUpdater {
 
     public User buildUser(UserDto user, UserUpdateCommand command, AuthDetailsDto authDetailsDto) {
         return User.builder()
-                .id(user.getId())
-                .fullName(getFullName(user.getFullName(), command))
-                .contact(getContact(user.getContact(), command, authDetailsDto))
-                .registrationDateTime(user.getRegistrationDateTime())
+                .id(user.id())
+                .fullName(getFullName(user.fullName(), command))
+                .contact(getContact(user.contact(), command, authDetailsDto))
+                .registrationDateTime(user.registrationDateTime())
                 .build();
     }
 
@@ -66,7 +66,7 @@ class UserUpdater {
     private UserContact getContact(UserContactDto contact, UserUpdateCommand command, AuthDetailsDto authDetailsDto) {
         return UserContact.builder()
                 .email(nonNull(command.getEmail())
-                        ? authDetailsDto.getEmail()
+                        ? authDetailsDto.email()
                         : contact.getEmail())
                 .build();
     }

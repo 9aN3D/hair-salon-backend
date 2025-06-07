@@ -6,8 +6,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Value;
 import pl.edu.wit.hairsalon.serviceCategory.dto.ServiceCategoryDto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -36,9 +36,9 @@ public class ServiceCategoryResponse {
 
     public static ServiceCategoryResponse of(ServiceCategoryDto dto) {
         return ServiceCategoryResponse.builder()
-                .id(dto.getId())
-                .name(dto.getName())
-                .order(dto.getOrder())
+                .id(dto.id())
+                .name(dto.name())
+                .order(dto.order())
                 .build();
     }
 

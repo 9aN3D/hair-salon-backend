@@ -17,7 +17,7 @@ class SettingUpdater {
 
     private Setting buildSetting(SettingDto settingDto, String value) {
         return Setting.builder()
-                .id(SettingId.valueOf(settingDto.getId().name()))
+                .id(SettingId.valueOf(settingDto.id().name()))
                 .value(value)
                 .build();
     }

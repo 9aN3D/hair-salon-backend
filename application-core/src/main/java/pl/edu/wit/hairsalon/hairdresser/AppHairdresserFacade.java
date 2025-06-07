@@ -28,7 +28,7 @@ class AppHairdresserFacade implements HairdresserFacade {
         requireNonNull(command, "Hairdresser create command must not be null");
         var savedHairdresserDto = creator.create(command);
         log.info("Created hairdresser {savedHairdresser: {}}", savedHairdresserDto);
-        return savedHairdresserDto.getId();
+        return savedHairdresserDto.id();
     }
 
     @Override

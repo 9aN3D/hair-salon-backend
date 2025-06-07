@@ -8,8 +8,8 @@ import pl.edu.wit.hairsalon.appointment.dto.AppointmentServicesDto;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentStatusDto;
 import pl.edu.wit.hairsalon.sharedKernel.dto.DateRangeDto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Value
 @Builder

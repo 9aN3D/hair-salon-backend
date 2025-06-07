@@ -9,8 +9,8 @@ import pl.edu.wit.hairsalon.appointment.dto.AppointmentServiceDto;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentStatusDto;
 import pl.edu.wit.hairsalon.sharedKernel.dto.DateRangeDto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;

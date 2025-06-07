@@ -22,7 +22,7 @@ class HairdresserUpdater {
 
     private Hairdresser buildHairdresser(HairdresserDto dto, HairdresserUpdateCommand command) {
         return Hairdresser.builder()
-                .id(dto.getId())
+                .id(dto.id())
                 .fullName(getFullName(dto, command))
                 .services(getServices(dto, command))
                 .build();
@@ -31,15 +31,15 @@ class HairdresserUpdater {
     private HairdresserFullName getFullName(HairdresserDto dto, HairdresserUpdateCommand command) {
         return HairdresserFullName.builder()
                 .name(ofNullable(command.getName())
-                        .orElseGet(() -> dto.getFullName().getName()))
+                        .orElseGet(() -> dto.fullName().getName()))
                 .surname(ofNullable(command.getSurname())
-                        .orElseGet(() -> dto.getFullName().getSurname()))
+                        .orElseGet(() -> dto.fullName().getSurname()))
                 .build();
     }
 
     private Set<String> getServices(HairdresserDto dto, HairdresserUpdateCommand command) {
         return ofNullable(command.getServices())
-                .orElseGet(dto::getServiceIds);
+                .orElseGet(dto::serviceIds);
     }
 
 }
