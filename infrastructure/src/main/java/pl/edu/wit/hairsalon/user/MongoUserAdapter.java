@@ -1,26 +1,29 @@
 package pl.edu.wit.hairsalon.user;
 
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import pl.edu.wit.hairsalon.sharedKernel.QuerydslPredicateBuilder;
 import pl.edu.wit.hairsalon.user.dto.UserDto;
 import pl.edu.wit.hairsalon.user.exception.UserNotFoundException;
 import pl.edu.wit.hairsalon.user.query.UserFindQuery;
 
+import java.util.List;
 import java.util.Optional;
 
 import static java.lang.String.format;
-import static java.util.Optional.ofNullable;
 
 @Repository
-@RequiredArgsConstructor
 class MongoUserAdapter implements UserPort {
 
     private final MongoUserRepository userRepository;
     private final UserMapper userMapper;
+
+    MongoUserAdapter(MongoUserRepository userRepository, UserMapper userMapper) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+    }
 
     @Override
     public UserDto save(UserDto user) {
@@ -57,12 +60,10 @@ class MongoUserAdapter implements UserPort {
 
     private Optional<Predicate> buildPredicate(UserFindQuery findQuery) {
         var qUser = QUserDocument.userDocument;
-        var builder = new BooleanBuilder();
-        findQuery.ifIdPresent(id -> builder.and(qUser.id.eq(id)));
-        findQuery.ifFullNamePresent(fullName -> builder
-                .and(qUser.fullName.name.like(fullName))
-                .or(qUser.fullName.surname.like(fullName)));
-        return ofNullable(builder.getValue());
+        return QuerydslPredicateBuilder.create()
+                .equals(qUser.id, findQuery.id())
+                .like(List.of(qUser.fullName.name, qUser.fullName.surname), findQuery.fullName())
+                .build();
     }
 
 }

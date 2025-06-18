@@ -20,7 +20,7 @@ import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.NOTIFICATIONS_EMAIL_
 import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.NOTIFICATIONS_EMAIL_SMTP_HOST;
 import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.NOTIFICATIONS_EMAIL_SMTP_PORT;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 class MailSenderConfiguration {
 
     @Bean

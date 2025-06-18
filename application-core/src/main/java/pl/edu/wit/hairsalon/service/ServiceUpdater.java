@@ -1,6 +1,5 @@
 package pl.edu.wit.hairsalon.service;
 
-import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.service.command.ServiceUpdateCommand;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
 import pl.edu.wit.hairsalon.sharedKernel.domain.Money;
@@ -10,10 +9,13 @@ import java.time.Duration;
 import static java.util.Optional.ofNullable;
 import static pl.edu.wit.hairsalon.service.query.ServiceFindQuery.withId;
 
-@RequiredArgsConstructor
 class ServiceUpdater {
 
     private final ServicePort servicePort;
+
+    ServiceUpdater(ServicePort servicePort) {
+        this.servicePort = servicePort;
+    }
 
     Service update(String serviceId, ServiceUpdateCommand command) {
         var serviceDto = servicePort.findOneOrThrow(withId(serviceId));
@@ -22,7 +24,7 @@ class ServiceUpdater {
 
     private Service buildService(ServiceDto dto, ServiceUpdateCommand command) {
         return Service.builder()
-                .id(dto.getId())
+                .id(dto.id())
                 .name(getName(dto, command))
                 .price(getPrice(dto, command))
                 .duration(getDuration(dto, command))
@@ -30,20 +32,20 @@ class ServiceUpdater {
     }
 
     private Money getPrice(ServiceDto dto, ServiceUpdateCommand command) {
-        return ofNullable(command.getPrice())
+        return ofNullable(command.price())
                 .map(Money::ofPln)
-                .orElseGet(() -> Money.of(dto.getPrice()));
+                .orElseGet(() -> Money.of(dto.price()));
     }
 
     private String getName(ServiceDto dto, ServiceUpdateCommand command) {
-        return ofNullable(command.getName())
-                .orElseGet(dto::getName);
+        return ofNullable(command.name())
+                .orElseGet(dto::name);
     }
 
     private Duration getDuration(ServiceDto dto, ServiceUpdateCommand command) {
-        return ofNullable(command.getDurationInMinutes())
+        return ofNullable(command.durationInMinutes())
                 .map(Duration::ofMinutes)
-                .orElseGet(() -> Duration.ofMinutes(dto.getDurationInMinutes()));
+                .orElseGet(() -> Duration.ofMinutes(dto.durationInMinutes()));
     }
 
 }

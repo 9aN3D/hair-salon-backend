@@ -1,6 +1,5 @@
 package pl.edu.wit.hairsalon.reservation;
 
-import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.eventBus.DomainEventPublisher;
 import pl.edu.wit.hairsalon.reservation.command.ReservationMakeCommand;
 import pl.edu.wit.hairsalon.reservation.dto.ReservationCalculationDto;
@@ -14,13 +13,19 @@ import java.util.List;
 import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 
-@RequiredArgsConstructor
 class ReservationCreator {
 
     private final IdGenerator idGenerator;
     private final ReservationPort reservationPort;
     private final ReservationCalculator reservationCalculator;
     private final DomainEventPublisher domainEventPublisher;
+
+    public ReservationCreator(IdGenerator idGenerator, ReservationPort reservationPort, ReservationCalculator reservationCalculator, DomainEventPublisher domainEventPublisher) {
+        this.idGenerator = idGenerator;
+        this.reservationPort = reservationPort;
+        this.reservationCalculator = reservationCalculator;
+        this.domainEventPublisher = domainEventPublisher;
+    }
 
     ReservationDto create(String memberId, ReservationMakeCommand command) {
         var calculatedReservation = reservationCalculator.calculate(memberId, command.toCalculateCommand());
@@ -35,10 +40,10 @@ class ReservationCreator {
         return Reservation.builder()
                 .id(idGenerator.generate())
                 .memberId(memberId)
-                .hairdresser(new ReservationHairdresser(reservationCalculation.getHairdresser()))
-                .times(new DateRange(reservationCalculation.getTimes()))
-                .selectedServices(toReservationHairdresserService(reservationCalculation.getSelectedServices()))
-                .totalPrice(reservationCalculation.getTotalPrice())
+                .hairdresser(new ReservationHairdresser(reservationCalculation.hairdresser()))
+                .times(new DateRange(reservationCalculation.times()))
+                .selectedServices(toReservationHairdresserService(reservationCalculation.selectedServices()))
+                .totalPrice(reservationCalculation.totalPrice())
                 .creationDateTime(now())
                 .build();
     }

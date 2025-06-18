@@ -1,35 +1,104 @@
 package pl.edu.wit.hairsalon.appointment.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Value;
 import pl.edu.wit.hairsalon.sharedKernel.dto.DateRangeDto;
 
 import java.time.LocalDateTime;
 
-@Value
-@Builder
-@AllArgsConstructor
-public class AppointmentDto {
+public record AppointmentDto(
+        String id,
+        String reservationId,
+        String memberId,
+        DateRangeDto times,
+        AppointmentServicesDto services,
+        AppointmentStatusDto status,
+        LocalDateTime creationDateTime,
+        LocalDateTime statusModificationDateTime,
+        String hairdresserId,
+        AppointmentNotificationDto notification
+) {
 
-    String id;
+    public static Builder builder() {
+        return new Builder();
+    }
 
-    String reservationId;
+    public static class Builder {
 
-    String memberId;
+        private String id;
+        private String reservationId;
+        private String memberId;
+        private DateRangeDto times;
+        private AppointmentServicesDto services;
+        private AppointmentStatusDto status;
+        private LocalDateTime creationDateTime;
+        private LocalDateTime statusModificationDateTime;
+        private String hairdresserId;
+        private AppointmentNotificationDto notification;
 
-    DateRangeDto times;
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
 
-    AppointmentServicesDto services;
+        public Builder reservationId(String reservationId) {
+            this.reservationId = reservationId;
+            return this;
+        }
 
-    AppointmentStatusDto status;
+        public Builder memberId(String memberId) {
+            this.memberId = memberId;
+            return this;
+        }
 
-    LocalDateTime creationDateTime;
+        public Builder times(DateRangeDto times) {
+            this.times = times;
+            return this;
+        }
 
-    LocalDateTime statusModificationDateTime;
+        public Builder services(AppointmentServicesDto services) {
+            this.services = services;
+            return this;
+        }
 
-    String hairdresserId;
+        public Builder status(AppointmentStatusDto status) {
+            this.status = status;
+            return this;
+        }
 
-    AppointmentNotificationDto notification;
+        public Builder creationDateTime(LocalDateTime creationDateTime) {
+            this.creationDateTime = creationDateTime;
+            return this;
+        }
+
+        public Builder statusModificationDateTime(LocalDateTime statusModificationDateTime) {
+            this.statusModificationDateTime = statusModificationDateTime;
+            return this;
+        }
+
+        public Builder hairdresserId(String hairdresserId) {
+            this.hairdresserId = hairdresserId;
+            return this;
+        }
+
+        public Builder notification(AppointmentNotificationDto notification) {
+            this.notification = notification;
+            return this;
+        }
+
+        public AppointmentDto build() {
+            return new AppointmentDto(
+                    id,
+                    reservationId,
+                    memberId,
+                    times,
+                    services,
+                    status,
+                    creationDateTime,
+                    statusModificationDateTime,
+                    hairdresserId,
+                    notification
+            );
+        }
+
+    }
 
 }

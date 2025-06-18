@@ -1,7 +1,7 @@
 package pl.edu.wit.hairsalon.web;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,18 +13,19 @@ import pl.edu.wit.hairsalon.user.query.UserFindQuery;
 import pl.edu.wit.hairsalon.web.adapter.UserResponseAdapter;
 import pl.edu.wit.hairsalon.web.response.UserResponse;
 
-import jakarta.validation.constraints.NotNull;
-
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(value = "/api/v1", produces = APPLICATION_JSON_VALUE)
 @SecurityRequirement(name = "hair-salon-API")
 class UserController {
 
     private final UserResponseAdapter userResponseAdapter;
+
+    UserController(UserResponseAdapter userResponseAdapter) {
+        this.userResponseAdapter = userResponseAdapter;
+    }
 
     @GetMapping(value = "/admin/users/{authDetailsId}")
     @ResponseStatus(OK)

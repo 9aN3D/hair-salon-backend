@@ -1,9 +1,5 @@
 package pl.edu.wit.hairsalon.reservation;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import pl.edu.wit.hairsalon.reservation.dto.ReservationDto;
 import pl.edu.wit.hairsalon.reservation.event.ReservationMadeEvent;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
@@ -15,24 +11,32 @@ import pl.edu.wit.hairsalon.sharedKernel.exception.ValidationException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 
-@Builder
-@ToString
-@RequiredArgsConstructor
-@EqualsAndHashCode(of = "id")
-class Reservation implements SelfValidator<Reservation> {
+record Reservation(
+        String id,
+        String memberId,
+        ReservationHairdresser hairdresser,
+        DateRange times,
+        List<ReservationHairdresserService> selectedServices,
+        BigDecimal totalPrice,
+        LocalDateTime creationDateTime
+) implements SelfValidator<Reservation> {
 
-    private final String id;
-    private final String memberId;
-    private final ReservationHairdresser hairdresser;
-    private final DateRange times;
-    private final List<ReservationHairdresserService> selectedServices;
-    private final BigDecimal totalPrice;
-    private final LocalDateTime creationDateTime;
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Reservation that)) return false;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 
     @Override
     public Reservation validate() {
@@ -68,6 +72,61 @@ class Reservation implements SelfValidator<Reservation> {
         return selectedServices.stream()
                 .map(ReservationHairdresserService::toDto)
                 .collect(toList());
+    }
+
+    static Builder builder() {
+        return new Builder();
+    }
+
+    static class Builder {
+
+        private String id;
+        private String memberId;
+        private ReservationHairdresser hairdresser;
+        private DateRange times;
+        private List<ReservationHairdresserService> selectedServices;
+        private BigDecimal totalPrice;
+        private LocalDateTime creationDateTime;
+
+        Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        Builder memberId(String memberId) {
+            this.memberId = memberId;
+            return this;
+        }
+
+        Builder hairdresser(ReservationHairdresser hairdresser) {
+            this.hairdresser = hairdresser;
+            return this;
+        }
+
+        Builder times(DateRange times) {
+            this.times = times;
+            return this;
+        }
+
+        Builder selectedServices(List<ReservationHairdresserService> selectedServices) {
+            this.selectedServices = selectedServices;
+            return this;
+        }
+
+        Builder totalPrice(BigDecimal totalPrice) {
+            this.totalPrice = totalPrice;
+            return this;
+        }
+
+        Builder creationDateTime(LocalDateTime creationDateTime) {
+            this.creationDateTime = creationDateTime;
+            return this;
+        }
+
+        Reservation build() {
+            return new Reservation(id, memberId, hairdresser, times, selectedServices, totalPrice, creationDateTime);
+        }
+
     }
 
 }

@@ -1,14 +1,14 @@
 package pl.edu.wit.hairsalon.member;
 
-import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.authDetails.AuthDetailsFacade;
 import pl.edu.wit.hairsalon.authDetails.command.AuthDetailsUpdateCommand;
 import pl.edu.wit.hairsalon.authDetails.dto.AuthDetailsDto;
 import pl.edu.wit.hairsalon.member.command.MemberUpdateCommand;
 import pl.edu.wit.hairsalon.member.dto.MemberContactDto;
 import pl.edu.wit.hairsalon.member.dto.MemberDto;
-import pl.edu.wit.hairsalon.member.dto.MemberFullNameDto;
 import pl.edu.wit.hairsalon.member.query.MemberFindQuery;
+import pl.edu.wit.hairsalon.sharedKernel.domain.FullName;
+import pl.edu.wit.hairsalon.sharedKernel.dto.FullNameDto;
 
 import java.util.Set;
 
@@ -16,12 +16,17 @@ import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static java.util.function.Predicate.not;
 
-@RequiredArgsConstructor
 class MemberUpdater {
 
     private final MemberPort memberPort;
     private final PhoneNumberPort phoneNumberPort;
     private final AuthDetailsFacade authDetailsFacade;
+
+    public MemberUpdater(MemberPort memberPort, PhoneNumberPort phoneNumberPort, AuthDetailsFacade authDetailsFacade) {
+        this.memberPort = memberPort;
+        this.phoneNumberPort = phoneNumberPort;
+        this.authDetailsFacade = authDetailsFacade;
+    }
 
     MemberDto update(String memberId, MemberUpdateCommand command) {
         var memberDto = memberPort.findOneOrThrow(MemberFindQuery.withId(memberId));
@@ -43,8 +48,8 @@ class MemberUpdater {
         } catch (Exception ex) {
             if (command.isNotBlankEmail() || command.isNotBlankPassword()) {
                 authDetailsFacade.update(previousAuthDetails.id(), AuthDetailsUpdateCommand.builder()
-                        .email(command.getEmail())
-                        .password(command.getPassword())
+                        .email(command.email())
+                        .password(command.password())
                         .build());
             }
             throw ex;
@@ -61,29 +66,29 @@ class MemberUpdater {
                 .build();
     }
 
-    private MemberFullName getFullName(MemberFullNameDto memberFullName, MemberUpdateCommand command) {
-        return MemberFullName.builder()
-                .name(ofNullable(command.getName())
-                        .orElseGet(memberFullName::getName))
-                .surname(ofNullable(command.getSurname())
-                        .orElseGet(memberFullName::getSurname))
-                .build();
+    private FullName getFullName(FullNameDto memberFullName, MemberUpdateCommand command) {
+        return new FullName(
+                ofNullable(command.name()).orElseGet(memberFullName::name),
+                ofNullable(command.surname()).orElseGet(memberFullName::surname)
+        );
     }
 
     private MemberContact getContact(MemberContactDto contact, MemberUpdateCommand command, AuthDetailsDto authDetailsDto) {
-        return MemberContact.builder()
-                .email(nonNull(command.getEmail())
-                        ? authDetailsDto.email()
-                        : contact.getEmail())
-                .phoneNumber(ofNullable(command.getPhone())
-                        .map(PhoneNumber::new)
-                        .map(phoneNumber -> phoneNumber.verifyPhoneNumber(phoneNumberPort))
-                        .orElseGet(() -> new PhoneNumber(contact.getPhone())))
-                .build();
+        return new MemberContact(
+                nonNull(command.email()) ? authDetailsDto.email() : contact.email(),
+                getPhoneNumber(contact, command)
+        );
+    }
+
+    private PhoneNumber getPhoneNumber(MemberContactDto contact, MemberUpdateCommand command) {
+        return ofNullable(command.phone())
+                .map(PhoneNumber::new)
+                .map(phoneNumber -> phoneNumber.verifyPhoneNumber(phoneNumberPort))
+                .orElseGet(() -> new PhoneNumber(contact.phone()));
     }
 
     private MemberAgreements getAgreements(MemberDto memberDto, MemberUpdateCommand command) {
-        return ofNullable(command.getAgreements())
+        return ofNullable(command.agreements())
                 .filter(not(Set::isEmpty))
                 .map(MemberAgreements::of)
                 .orElseGet(() -> MemberAgreements.of(memberDto.agreements()));

@@ -1,11 +1,8 @@
 package pl.edu.wit.hairsalon.hairdresser;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import pl.edu.wit.hairsalon.hairdresser.dto.HairdresserDto;
 import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
+import pl.edu.wit.hairsalon.sharedKernel.domain.FullName;
 import pl.edu.wit.hairsalon.sharedKernel.domain.NotBlankString;
 import pl.edu.wit.hairsalon.uploadableFile.command.FileUploadCommand;
 
@@ -16,21 +13,17 @@ import java.util.function.Function;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
-@Builder
-@ToString
-@RequiredArgsConstructor
-@EqualsAndHashCode(of = "id")
-class Hairdresser implements SelfValidator<Hairdresser> {
-
-    private final String id;
-    private final HairdresserFullName fullName;
-    private final String photoId;
-    private final Set<String> services;
+public record Hairdresser(
+        String id,
+        FullName fullName,
+        String photoId,
+        Set<String> services
+) implements SelfValidator<Hairdresser> {
 
     public Hairdresser(HairdresserDto dto) {
         this(
                 dto.id(),
-                new HairdresserFullName(dto.fullName()),
+                new FullName(dto.fullName()),
                 dto.photoId(),
                 dto.serviceIds()
         );
@@ -72,6 +65,43 @@ class Hairdresser implements SelfValidator<Hairdresser> {
                 .photoId(photoId)
                 .services(services)
                 .build();
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+
+        private String id;
+        private FullName fullName;
+        private String photoId;
+        private Set<String> services;
+
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder fullName(FullName fullName) {
+            this.fullName = fullName;
+            return this;
+        }
+
+        public Builder photoId(String photoId) {
+            this.photoId = photoId;
+            return this;
+        }
+
+        public Builder services(Set<String> services) {
+            this.services = services;
+            return this;
+        }
+
+        public Hairdresser build() {
+            return new Hairdresser(id, fullName, photoId, services);
+        }
+
     }
 
 }

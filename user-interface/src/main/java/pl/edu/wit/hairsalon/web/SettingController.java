@@ -1,7 +1,7 @@
 package pl.edu.wit.hairsalon.web;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +16,6 @@ import pl.edu.wit.hairsalon.setting.dto.SettingDto;
 import pl.edu.wit.hairsalon.setting.dto.SettingIdDto;
 import pl.edu.wit.hairsalon.setting.query.SettingGroupFindQuery;
 
-import jakarta.validation.constraints.NotNull;
 import java.util.Map;
 
 import static java.util.stream.Collectors.toMap;
@@ -25,11 +24,14 @@ import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(value = "/api/v1")
 class SettingController {
 
     private final SettingFacade settingFacade;
+
+    SettingController(SettingFacade settingFacade) {
+        this.settingFacade = settingFacade;
+    }
 
     @SecurityRequirement(name = "hair-salon-API")
     @PostMapping(value = "/admin/settings", consumes = APPLICATION_JSON_VALUE)

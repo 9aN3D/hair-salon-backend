@@ -1,12 +1,10 @@
 package pl.edu.wit.hairsalon.notification;
 
-import lombok.AllArgsConstructor;
 import pl.edu.wit.hairsalon.notification.dto.EmailNotificationContentDto;
 import pl.edu.wit.hairsalon.notification.dto.NotificationContentDto;
 import pl.edu.wit.hairsalon.notification.dto.NotificationTypeDto;
 import pl.edu.wit.hairsalon.notification.dto.SmsNotificationContentDto;
 
-@AllArgsConstructor
 enum NotificationType {
 
     SMS {

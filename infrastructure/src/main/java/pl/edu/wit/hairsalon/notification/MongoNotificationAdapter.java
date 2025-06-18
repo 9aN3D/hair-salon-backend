@@ -1,26 +1,28 @@
 package pl.edu.wit.hairsalon.notification;
 
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import pl.edu.wit.hairsalon.notification.dto.NotificationDto;
 import pl.edu.wit.hairsalon.notification.exception.NotificationNotFoundException;
 import pl.edu.wit.hairsalon.notification.query.NotificationFindQuery;
+import pl.edu.wit.hairsalon.sharedKernel.QuerydslPredicateBuilder;
 
 import java.util.Optional;
 
 import static java.lang.String.format;
-import static java.util.Optional.ofNullable;
 
 @Repository
-@RequiredArgsConstructor
 class MongoNotificationAdapter implements NotificationPort {
 
     private final MongoNotificationRepository repository;
     private final NotificationMapper mapper;
+
+    MongoNotificationAdapter(MongoNotificationRepository repository, NotificationMapper notificationMapper) {
+        this.repository = repository;
+        this.mapper = notificationMapper;
+    }
 
     @Override
     public NotificationDto save(NotificationDto notification) {
@@ -47,9 +49,9 @@ class MongoNotificationAdapter implements NotificationPort {
 
     private Optional<Predicate> buildPredicate(NotificationFindQuery findQuery) {
         var qNotificationDocument = QNotificationDocument.notificationDocument;
-        var builder = new BooleanBuilder();
-        findQuery.ifRecipientIdPresent(qNotificationDocument.recipientId::eq);
-        return ofNullable(builder.getValue());
+        return QuerydslPredicateBuilder.create()
+                .equals(qNotificationDocument.recipientId, findQuery.recipientId())
+                .build();
     }
 
 }

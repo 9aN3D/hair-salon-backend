@@ -1,6 +1,5 @@
 package pl.edu.wit.hairsalon.web;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,11 +12,14 @@ import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/v1/registration")
 class RegistrationController {
 
     private final MemberFacade memberFacade;
+
+    RegistrationController(MemberFacade memberFacade) {
+        this.memberFacade = memberFacade;
+    }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)

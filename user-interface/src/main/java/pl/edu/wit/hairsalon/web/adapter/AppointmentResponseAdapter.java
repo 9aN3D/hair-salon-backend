@@ -1,6 +1,5 @@
 package pl.edu.wit.hairsalon.web.adapter;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,6 +17,7 @@ import pl.edu.wit.hairsalon.web.response.AppointmentResponse;
 import pl.edu.wit.hairsalon.web.response.HairdresserResponse;
 import pl.edu.wit.hairsalon.web.response.LinkAddingGoogleCalendarEventResponse;
 
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.SALON_ADDRESS_CITY;
@@ -28,7 +28,6 @@ import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.SALON_NAME;
 import static pl.edu.wit.hairsalon.socialIntegration.dto.SocialProviderDto.GOOGLE;
 
 @Service
-@RequiredArgsConstructor
 public class AppointmentResponseAdapter {
 
     private final AppointmentFacade appointmentFacade;
@@ -37,6 +36,18 @@ public class AppointmentResponseAdapter {
     private final SocialIntegrationFacade socialIntegrationFacade;
     private final SettingFacade settingFacade;
 
+    public AppointmentResponseAdapter(AppointmentFacade appointmentFacade,
+                                      HairdresserFacade hairdresserFacade,
+                                      UploadableFileFacade uploadableFileFacade,
+                                      SocialIntegrationFacade socialIntegrationFacade,
+                                      SettingFacade settingFacade) {
+        this.appointmentFacade = appointmentFacade;
+        this.hairdresserFacade = hairdresserFacade;
+        this.uploadableFileFacade = uploadableFileFacade;
+        this.socialIntegrationFacade = socialIntegrationFacade;
+        this.settingFacade = settingFacade;
+    }
+
     public Page<AppointmentConciseResponse> findAll(String memberId, AppointmentFindQuery findQuery, Pageable pageable) {
         return appointmentFacade.findAll(findQuery.withMemberId(memberId), pageable)
                 .map(AppointmentConciseResponse::of);
@@ -44,12 +55,12 @@ public class AppointmentResponseAdapter {
 
     public AppointmentResponse findOne(String memberId, String appointmentId) {
         var appointment = appointmentFacade.findOne(AppointmentFindQuery.with(memberId, appointmentId));
-        var hairdresserResponse = HairdresserResponse.of(hairdresserFacade.findOne(appointment.getHairdresserId()), uploadableFileFacade::findOne);
+        var hairdresserResponse = HairdresserResponse.of(hairdresserFacade.findOne(appointment.hairdresserId()), uploadableFileFacade::findOne);
         return AppointmentResponse.builder()
-                .id(appointment.getId())
-                .times(appointment.getTimes())
-                .appointmentServices(appointment.getServices())
-                .status(appointment.getStatus())
+                .id(appointment.id())
+                .times(appointment.times())
+                .appointmentServices(appointment.services())
+                .status(appointment.status())
                 .hairdresser(hairdresserResponse)
                 .build();
     }
@@ -63,8 +74,8 @@ public class AppointmentResponseAdapter {
         return new LinkAddingGoogleCalendarEventResponse(socialIntegrationFacade.generateLinkAddingCalendarEvent(
                 LinkAddingCalendarEventGenerateCommand.builder()
                         .socialProvider(GOOGLE)
-                        .times(appointment.getTimes())
-                        .eventName(appointment.getServices().getName())
+                        .times(appointment.times())
+                        .eventName(appointment.status().name())
                         .location(prepareLocation())
                         .build()
         ));
@@ -74,16 +85,13 @@ public class AppointmentResponseAdapter {
         var salonName = settingFacade.findOne(SALON_NAME).value();
         var settingIdToValueMap = settingFacade.findAll(SettingGroupFindQuery.ofSalonAddressGroup()).stream()
                 .collect(Collectors.toMap(SettingDto::id, SettingDto::value));
-        return new StringBuilder()
-                .append(settingIdToValueMap.getOrDefault(SALON_ADDRESS_CITY, ""))
-                .append(" ")
-                .append(salonName)
-                .append(", ")
-                .append(settingIdToValueMap.getOrDefault(SALON_ADDRESS_STREET_NAME, ""))
-                .append(" ")
-                .append(settingIdToValueMap.getOrDefault(SALON_ADDRESS_STREET_NUMBER, ""))
-                .append(", ")
-                .append(settingIdToValueMap.getOrDefault(SALON_ADDRESS_POSTAL_CODE, ""))
+        return new StringJoiner(", ")
+                .add(new StringJoiner(" ")
+                        .add(settingIdToValueMap.getOrDefault(SALON_ADDRESS_CITY, ""))
+                        .add(salonName)
+                        .toString())
+                .add(settingIdToValueMap.getOrDefault(SALON_ADDRESS_STREET_NAME, "") + " " + settingIdToValueMap.getOrDefault(SALON_ADDRESS_STREET_NUMBER, ""))
+                .add(settingIdToValueMap.getOrDefault(SALON_ADDRESS_POSTAL_CODE, ""))
                 .toString();
     }
 

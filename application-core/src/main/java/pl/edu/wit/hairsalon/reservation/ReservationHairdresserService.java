@@ -1,36 +1,48 @@
 package pl.edu.wit.hairsalon.reservation;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
 import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
 import pl.edu.wit.hairsalon.sharedKernel.domain.Money;
 import pl.edu.wit.hairsalon.sharedKernel.domain.NotBlankString;
 
 import java.time.Duration;
+import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
-@Builder
-@ToString
-@RequiredArgsConstructor
-@EqualsAndHashCode(of = "serviceId")
-class ReservationHairdresserService implements SelfValidator<ReservationHairdresserService> {
-
-    private final String serviceId;
-    private final String name;
-    private final Money price;
-    private final Duration duration;
+record ReservationHairdresserService(
+        String serviceId,
+        String name,
+        Money price,
+        Duration duration
+) implements SelfValidator<ReservationHairdresserService> {
 
     ReservationHairdresserService(ServiceDto arg) {
         this(
-                arg.getId(),
-                arg.getName(),
-                Money.of(arg.getPrice()),
-                Duration.ofMinutes(arg.getDurationInMinutes())
+                arg.id(),
+                arg.name(),
+                Money.of(arg.price()),
+                Duration.ofMinutes(arg.durationInMinutes())
         );
+    }
+
+    @Override
+    public ReservationHairdresserService validate() {
+        requireNonNull(price, "Hairdresser reservation price must not be null");
+        requireNonNull(duration, "Hairdresser reservation duration must not be null");
+        validate(new NotBlankString(serviceId), new NotBlankString(name));
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ReservationHairdresserService that)) return false;
+        return Objects.equals(serviceId, that.serviceId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(serviceId);
     }
 
     ServiceDto toDto() {
@@ -40,26 +52,6 @@ class ReservationHairdresserService implements SelfValidator<ReservationHairdres
                 .price(price.toDto())
                 .durationInMinutes(duration.toMinutes())
                 .build();
-    }
-
-    String serviceId() {
-        return serviceId;
-    }
-
-    Duration duration() {
-        return duration;
-    }
-
-    Money price() {
-        return price;
-    }
-
-    @Override
-    public ReservationHairdresserService validate() {
-        requireNonNull(price, "Hairdresser reservation price must not be null");
-        requireNonNull(duration, "Hairdresser reservation duration must not be null");
-        validate(new NotBlankString(serviceId), new NotBlankString(name));
-        return this;
     }
 
 }

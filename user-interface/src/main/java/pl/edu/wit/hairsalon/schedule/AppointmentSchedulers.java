@@ -1,15 +1,19 @@
 package pl.edu.wit.hairsalon.schedule;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import pl.edu.wit.hairsalon.appointment.AppointmentFacade;
 
-@RequiredArgsConstructor
+@Component
 class AppointmentSchedulers {
 
     private final AppointmentFacade appointmentFacade;
+
+    public AppointmentSchedulers(AppointmentFacade appointmentFacade) {
+        this.appointmentFacade = appointmentFacade;
+    }
 
     //At every 30th minute
     @Scheduled(cron = "* 30 * * * *")

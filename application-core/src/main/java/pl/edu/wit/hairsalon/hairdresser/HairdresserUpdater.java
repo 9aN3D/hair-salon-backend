@@ -1,18 +1,21 @@
 package pl.edu.wit.hairsalon.hairdresser;
 
-import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.hairdresser.command.HairdresserUpdateCommand;
 import pl.edu.wit.hairsalon.hairdresser.dto.HairdresserDto;
+import pl.edu.wit.hairsalon.sharedKernel.domain.FullName;
 
 import java.util.Set;
 
 import static java.util.Optional.ofNullable;
 import static pl.edu.wit.hairsalon.hairdresser.query.HairdresserFindQuery.ofHairdresserId;
 
-@RequiredArgsConstructor
 class HairdresserUpdater {
 
     private final HairdresserPort hairdresserPort;
+
+    HairdresserUpdater(HairdresserPort hairdresserPort) {
+        this.hairdresserPort = hairdresserPort;
+    }
 
     HairdresserDto update(String hairdresserId, HairdresserUpdateCommand command) {
         var hairdresserDto = hairdresserPort.findOneOrThrow(ofHairdresserId(hairdresserId));
@@ -28,17 +31,15 @@ class HairdresserUpdater {
                 .build();
     }
 
-    private HairdresserFullName getFullName(HairdresserDto dto, HairdresserUpdateCommand command) {
-        return HairdresserFullName.builder()
-                .name(ofNullable(command.getName())
-                        .orElseGet(() -> dto.fullName().getName()))
-                .surname(ofNullable(command.getSurname())
-                        .orElseGet(() -> dto.fullName().getSurname()))
-                .build();
+    private FullName getFullName(HairdresserDto dto, HairdresserUpdateCommand command) {
+        return new FullName(
+                ofNullable(command.name()).orElseGet(() -> dto.fullName().name()),
+                ofNullable(command.surname()).orElseGet(() -> dto.fullName().surname())
+        );
     }
 
     private Set<String> getServices(HairdresserDto dto, HairdresserUpdateCommand command) {
-        return ofNullable(command.getServices())
+        return ofNullable(command.services())
                 .orElseGet(dto::serviceIds);
     }
 

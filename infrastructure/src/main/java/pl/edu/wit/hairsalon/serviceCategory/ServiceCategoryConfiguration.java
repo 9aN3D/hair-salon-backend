@@ -7,7 +7,7 @@ import pl.edu.wit.hairsalon.sharedKernel.port.secondary.IdGenerator;
 
 import java.util.Set;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 class ServiceCategoryConfiguration {
 
     @Bean
@@ -17,7 +17,9 @@ class ServiceCategoryConfiguration {
         var commandHandlers = new ServiceCategoryCommandHandlers(commandVerifiers);
         var creator = new ServiceCategoryCreator(idGenerator, commandHandlers);
         var updater = new ServiceCategoryUpdater(serviceCategoryPort, commandHandlers);
-        return new AppServiceCategoryFacade(serviceCategoryPort, creator, updater);
+        return new LoggableServiceCategoryFacade(
+                new AppServiceCategoryFacade(serviceCategoryPort, creator, updater)
+        );
     }
 
     @Bean

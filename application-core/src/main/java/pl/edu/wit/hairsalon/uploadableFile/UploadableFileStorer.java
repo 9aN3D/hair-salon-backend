@@ -1,6 +1,5 @@
 package pl.edu.wit.hairsalon.uploadableFile;
 
-import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.sharedKernel.exception.ValidationException;
 import pl.edu.wit.hairsalon.uploadableFile.command.FileUploadCommand;
 import pl.edu.wit.hairsalon.uploadableFile.exception.UploadableFileStoreException;
@@ -10,10 +9,13 @@ import java.util.Objects;
 import static java.lang.String.format;
 import static java.util.Optional.ofNullable;
 
-@RequiredArgsConstructor
 class UploadableFileStorer {
 
     private final UploadableFilePort uploadableFilePort;
+
+    UploadableFileStorer(UploadableFilePort uploadableFilePort) {
+        this.uploadableFilePort = uploadableFilePort;
+    }
 
     public String store(FileUploadCommand command) {
         Objects.requireNonNull(command, "File upload command must not be null");
@@ -22,7 +24,7 @@ class UploadableFileStorer {
     }
 
     private void verifySize(FileUploadCommand command) {
-        ofNullable(command.getSize())
+        ofNullable(command.size())
                 .filter(this::hasPositiveValue)
                 .orElseThrow(() -> new ValidationException("File upload command length must not be null or negative"));
     }

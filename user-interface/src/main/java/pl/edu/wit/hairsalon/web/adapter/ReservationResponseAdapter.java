@@ -1,11 +1,10 @@
 package pl.edu.wit.hairsalon.web.adapter;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import pl.edu.wit.hairsalon.reservation.ReservationFacade;
-import pl.edu.wit.hairsalon.reservation.command.ReservationMakeCommand;
 import pl.edu.wit.hairsalon.reservation.command.ReservationCalculateCommand;
+import pl.edu.wit.hairsalon.reservation.command.ReservationMakeCommand;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
 import pl.edu.wit.hairsalon.serviceCategory.ServiceCategoryFacade;
 import pl.edu.wit.hairsalon.serviceCategory.dto.ServiceCategoryDto;
@@ -27,12 +26,19 @@ import static java.util.stream.Collectors.toSet;
 import static pl.edu.wit.hairsalon.sharedKernel.CollectionHelper.isNullOrEmpty;
 
 @Service
-@RequiredArgsConstructor
 public class ReservationResponseAdapter {
 
     private final ReservationFacade reservationFacade;
     private final ServiceCategoryFacade serviceCategoryFacade;
     private final UploadableFileFacade uploadableFileFacade;
+
+    public ReservationResponseAdapter(ReservationFacade reservationFacade,
+                                      ServiceCategoryFacade serviceCategoryFacade,
+                                      UploadableFileFacade uploadableFileFacade) {
+        this.reservationFacade = reservationFacade;
+        this.serviceCategoryFacade = serviceCategoryFacade;
+        this.uploadableFileFacade = uploadableFileFacade;
+    }
 
     public void make(String memberId, ReservationMakeCommand command) {
         reservationFacade.make(memberId, command);
@@ -40,21 +46,21 @@ public class ReservationResponseAdapter {
 
     public ReservationCalculationResponse calculate(String memberId, ReservationCalculateCommand command) {
         var reservationCalculation = reservationFacade.calculate(memberId, command);
-        var reservationCalculationHairdresser = reservationCalculation.getHairdresser();
-        var serviceIdToServiceResponse = collectServiceIdToServiceResponse(reservationCalculationHairdresser.getServices());
+        var reservationCalculationHairdresser = reservationCalculation.hairdresser();
+        var serviceIdToServiceResponse = collectServiceIdToServiceResponse(reservationCalculationHairdresser.services());
         return ReservationCalculationResponse.builder()
                 .hairdresser(HairdresserResponse.of(reservationCalculationHairdresser, serviceIdToServiceResponse.values(), uploadableFileFacade::findOne))
-                .times(reservationCalculation.getTimes())
-                .selectedServices(collectSelectedServiceResponses(reservationCalculation.getSelectedServices(), serviceIdToServiceResponse))
-                .totalPrice(reservationCalculation.getTotalPrice())
+                .times(reservationCalculation.times())
+                .selectedServices(collectSelectedServiceResponses(reservationCalculation.selectedServices(), serviceIdToServiceResponse))
+                .totalPrice(reservationCalculation.totalPrice())
                 .build();
     }
 
     private Map<String, ServiceResponse> collectServiceIdToServiceResponse(List<ServiceDto> hairdresserServices) {
         var serviceCategories = getServiceCategories(hairdresserServices);
         return hairdresserServices.stream()
-                .map(service -> ServiceResponse.of(service, getServiceCategoryName(serviceCategories, service.getId())))
-                .collect(toMap(ServiceResponse::getId, identity()));
+                .map(service -> ServiceResponse.of(service, getServiceCategoryName(serviceCategories, service.id())))
+                .collect(toMap(ServiceResponse::id, identity()));
     }
 
     private String getServiceCategoryName(List<ServiceCategoryDto> serviceCategories, String serviceId) {
@@ -75,7 +81,7 @@ public class ReservationResponseAdapter {
 
     private Set<String> collectHairdresserServiceIds(List<ServiceDto> hairdresserServices) {
         return hairdresserServices.stream()
-                .map(ServiceDto::getId)
+                .map(ServiceDto::id)
                 .collect(toSet());
     }
 
@@ -84,7 +90,7 @@ public class ReservationResponseAdapter {
             return null;
         }
         return selectedServices.stream()
-                .map(ServiceDto::getId)
+                .map(ServiceDto::id)
                 .map(serviceIdToServiceResponse::get)
                 .filter(Objects::nonNull)
                 .collect(toList());

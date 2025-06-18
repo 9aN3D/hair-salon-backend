@@ -1,10 +1,5 @@
 package pl.edu.wit.hairsalon.notification.dto;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@RequiredArgsConstructor
 public enum SmsShipmentStatusDto {
 
     NOT_FOUND(NotificationStatusDto.ERROR, "Błędny numer ID lub raport wygasł"),
@@ -24,4 +19,16 @@ public enum SmsShipmentStatusDto {
     private final NotificationStatusDto notificationStatus;
     private final String description;
 
+    SmsShipmentStatusDto(NotificationStatusDto notificationStatus, String description) {
+        this.notificationStatus = notificationStatus;
+        this.description = description;
+    }
+
+    public NotificationStatusDto getNotificationStatus() {
+        return notificationStatus;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

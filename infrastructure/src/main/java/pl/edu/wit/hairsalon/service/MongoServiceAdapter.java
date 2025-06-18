@@ -1,26 +1,28 @@
 package pl.edu.wit.hairsalon.service;
 
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
 import pl.edu.wit.hairsalon.service.exception.ServiceNotFoundException;
 import pl.edu.wit.hairsalon.service.query.ServiceFindQuery;
+import pl.edu.wit.hairsalon.sharedKernel.QuerydslPredicateBuilder;
 
 import java.util.Optional;
 
 import static java.lang.String.format;
-import static java.util.Optional.ofNullable;
 
 @Repository
-@RequiredArgsConstructor
 class MongoServiceAdapter implements ServicePort {
 
     private final MongoServiceRepository repository;
     private final ServiceMapper mapper;
+
+    MongoServiceAdapter(MongoServiceRepository repository, ServiceMapper serviceMapper) {
+        this.repository = repository;
+        this.mapper = serviceMapper;
+    }
 
     @Override
     public String save(ServiceDto product) {
@@ -64,11 +66,11 @@ class MongoServiceAdapter implements ServicePort {
 
     private Optional<Predicate> buildPredicate(ServiceFindQuery findQuery) {
         var qService = QServiceDocument.serviceDocument;
-        var builder = new BooleanBuilder();
-        findQuery.ifIdPresent(id -> builder.and(qService.id.eq(id)));
-        findQuery.ifIdsPresent(ids -> builder.and(qService.id.in(ids)));
-        findQuery.ifNamePresent(name -> builder.and(qService.name.like(name)));
-        return ofNullable(builder.getValue());
+        return QuerydslPredicateBuilder.create()
+                .equals(qService.id, findQuery.id())
+                .in(qService.id, findQuery.ids())
+                .like(qService.name, findQuery.name())
+                .build();
     }
 
 }

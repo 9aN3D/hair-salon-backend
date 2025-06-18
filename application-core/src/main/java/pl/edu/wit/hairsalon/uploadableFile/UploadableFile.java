@@ -1,9 +1,5 @@
 package pl.edu.wit.hairsalon.uploadableFile;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
 import pl.edu.wit.hairsalon.sharedKernel.domain.NotBlankString;
 import pl.edu.wit.hairsalon.sharedKernel.exception.ValidationException;
@@ -15,29 +11,25 @@ import java.time.LocalDateTime;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-@Builder
-@RequiredArgsConstructor
-@ToString(exclude = "content")
-@EqualsAndHashCode(of = "id")
-class UploadableFile implements SelfValidator<UploadableFile> {
-
-    private final String id;
-    private final String name;
-    private final FileType type;
-    private final String contentType;
-    private final Long length;
-    private final LocalDateTime uploadDate;
-    private final InputStream content;
+record UploadableFile(
+        String id,
+        String name,
+        FileType type,
+        String contentType,
+        Long length,
+        LocalDateTime uploadDate,
+        InputStream content
+) implements SelfValidator<UploadableFile> {
 
     public UploadableFile(UploadableFileDto dto) {
         this(
-                dto.getId(),
-                dto.getName(),
-                FileType.getFileType(dto.getContentType()),
-                dto.getContentType(),
-                dto.getLength(),
-                dto.getUploadDate(),
-                dto.getContent()
+                dto.id(),
+                dto.name(),
+                FileType.getFileType(dto.contentType()),
+                dto.contentType(),
+                dto.length(),
+                dto.uploadDate(),
+                dto.content()
         );
     }
 
@@ -65,8 +57,63 @@ class UploadableFile implements SelfValidator<UploadableFile> {
                 .build();
     }
 
+    static Builder builder() {
+        return new Builder();
+    }
+
     private boolean hasPositiveLength(Long value) {
         return value.compareTo(0L) > 0;
+    }
+
+    static class Builder {
+
+        private String id;
+        private String name;
+        private FileType type;
+        private String contentType;
+        private Long length;
+        private LocalDateTime uploadDate;
+        private InputStream content;
+
+        Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        Builder type(FileType type) {
+            this.type = type;
+            return this;
+        }
+
+        Builder contentType(String contentType) {
+            this.contentType = contentType;
+            return this;
+        }
+
+        Builder length(Long length) {
+            this.length = length;
+            return this;
+        }
+
+        Builder uploadDate(LocalDateTime uploadDate) {
+            this.uploadDate = uploadDate;
+            return this;
+        }
+
+        Builder content(InputStream content) {
+            this.content = content;
+            return this;
+        }
+
+        UploadableFile build() {
+            return new UploadableFile(id, name, type, contentType, length, uploadDate, content);
+        }
+
     }
 
 }

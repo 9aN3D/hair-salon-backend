@@ -1,21 +1,52 @@
 package pl.edu.wit.hairsalon.appointment.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Value;
 import pl.edu.wit.hairsalon.sharedKernel.dto.MoneyDto;
 
-@Value
-@Builder
-@AllArgsConstructor
-public class AppointmentServiceDto {
+public record AppointmentServiceDto(
+        String serviceId,
+        String name,
+        MoneyDto price,
+        Long durationInMinutes
+) {
 
-    String serviceId;
+    public static Builder builder() {
+        return new Builder();
+    }
 
-    String name;
+    public static class Builder {
 
-    MoneyDto price;
+        private String serviceId;
+        private String name;
+        private MoneyDto price;
+        private Long durationInMinutes;
 
-    Long durationInMinutes;
+        public Builder serviceId(String serviceId) {
+            this.serviceId = serviceId;
+            return this;
+        }
 
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder price(MoneyDto price) {
+            this.price = price;
+            return this;
+        }
+
+        public Builder durationInMinutes(Long durationInMinutes) {
+            this.durationInMinutes = durationInMinutes;
+            return this;
+        }
+
+        public AppointmentServiceDto build() {
+            return new AppointmentServiceDto(
+                    serviceId,
+                    name,
+                    price,
+                    durationInMinutes
+            );
+        }
+    }
 }

@@ -8,7 +8,7 @@ import pl.edu.wit.hairsalon.scheduledEvent.ScheduledEventFacade;
 import pl.edu.wit.hairsalon.setting.SettingFacade;
 import pl.edu.wit.hairsalon.sharedKernel.port.secondary.IdGenerator;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 class AppointmentConfiguration {
 
     @Bean
@@ -23,7 +23,9 @@ class AppointmentConfiguration {
         var resignation = new AppointmentResignation(appointmentPort, scheduledEventFacade);
         var notificationSender = new AppointmentNotificationSender(appointmentPort, memberFacade, notificationFacade, settingFacade);
         var appointmentReminders = new AppointmentReminders(appointmentPort, notificationSender);
-        return new AppAppointmentFacade(appointmentPort, creator, updater, resignation, appointmentReminders);
+        return new LoggableAppointmentFacade(
+                new AppAppointmentFacade(appointmentPort, creator, updater, resignation, appointmentReminders)
+        );
     }
 
 }

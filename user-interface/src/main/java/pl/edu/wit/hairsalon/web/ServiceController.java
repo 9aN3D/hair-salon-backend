@@ -1,6 +1,6 @@
 package pl.edu.wit.hairsalon.web;
 
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.constraints.NotNull;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,18 +19,19 @@ import pl.edu.wit.hairsalon.service.query.ServiceFindQuery;
 import pl.edu.wit.hairsalon.web.adapter.ServiceResponseAdapter;
 import pl.edu.wit.hairsalon.web.response.ServiceResponse;
 
-import jakarta.validation.constraints.NotNull;
-
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(value = "/api/v1")
 class ServiceController {
 
     private final ServiceResponseAdapter serviceResponseAdapter;
+
+    ServiceController(ServiceResponseAdapter serviceResponseAdapter) {
+        this.serviceResponseAdapter = serviceResponseAdapter;
+    }
 
     @PostMapping(value = "/admin/services", consumes = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)

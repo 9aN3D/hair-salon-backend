@@ -1,7 +1,6 @@
 package pl.edu.wit.hairsalon.uploadableFile;
 
 import com.mongodb.BasicDBObject;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
@@ -16,20 +15,24 @@ import static java.lang.String.format;
 import static java.util.Objects.nonNull;
 
 @Repository
-@RequiredArgsConstructor
 class MongoGridFsUploadableFilePort implements UploadableFilePort {
 
     private final GridFsTemplate gridFsTemplate;
     private final UploadableFileMapper mapper;
 
+    MongoGridFsUploadableFilePort(GridFsTemplate gridFsTemplate, UploadableFileMapper mapper) {
+        this.gridFsTemplate = gridFsTemplate;
+        this.mapper = mapper;
+    }
+
     @Override
     public String store(FileUploadCommand command) {
         var metadata = new BasicDBObject();
-        metadata.put("fileSize", command.getSize());
+        metadata.put("fileSize", command.size());
         return gridFsTemplate.store(
-                command.getContent(),
-                command.getOriginalFilename(),
-                command.getContentType(),
+                command.content(),
+                command.originalFilename(),
+                command.contentType(),
                 metadata).toString();
     }
 

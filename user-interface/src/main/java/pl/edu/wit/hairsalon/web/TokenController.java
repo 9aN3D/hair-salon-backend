@@ -1,6 +1,5 @@
 package pl.edu.wit.hairsalon.web;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,11 +14,14 @@ import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(value = "/api/v1/tokens", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 class TokenController {
 
     private final AccessTokenFacade accessTokenFacade;
+
+    TokenController(AccessTokenFacade accessTokenFacade) {
+        this.accessTokenFacade = accessTokenFacade;
+    }
 
     @PostMapping
     @ResponseStatus(OK)

@@ -1,25 +1,21 @@
 package pl.edu.wit.hairsalon.authDetails;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import pl.edu.wit.hairsalon.authDetails.dto.AuthDetailsDto;
 import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
 import pl.edu.wit.hairsalon.sharedKernel.domain.NotBlankString;
 
+import java.util.Objects;
+
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
-@Builder
-@ToString
-@EqualsAndHashCode(of = "id")
-class AuthDetails implements SelfValidator<AuthDetails> {
-
-    private final String id;
-    private final Email email;
-    private final Password password;
-    private final AuthDetailsStatus status;
-    private final AuthDetailsRole role;
+record AuthDetails(
+        String id,
+        Email email,
+        Password password,
+        AuthDetailsStatus status,
+        AuthDetailsRole role
+) implements SelfValidator<AuthDetails> {
 
     @Override
     public AuthDetails validate() {
@@ -57,6 +53,60 @@ class AuthDetails implements SelfValidator<AuthDetails> {
                 .status(status)
                 .role(role)
                 .build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof AuthDetails that)) return false;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+
+        private String id;
+        private Email email;
+        private Password password;
+        private AuthDetailsStatus status;
+        private AuthDetailsRole role;
+
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder email(Email email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder password(Password password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder status(AuthDetailsStatus status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder role(AuthDetailsRole role) {
+            this.role = role;
+            return this;
+        }
+
+        public AuthDetails build() {
+            return new AuthDetails(id, email, password, status, role);
+        }
+
     }
 
 }

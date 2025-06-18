@@ -1,6 +1,5 @@
 package pl.edu.wit.hairsalon.sharedKernel.domain;
 
-import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
 import pl.edu.wit.hairsalon.sharedKernel.dto.DateRangeDto;
 import pl.edu.wit.hairsalon.sharedKernel.exception.ValidationException;
@@ -11,15 +10,10 @@ import java.time.format.DateTimeFormatter;
 import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
 
-@RequiredArgsConstructor
-public class DateRange implements Comparable<DateRange>, SelfValidator<DateRange> {
-
-    private final LocalDateTime start;
-    private final LocalDateTime end;
+public record DateRange(LocalDateTime start, LocalDateTime end) implements Comparable<DateRange>, SelfValidator<DateRange> {
 
     public DateRange(DateRangeDto arg) {
-        start = arg.getStart();
-        end = arg.getEnd();
+        this(arg.start(), arg.end());
     }
 
     public boolean overlaps(DateRange arg) {

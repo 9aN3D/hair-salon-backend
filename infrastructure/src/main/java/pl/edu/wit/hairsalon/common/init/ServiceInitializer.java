@@ -1,6 +1,5 @@
 package pl.edu.wit.hairsalon.common.init;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import pl.edu.wit.hairsalon.service.ServiceFacade;
@@ -16,14 +15,18 @@ import java.util.stream.Collectors;
 import static pl.edu.wit.hairsalon.serviceCategory.dto.ServiceCategoryStatusDto.ACTIVE;
 
 @Component
-@RequiredArgsConstructor
 public class ServiceInitializer {
 
     private final ServiceFacade serviceFacade;
     private final ServiceCategoryFacade serviceCategoryFacade;
 
+    public ServiceInitializer(ServiceFacade serviceFacade, ServiceCategoryFacade serviceCategoryFacade) {
+        this.serviceFacade = serviceFacade;
+        this.serviceCategoryFacade = serviceCategoryFacade;
+    }
+
     public void createIfNecessary() {
-        var serviceCategories = serviceCategoryFacade.findAll(new ServiceCategoryFindQuery(), PageRequest.of(0, 5));
+        var serviceCategories = serviceCategoryFacade.findAll(ServiceCategoryFindQuery.empty(), PageRequest.of(0, 5));
         if (serviceCategories.isEmpty()) {
             createHaircutServices();
             createCareServices();

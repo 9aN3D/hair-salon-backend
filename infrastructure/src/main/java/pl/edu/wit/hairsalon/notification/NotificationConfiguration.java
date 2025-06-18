@@ -13,21 +13,27 @@ class NotificationConfiguration {
     NotificationFacade notificationFacade(NotificationPort notificationPort,
                                           Set<NotificationSender> notificationSenders) {
         var notificationSenderFactory = new NotificationSenderFactory(notificationSenders);
-        return new AppNotificationFacade(notificationPort, notificationSenderFactory);
+        return new LoggableNotificationFacade(
+                new AppNotificationFacade(notificationPort, notificationSenderFactory)
+        );
     }
 
     @Bean
     NotificationSender smsNotificationSender(SmsSenderPort smsSenderPort,
                                              NotificationCreator notificationCreator,
                                              NotificationPort notificationPort) {
-        return new SmsNotificationSender(smsSenderPort, notificationCreator, notificationPort);
+        return new LoggableNotificationSender(
+                new SmsNotificationSender(smsSenderPort, notificationCreator, notificationPort)
+        );
     }
 
     @Bean
     NotificationSender emailNotificationSender(EmailSenderPort emailSenderPort,
                                                NotificationCreator notificationCreator,
                                                NotificationPort notificationPort) {
-        return new EmailNotificationSender(emailSenderPort, notificationCreator, notificationPort);
+        return new LoggableNotificationSender(
+                new EmailNotificationSender(emailSenderPort, notificationCreator, notificationPort)
+        );
     }
 
     @Bean

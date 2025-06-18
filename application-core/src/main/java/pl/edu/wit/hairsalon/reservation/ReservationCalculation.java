@@ -1,9 +1,5 @@
 package pl.edu.wit.hairsalon.reservation;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import pl.edu.wit.hairsalon.hairdresser.dto.HairdresserDto;
 import pl.edu.wit.hairsalon.reservation.dto.ReservationCalculationDto;
 import pl.edu.wit.hairsalon.reservation.exception.ReservationCalculationException;
@@ -20,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -33,16 +30,12 @@ import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 import static pl.edu.wit.hairsalon.sharedKernel.CollectionHelper.nonNullOrEmpty;
 
-@Builder
-@ToString
-@RequiredArgsConstructor
-@EqualsAndHashCode(of = "hairdresser")
-class ReservationCalculation implements SelfValidator<ReservationCalculation> {
-
-    private final ReservationHairdresser hairdresser;
-    private final DateRange times;
-    private final List<ReservationHairdresserService> selectedServices;
-    private final BigDecimal totalPrice;
+record ReservationCalculation(
+        ReservationHairdresser hairdresser,
+        DateRange times,
+        List<ReservationHairdresserService> selectedServices,
+        BigDecimal totalPrice
+) implements SelfValidator<ReservationCalculation> {
 
     ReservationCalculation(HairdresserDto arg, LocalDateTime startDateTime) {
         this(new ReservationHairdresser(arg), new DateRange(startDateTime, null), new ArrayList<>(), ZERO);
@@ -59,7 +52,7 @@ class ReservationCalculation implements SelfValidator<ReservationCalculation> {
             var serviceIdToHairdresserService = hairdresser.collectServiceIdToService();
             var selectedServicesStreamSupplier = getSelectedServicesStreamSupplier(serviceIdToHairdresserService, args);
             selectedServices.addAll(selectedServicesStreamSupplier.get()
-                    .collect(toList()));
+                    .toList());
             return ReservationCalculation.builder()
                     .hairdresser(hairdresser)
                     .times(new DateRange(times.start(), calculateEndDateTime(selectedServicesStreamSupplier)).validate())
@@ -93,6 +86,17 @@ class ReservationCalculation implements SelfValidator<ReservationCalculation> {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ReservationCalculation that)) return false;
+        return Objects.equals(hairdresser, that.hairdresser);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(hairdresser);
+    }
+
+    @Override
     public ReservationCalculation validate() {
         requireNonNull(hairdresser, "Reservation calculation hairdresser must not be null");
         requireNonNull(times, "Reservation calculation times must not be null");
@@ -105,6 +109,10 @@ class ReservationCalculation implements SelfValidator<ReservationCalculation> {
             );
         }
         return this;
+    }
+
+    static Builder builder() {
+        return new Builder();
     }
 
     private Supplier<Stream<ReservationHairdresserService>> getSelectedServicesStreamSupplier(Map<String, ReservationHairdresserService> serviceIdToHairdresserService, Set<String> args) {
@@ -147,7 +155,40 @@ class ReservationCalculation implements SelfValidator<ReservationCalculation> {
     }
 
     private boolean hasNotSelectedServiceIds() {
-        return selectedServices.size() == 0;
+        return selectedServices.isEmpty();
+    }
+
+    static class Builder {
+
+        private ReservationHairdresser hairdresser;
+        private DateRange times;
+        private List<ReservationHairdresserService> selectedServices;
+        private BigDecimal totalPrice;
+
+        Builder hairdresser(ReservationHairdresser hairdresser) {
+            this.hairdresser = hairdresser;
+            return this;
+        }
+
+        Builder times(DateRange times) {
+            this.times = times;
+            return this;
+        }
+
+        Builder selectedServices(List<ReservationHairdresserService> selectedServices) {
+            this.selectedServices = selectedServices;
+            return this;
+        }
+
+        Builder totalPrice(BigDecimal totalPrice) {
+            this.totalPrice = totalPrice;
+            return this;
+        }
+
+        ReservationCalculation build() {
+            return new ReservationCalculation(hairdresser, times, selectedServices, totalPrice);
+        }
+
     }
 
 }

@@ -22,7 +22,9 @@ class ReservationConfiguration {
                                         DomainEventPublisher eventPublisher) {
         var calculator = new ReservationCalculator(memberFacade, hairdresserFacade, serviceFacade, scheduledEventFacade);
         var creator = new ReservationCreator(idGenerator, reservationPort, calculator, eventPublisher);
-        return new AppReservationFacade(reservationPort, creator, calculator);
+        return new LoggableReservationFacade(
+                new AppReservationFacade(reservationPort, creator, calculator)
+        );
     }
 
 }

@@ -1,9 +1,5 @@
 package pl.edu.wit.hairsalon.appointment;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentDto;
 import pl.edu.wit.hairsalon.appointment.exception.AppointmentResignException;
 import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
@@ -19,35 +15,31 @@ import static pl.edu.wit.hairsalon.appointment.AppointmentStatus.RESERVED;
 import static pl.edu.wit.hairsalon.appointment.AppointmentStatus.RESIGNED;
 import static pl.edu.wit.hairsalon.appointment.AppointmentStatus.valueOf;
 
-@Builder
-@ToString
-@RequiredArgsConstructor
-@EqualsAndHashCode(of = "id")
-class Appointment implements SelfValidator<Appointment> {
-
-    private final String id;
-    private final String reservationId;
-    private final String memberId;
-    private final DateRange times;
-    private final AppointmentServices services;
-    private final AppointmentStatus status;
-    private final LocalDateTime creationDateTime;
-    private final LocalDateTime statusModificationDateTime;
-    private final String hairdresserId;
-    private final AppointmentNotification notification;
+record Appointment(
+        String id,
+        String reservationId,
+        String memberId,
+        DateRange times,
+        AppointmentServices services,
+        AppointmentStatus status,
+        LocalDateTime creationDateTime,
+        LocalDateTime statusModificationDateTime,
+        String hairdresserId,
+        AppointmentNotification notification
+) implements SelfValidator<Appointment> {
 
     Appointment(AppointmentDto arg) {
         this(
-                arg.getId(),
-                arg.getReservationId(),
-                arg.getMemberId(),
-                new DateRange(arg.getTimes()),
-                new AppointmentServices(arg.getServices()),
-                valueOf(arg.getStatus().name()),
-                arg.getCreationDateTime(),
-                arg.getStatusModificationDateTime(),
-                arg.getHairdresserId(),
-                new AppointmentNotification(arg.getNotification())
+                arg.id(),
+                arg.reservationId(),
+                arg.memberId(),
+                new DateRange(arg.times()),
+                new AppointmentServices(arg.services()),
+                valueOf(arg.status().name()),
+                arg.creationDateTime(),
+                arg.statusModificationDateTime(),
+                arg.hairdresserId(),
+                new AppointmentNotification(arg.notification())
         );
     }
 
@@ -117,6 +109,89 @@ class Appointment implements SelfValidator<Appointment> {
                 .hairdresserId(hairdresserId)
                 .notification(notification.changeSent())
                 .build();
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+
+        private String id;
+        private String reservationId;
+        private String memberId;
+        private DateRange times;
+        private AppointmentServices services;
+        private AppointmentStatus status;
+        private LocalDateTime creationDateTime;
+        private LocalDateTime statusModificationDateTime;
+        private String hairdresserId;
+        private AppointmentNotification notification;
+
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder reservationId(String reservationId) {
+            this.reservationId = reservationId;
+            return this;
+        }
+
+        public Builder memberId(String memberId) {
+            this.memberId = memberId;
+            return this;
+        }
+
+        public Builder times(DateRange times) {
+            this.times = times;
+            return this;
+        }
+
+        public Builder services(AppointmentServices services) {
+            this.services = services;
+            return this;
+        }
+
+        public Builder status(AppointmentStatus status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder creationDateTime(LocalDateTime creationDateTime) {
+            this.creationDateTime = creationDateTime;
+            return this;
+        }
+
+        public Builder statusModificationDateTime(LocalDateTime statusModificationDateTime) {
+            this.statusModificationDateTime = statusModificationDateTime;
+            return this;
+        }
+
+        public Builder hairdresserId(String hairdresserId) {
+            this.hairdresserId = hairdresserId;
+            return this;
+        }
+
+        public Builder notification(AppointmentNotification notification) {
+            this.notification = notification;
+            return this;
+        }
+
+        public Appointment build() {
+            return new Appointment(
+                    id,
+                    reservationId,
+                    memberId,
+                    times,
+                    services,
+                    status,
+                    creationDateTime,
+                    statusModificationDateTime,
+                    hairdresserId,
+                    notification
+            );
+        }
     }
 
 }

@@ -6,20 +6,20 @@ import org.springframework.stereotype.Component;
 import pl.edu.wit.hairsalon.notification.dto.NotificationDto;
 
 @Component
-@Mapper(builder = @Builder(disableBuilder = true),componentModel = "spring")
+@Mapper(builder = @Builder(disableBuilder = true), componentModel = "spring")
 abstract class NotificationMapper {
 
     NotificationDocument toDocument(NotificationDto dto) {
         return NotificationDocument.builder()
-                .id(dto.getId())
-                .type(dto.getType())
-                .content(dto.getContent())
-                .status(dto.getStatus())
-                .errorMessage(dto.getErrorMessage())
-                .recipientId(dto.getRecipientId())
-                .shipmentId(dto.getShipmentId())
-                .creationDateTime(dto.getCreationDateTime())
-                .modificationDateTime(dto.getModificationDateTime())
+                .id(dto.id())
+                .type(dto.type())
+                .content(dto.content())
+                .status(dto.status())
+                .errorMessage(dto.errorMessage())
+                .recipientId(dto.recipientId())
+                .shipmentId(dto.shipmentId())
+                .creationDateTime(dto.creationDateTime())
+                .modificationDateTime(dto.modificationDateTime())
                 .build();
     }
 

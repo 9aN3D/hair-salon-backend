@@ -1,6 +1,5 @@
 package pl.edu.wit.hairsalon.web.adapter;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,11 +25,15 @@ import static java.util.stream.Collectors.toSet;
 import static pl.edu.wit.hairsalon.service.query.ServiceFindQuery.withIds;
 
 @Service
-@RequiredArgsConstructor
 public class ServiceCategoryResponseAdapter {
 
     private final ServiceCategoryFacade serviceCategoryFacade;
     private final ServiceFacade serviceFacade;
+
+    public ServiceCategoryResponseAdapter(ServiceCategoryFacade serviceCategoryFacade, ServiceFacade serviceFacade) {
+        this.serviceCategoryFacade = serviceCategoryFacade;
+        this.serviceFacade = serviceFacade;
+    }
 
     public void create(ServiceCategoryCreateCommand command) {
         serviceCategoryFacade.create(command);
@@ -71,7 +74,7 @@ public class ServiceCategoryResponseAdapter {
     private Map<String, ServiceResponse> collectServiceIdToService(Page<ServiceResponse> productPage) {
         return productPage.getContent()
                 .stream()
-                .collect(toMap(ServiceResponse::getId, Function.identity()));
+                .collect(toMap(ServiceResponse::id, Function.identity()));
     }
 
     private ServiceCategoryResponse toServiceCategoryResponse(ServiceCategoryDto serviceCategory, Map<String, ServiceResponse> serviceCategoryIdToServices) {

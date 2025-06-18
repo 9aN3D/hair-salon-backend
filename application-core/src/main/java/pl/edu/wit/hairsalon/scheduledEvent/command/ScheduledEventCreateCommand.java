@@ -1,24 +1,50 @@
 package pl.edu.wit.hairsalon.scheduledEvent.command;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import pl.edu.wit.hairsalon.scheduledEvent.dto.ScheduledEventTypeDto;
 import pl.edu.wit.hairsalon.sharedKernel.dto.DateRangeDto;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class ScheduledEventCreateCommand {
+public record ScheduledEventCreateCommand(
+        DateRangeDto times,
+        ScheduledEventTypeDto type,
+        String hairdresserId,
+        String reservationId
+) {
 
-    private DateRangeDto times;
+    public static Builder builder() {
+        return new Builder();
+    }
 
-    private ScheduledEventTypeDto type;
+    public static class Builder {
 
-    private String hairdresserId;
+        private DateRangeDto times;
+        private ScheduledEventTypeDto type;
+        private String hairdresserId;
+        private String reservationId;
 
-    private String reservationId;
+        public Builder times(DateRangeDto times) {
+            this.times = times;
+            return this;
+        }
+
+        public Builder type(ScheduledEventTypeDto type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder hairdresserId(String hairdresserId) {
+            this.hairdresserId = hairdresserId;
+            return this;
+        }
+
+        public Builder reservationId(String reservationId) {
+            this.reservationId = reservationId;
+            return this;
+        }
+
+        public ScheduledEventCreateCommand build() {
+            return new ScheduledEventCreateCommand(times, type, hairdresserId, reservationId);
+        }
+
+    }
 
 }

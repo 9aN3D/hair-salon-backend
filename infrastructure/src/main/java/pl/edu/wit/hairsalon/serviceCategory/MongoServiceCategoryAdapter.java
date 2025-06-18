@@ -1,26 +1,29 @@
 package pl.edu.wit.hairsalon.serviceCategory;
 
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import pl.edu.wit.hairsalon.serviceCategory.dto.ServiceCategoryDto;
 import pl.edu.wit.hairsalon.serviceCategory.exception.ServiceCategoryNotFoundException;
 import pl.edu.wit.hairsalon.serviceCategory.query.ServiceCategoryFindQuery;
+import pl.edu.wit.hairsalon.sharedKernel.QuerydslPredicateBuilder;
 
 import java.util.Optional;
 
 import static java.lang.String.format;
-import static java.util.Optional.ofNullable;
 
 @Repository
-@RequiredArgsConstructor
 class MongoServiceCategoryAdapter implements ServiceCategoryPort {
 
     private final MongoServiceCategoryRepository repository;
     private final ServiceCategoryMapper mapper;
+
+    MongoServiceCategoryAdapter(MongoServiceCategoryRepository repository,
+                                ServiceCategoryMapper serviceCategoryMapper) {
+        this.repository = repository;
+        this.mapper = serviceCategoryMapper;
+    }
 
     @Override
     public String save(ServiceCategoryDto productCategory) {
@@ -57,13 +60,13 @@ class MongoServiceCategoryAdapter implements ServiceCategoryPort {
 
     private Optional<Predicate> buildPredicate(ServiceCategoryFindQuery findQuery) {
         var qServiceCategory = QServiceCategoryDocument.serviceCategoryDocument;
-        var builder = new BooleanBuilder();
-        findQuery.ifServiceCategoryIdPresent(productCategoryId -> builder.and(qServiceCategory.id.eq(productCategoryId)));
-        findQuery.ifNamePresent(name -> builder.and(qServiceCategory.name.like(name)));
-        findQuery.ifStatusPresent(status -> builder.and(qServiceCategory.status.eq(status)));
-        findQuery.ifServiceIdsPresent(serviceIds -> builder.and(qServiceCategory.serviceIds.any().in(serviceIds)));
-        findQuery.ifOrderPresent(order -> builder.and(qServiceCategory.order.eq(order)));
-        return ofNullable(builder.getValue());
+        return QuerydslPredicateBuilder.create()
+                .equals(qServiceCategory.id, findQuery.serviceCategoryId())
+                .like(qServiceCategory.name, findQuery.name())
+                .equals(qServiceCategory.status, findQuery.status())
+                .anyIn(qServiceCategory.serviceIds, findQuery.serviceIds())
+                .equals(qServiceCategory.order, findQuery.order())
+                .build();
     }
 
 }

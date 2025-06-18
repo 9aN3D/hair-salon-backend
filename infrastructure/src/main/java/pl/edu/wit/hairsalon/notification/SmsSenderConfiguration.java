@@ -8,7 +8,7 @@ import pl.smsapi.api.SmsFactory;
 import pl.smsapi.exception.ClientException;
 import pl.smsapi.proxy.ProxyNative;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(SmsApiProperties.class)
 class SmsSenderConfiguration {
 

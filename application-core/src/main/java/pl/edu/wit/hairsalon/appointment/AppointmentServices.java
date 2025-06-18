@@ -1,6 +1,5 @@
 package pl.edu.wit.hairsalon.appointment;
 
-import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentServiceDto;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentServicesDto;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
@@ -11,6 +10,7 @@ import pl.edu.wit.hairsalon.sharedKernel.exception.ValidationException;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static java.math.BigDecimal.ZERO;
@@ -18,16 +18,18 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
-@RequiredArgsConstructor
-class AppointmentServices implements SelfValidator<AppointmentServices> {
+record AppointmentServices(List<AppointmentService> services) implements SelfValidator<AppointmentServices> {
 
-    private final List<AppointmentService> services = new ArrayList<>();
+    AppointmentServices() {
+        this(new ArrayList<>());
+    }
 
     AppointmentServices(AppointmentServicesDto arg) {
-        services.addAll(arg.getServices()
+        this(arg.services()
                 .stream()
                 .map(AppointmentService::new)
-                .collect(toList()));
+                .toList()
+        );
     }
 
     AppointmentServices addAll(List<ServiceDto> args) {
@@ -72,7 +74,7 @@ class AppointmentServices implements SelfValidator<AppointmentServices> {
 
     @Override
     public AppointmentServices validate() {
-        if (services.size() == 0) {
+        if (services.isEmpty()) {
             throw new ValidationException("Number of appointment services must not be zero ");
         }
         validate(services);

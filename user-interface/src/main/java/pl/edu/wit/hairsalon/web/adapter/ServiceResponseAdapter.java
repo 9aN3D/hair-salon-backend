@@ -1,6 +1,5 @@
 package pl.edu.wit.hairsalon.web.adapter;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -11,10 +10,13 @@ import pl.edu.wit.hairsalon.service.query.ServiceFindQuery;
 import pl.edu.wit.hairsalon.web.response.ServiceResponse;
 
 @Service
-@RequiredArgsConstructor
 public class ServiceResponseAdapter {
 
     private final ServiceFacade serviceFacade;
+
+    public ServiceResponseAdapter(ServiceFacade serviceFacade) {
+        this.serviceFacade = serviceFacade;
+    }
 
     public void create(ServiceCreateCommand command) {
         serviceFacade.create(command);

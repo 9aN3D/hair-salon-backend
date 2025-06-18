@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.edu.wit.hairsalon.authDetails.AuthDetailsFacade;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 class MemberConfiguration {
 
     @Bean
@@ -13,7 +13,9 @@ class MemberConfiguration {
                               AuthDetailsFacade authDetailsFacade) {
         var registration = new MemberRegistration(memberPort, phoneNumberPort, authDetailsFacade);
         var updater = new MemberUpdater(memberPort, phoneNumberPort, authDetailsFacade);
-        return new AppMemberFacade(memberPort, registration, updater);
+        return new LoggableMemberFacade(
+                new AppMemberFacade(memberPort, registration, updater)
+        );
     }
 
 }

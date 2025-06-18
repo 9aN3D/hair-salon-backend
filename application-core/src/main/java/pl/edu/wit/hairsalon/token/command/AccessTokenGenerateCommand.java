@@ -1,18 +1,26 @@
 package pl.edu.wit.hairsalon.token.command;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import java.util.Objects;
+import java.util.StringJoiner;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString(exclude = "password")
-public class AccessTokenGenerateCommand {
+public record AccessTokenGenerateCommand(String email, String password) {
 
-    private String email;
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof AccessTokenGenerateCommand that)) return false;
+        return Objects.equals(email, that.email);
+    }
 
-    private String password;
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(email);
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", AccessTokenGenerateCommand.class.getSimpleName() + "[", "]")
+                .add("email='" + email + "'")
+                .toString();
+    }
 
 }

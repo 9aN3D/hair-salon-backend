@@ -1,14 +1,13 @@
 package pl.edu.wit.hairsalon.token;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import pl.edu.wit.hairsalon.authDetails.AuthDetailsPort;
 import pl.edu.wit.hairsalon.authDetails.dto.AuthDetailsDto;
 import pl.edu.wit.hairsalon.authDetails.query.AuthDetailsFindQuery;
@@ -21,13 +20,18 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static pl.edu.wit.hairsalon.authDetails.query.AuthDetailsFindQuery.ofEmail;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 class AuthorizedUserDetailsAdapter implements UserDetailsService {
 
+    private final Logger log;
     private final AuthDetailsPort authDetailsPort;
     private final IdGenerator idGenerator;
+
+    public AuthorizedUserDetailsAdapter(AuthDetailsPort authDetailsPort, IdGenerator idGenerator) {
+        this.log = LoggerFactory.getLogger(AuthorizedUserDetailsAdapter.class);
+        this.authDetailsPort = authDetailsPort;
+        this.idGenerator = idGenerator;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String idOrEmail) throws UsernameNotFoundException {

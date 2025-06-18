@@ -1,23 +1,27 @@
 package pl.edu.wit.hairsalon.user;
 
-import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.authDetails.AuthDetailsFacade;
 import pl.edu.wit.hairsalon.authDetails.command.AuthDetailsUpdateCommand;
 import pl.edu.wit.hairsalon.authDetails.dto.AuthDetailsDto;
+import pl.edu.wit.hairsalon.sharedKernel.domain.FullName;
+import pl.edu.wit.hairsalon.sharedKernel.dto.FullNameDto;
 import pl.edu.wit.hairsalon.user.command.UserUpdateCommand;
 import pl.edu.wit.hairsalon.user.dto.UserContactDto;
 import pl.edu.wit.hairsalon.user.dto.UserDto;
-import pl.edu.wit.hairsalon.user.dto.UserFullNameDto;
 
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static pl.edu.wit.hairsalon.user.query.UserFindQuery.withId;
 
-@RequiredArgsConstructor
 class UserUpdater {
 
     private final UserPort userPort;
     private final AuthDetailsFacade authDetailsFacade;
+
+    UserUpdater(UserPort userPort, AuthDetailsFacade authDetailsFacade) {
+        this.userPort = userPort;
+        this.authDetailsFacade = authDetailsFacade;
+    }
 
     UserDto update(String userId, UserUpdateCommand command) {
         var userDto = userPort.findOneOrThrow(withId(userId));
@@ -37,8 +41,8 @@ class UserUpdater {
         } catch (Exception ex) {
             if (command.isNotBlankEmail() || command.isNotBlankPassword()) {
                 authDetailsFacade.update(previousAuthDetails.id(), AuthDetailsUpdateCommand.builder()
-                        .email(command.getEmail())
-                        .password(command.getPassword())
+                        .email(command.email())
+                        .password(command.password())
                         .build());
             }
             throw ex;
@@ -54,21 +58,19 @@ class UserUpdater {
                 .build();
     }
 
-    private UserFullName getFullName(UserFullNameDto fullName, UserUpdateCommand command) {
-        return UserFullName.builder()
-                .name(ofNullable(command.getName())
-                        .orElseGet(fullName::getName))
-                .surname(ofNullable(command.getSurname())
-                        .orElseGet(fullName::getSurname))
-                .build();
+    private FullName getFullName(FullNameDto fullName, UserUpdateCommand command) {
+        return new FullName(
+                ofNullable(command.name()).orElseGet(fullName::name),
+                ofNullable(command.surname()).orElseGet(fullName::surname)
+        );
     }
 
     private UserContact getContact(UserContactDto contact, UserUpdateCommand command, AuthDetailsDto authDetailsDto) {
-        return UserContact.builder()
-                .email(nonNull(command.getEmail())
+        return new UserContact(
+                nonNull(command.email())
                         ? authDetailsDto.email()
-                        : contact.getEmail())
-                .build();
+                        : contact.email()
+        );
     }
 
 }

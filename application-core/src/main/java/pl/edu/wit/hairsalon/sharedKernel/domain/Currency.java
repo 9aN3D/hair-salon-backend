@@ -1,13 +1,11 @@
 package pl.edu.wit.hairsalon.sharedKernel.domain;
 
-import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.sharedKernel.dto.CurrencyDto;
 
 import java.math.RoundingMode;
 
 import static java.math.RoundingMode.HALF_UP;
 
-@RequiredArgsConstructor
 public enum Currency {
 
     PLN;

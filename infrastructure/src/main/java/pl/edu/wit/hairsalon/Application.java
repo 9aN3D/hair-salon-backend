@@ -1,8 +1,8 @@
 package pl.edu.wit.hairsalon;
 
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,16 +16,21 @@ import pl.edu.wit.hairsalon.common.init.ServiceInitializer;
 import static io.swagger.v3.oas.annotations.enums.SecuritySchemeIn.HEADER;
 import static io.swagger.v3.oas.annotations.enums.SecuritySchemeType.HTTP;
 
-@Slf4j
 @EnableScheduling
 @SpringBootApplication
-@RequiredArgsConstructor
 @SecurityScheme(name = "hair-salon-API", scheme = "Bearer", type = HTTP, bearerFormat = "JWT", in = HEADER)
 class Application extends SpringBootServletInitializer implements CommandLineRunner {
 
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final AdminInitializer adminInitializer;
     private final ServiceInitializer serviceInitializer;
     private final HairdresserInitializer hairdresserInitializer;
+
+    public Application(AdminInitializer adminInitializer, ServiceInitializer serviceInitializer, HairdresserInitializer hairdresserInitializer) {
+        this.adminInitializer = adminInitializer;
+        this.serviceInitializer = serviceInitializer;
+        this.hairdresserInitializer = hairdresserInitializer;
+    }
 
     public static void main(String... args) {
         SpringApplication.run(Application.class, args);

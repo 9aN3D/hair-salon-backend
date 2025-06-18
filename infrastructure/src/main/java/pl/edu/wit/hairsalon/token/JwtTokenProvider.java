@@ -5,14 +5,13 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.util.Base64;
 import java.util.Date;
 
 public interface JwtTokenProvider {
@@ -25,12 +24,15 @@ public interface JwtTokenProvider {
 
     boolean isTokenValid(String token);
 
-    @Slf4j
     @Component
-    @RequiredArgsConstructor
     class Default implements JwtTokenProvider {
 
+        private final Logger log = LoggerFactory.getLogger(Default.class);
         private final OAuthServerClientProperties clientProperties;
+
+        public Default(OAuthServerClientProperties clientProperties) {
+            this.clientProperties = clientProperties;
+        }
 
         @Override
         public String generateAccessToken(UserDetails user) {
@@ -82,13 +84,13 @@ public interface JwtTokenProvider {
                     .parseClaimsJws(token)
                     .getBody();
         }
-        
+
         private SecretKey toSecretKey() {
             return Keys.hmacShaKeyFor(
                     clientProperties.convertClientPasswordToBytes()
             );
         }
-        
+
     }
-    
+
 }

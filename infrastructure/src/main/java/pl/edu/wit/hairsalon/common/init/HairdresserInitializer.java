@@ -1,19 +1,17 @@
 package pl.edu.wit.hairsalon.common.init;
 
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-import pl.edu.wit.hairsalon.hairdresser.command.HairdresserCreateCommand;
 import pl.edu.wit.hairsalon.hairdresser.HairdresserFacade;
+import pl.edu.wit.hairsalon.hairdresser.command.HairdresserCreateCommand;
 import pl.edu.wit.hairsalon.hairdresser.query.HairdresserFindQuery;
-import pl.edu.wit.hairsalon.service.dto.ServiceDto;
 import pl.edu.wit.hairsalon.service.ServiceFacade;
+import pl.edu.wit.hairsalon.service.dto.ServiceDto;
 import pl.edu.wit.hairsalon.service.query.ServiceFindQuery;
 import pl.edu.wit.hairsalon.uploadableFile.command.FileUploadCommand;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -21,16 +19,19 @@ import java.util.Set;
 
 import static java.util.stream.Collectors.toMap;
 
-@Slf4j
 @Component
-@RequiredArgsConstructor
 public class HairdresserInitializer {
 
     private final HairdresserFacade hairdresserFacade;
     private final ServiceFacade serviceFacade;
 
+    public HairdresserInitializer(HairdresserFacade hairdresserFacade, ServiceFacade serviceFacade) {
+        this.hairdresserFacade = hairdresserFacade;
+        this.serviceFacade = serviceFacade;
+    }
+
     public void createIfNecessary() {
-        var hairdresserPage = hairdresserFacade.findAll(new HairdresserFindQuery(), PageRequest.of(0, 1));
+        var hairdresserPage = hairdresserFacade.findAll(HairdresserFindQuery.empty(), PageRequest.of(0, 1));
         if (!hairdresserPage.hasContent()) {
             var fileUploadCommandIterator = prepareFileUploadCommandIterator();
             prepareHairdresserCreateCommands()
@@ -80,33 +81,40 @@ public class HairdresserInitializer {
     }
 
     private Map<String, String> collectProductNameToProductId() {
-        return serviceFacade.findAll(new ServiceFindQuery(), PageRequest.of(0, 11)).getContent()
+        return serviceFacade.findAll(ServiceFindQuery.empty(), PageRequest.of(0, 11)).getContent()
                 .stream()
-                .collect(toMap(ServiceDto::getName, ServiceDto::getId));
+                .collect(toMap(ServiceDto::name, ServiceDto::id));
     }
 
-    @SneakyThrows
     private Iterator<FileUploadCommand> prepareFileUploadCommandIterator() {
         return List.of(
                 FileUploadCommand.builder()
                         .originalFilename("barber_1.jpeg")
                         .size(233632L)
                         .contentType("image/jpeg")
-                        .content(new FileInputStream("/Users/vkovalchuk/study/dyplom/img/barber_1.jpeg"))
+                        .content(getContent("/Users/vkovalchuk/study/dyplom/img/barber_1.jpeg"))
                         .build(),
                 FileUploadCommand.builder()
                         .originalFilename("barber_2.jpeg")
                         .size(222758L)
                         .contentType("image/jpeg")
-                        .content(new FileInputStream("/Users/vkovalchuk/study/dyplom/img/barber_2.jpeg"))
+                        .content(getContent("/Users/vkovalchuk/study/dyplom/img/barber_2.jpeg"))
                         .build(),
                 FileUploadCommand.builder()
                         .originalFilename("barber_3.jpeg")
                         .size(144085L)
                         .contentType("image/jpeg")
-                        .content(new FileInputStream("/Users/vkovalchuk/study/dyplom/img/barber_3.jpeg"))
+                        .content(getContent("/Users/vkovalchuk/study/dyplom/img/barber_3.jpeg"))
                         .build()
         ).iterator();
+    }
+
+    private FileInputStream getContent(String name) {
+        try (var result = new FileInputStream(name)) {
+            return result;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

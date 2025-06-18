@@ -1,16 +1,18 @@
 package pl.edu.wit.hairsalon.eventBus;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.wit.hairsalon.appointment.AppointmentFacade;
 import pl.edu.wit.hairsalon.appointment.command.AppointmentCreateCommand;
 import pl.edu.wit.hairsalon.reservation.event.ReservationMadeEvent;
 
 @Service
-@RequiredArgsConstructor
 class AppointmentHandler implements ReservationMadeEventHandler {
 
     private final AppointmentFacade appointmentFacade;
+
+    public AppointmentHandler(AppointmentFacade appointmentFacade) {
+        this.appointmentFacade = appointmentFacade;
+    }
 
     @Override
     public void handle(ReservationMadeEvent event) {
@@ -18,14 +20,14 @@ class AppointmentHandler implements ReservationMadeEventHandler {
     }
 
     private AppointmentCreateCommand buildCommand(ReservationMadeEvent event) {
-        var reservation = event.getReservation();
+        var reservation = event.reservation();
         return AppointmentCreateCommand.builder()
-                .reservationId(reservation.getId())
-                .times(reservation.getTimes())
-                .hairdresserId(reservation.getHairdresser().getId())
-                .memberId(reservation.getMemberId())
-                .services(reservation.getSelectedServices())
-                .creationDateTime(reservation.getCreationDateTime())
+                .reservationId(reservation.id())
+                .times(reservation.times())
+                .hairdresserId(reservation.hairdresser().id())
+                .memberId(reservation.memberId())
+                .services(reservation.selectedServices())
+                .creationDateTime(reservation.creationDateTime())
                 .build();
     }
 

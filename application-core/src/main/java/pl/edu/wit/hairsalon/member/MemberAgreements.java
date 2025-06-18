@@ -1,7 +1,5 @@
 package pl.edu.wit.hairsalon.member;
 
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.member.dto.MemberAgreementDto;
 import pl.edu.wit.hairsalon.sharedKernel.CollectionHelper;
 import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
@@ -15,11 +13,7 @@ import static java.util.stream.Collectors.toSet;
 import static pl.edu.wit.hairsalon.member.MemberAgreement.PERSONAL_DATA;
 import static pl.edu.wit.hairsalon.member.MemberAgreement.RESERVATION_RECEIPT;
 
-@EqualsAndHashCode
-@RequiredArgsConstructor
-class MemberAgreements implements SelfValidator<MemberAgreements> {
-
-    private final Set<MemberAgreement> agreements;
+record MemberAgreements(Set<MemberAgreement> agreements) implements SelfValidator<MemberAgreements> {
 
     @Override
     public MemberAgreements validate() {

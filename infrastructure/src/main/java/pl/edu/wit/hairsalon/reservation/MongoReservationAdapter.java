@@ -1,6 +1,5 @@
 package pl.edu.wit.hairsalon.reservation;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import pl.edu.wit.hairsalon.reservation.dto.ReservationDto;
 import pl.edu.wit.hairsalon.reservation.exception.ReservationNotFoundException;
@@ -8,11 +7,16 @@ import pl.edu.wit.hairsalon.reservation.exception.ReservationNotFoundException;
 import static java.lang.String.format;
 
 @Repository
-@RequiredArgsConstructor
 class MongoReservationAdapter implements ReservationPort {
 
     private final MongoReservationRepository repository;
     private final ReservationMapper mapper;
+
+    MongoReservationAdapter(MongoReservationRepository repository,
+                            ReservationMapper reservationMapper) {
+        this.repository = repository;
+        this.mapper = reservationMapper;
+    }
 
     @Override
     public ReservationDto save(ReservationDto reservation) {

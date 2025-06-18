@@ -1,6 +1,5 @@
 package pl.edu.wit.hairsalon.common.init;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import pl.edu.wit.hairsalon.user.UserFacade;
@@ -8,13 +7,16 @@ import pl.edu.wit.hairsalon.user.command.UserCreateCommand;
 import pl.edu.wit.hairsalon.user.query.UserFindQuery;
 
 @Component
-@RequiredArgsConstructor
 public class AdminInitializer {
 
     private final UserFacade userFacade;
 
+    public AdminInitializer(UserFacade userFacade) {
+        this.userFacade = userFacade;
+    }
+
     public void createIfNecessary() {
-        var users = userFacade.findAll(UserFindQuery.builder().fullName("Admin").build(), PageRequest.of(0, 2));
+        var users = userFacade.findAll(UserFindQuery.fullName("Admin"), PageRequest.of(0, 2));
         if (users.isEmpty()) {
             userFacade.create(UserCreateCommand.builder()
                     .email("admin@hairsalon.com")

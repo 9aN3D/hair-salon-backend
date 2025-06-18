@@ -1,32 +1,54 @@
 package pl.edu.wit.hairsalon.web.response;
 
-import lombok.Builder;
-import lombok.Value;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import pl.edu.wit.hairsalon.sharedKernel.dto.FullNameDto;
 import pl.edu.wit.hairsalon.user.dto.UserContactDto;
 import pl.edu.wit.hairsalon.user.dto.UserDto;
-import pl.edu.wit.hairsalon.user.dto.UserFullNameDto;
 
-import jakarta.validation.constraints.NotBlank;
+public record UserResponse(
+        @NotBlank String id,
+        @NotNull FullNameDto fullName,
+        @NotNull UserContactDto contact
+) {
 
-@Value
-@Builder
-public class UserResponse {
-
-    @NotBlank
-    String id;
-
-    @NotBlank
-    UserFullNameDto fullName;
-
-    @NotBlank
-    UserContactDto contact;
-
-    public static UserResponse of(UserDto dto) {
+    public static UserResponse of(UserDto userDto) {
         return UserResponse.builder()
-                .id(dto.id())
-                .fullName(dto.fullName())
-                .contact(dto.contact())
+                .id(userDto.id())
+                .fullName(userDto.fullName())
+                .contact(userDto.contact())
                 .build();
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+
+        private String id;
+        private FullNameDto fullName;
+        private UserContactDto contact;
+
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder fullName(FullNameDto fullName) {
+            this.fullName = fullName;
+            return this;
+        }
+
+        public Builder contact(UserContactDto contact) {
+            this.contact = contact;
+            return this;
+        }
+
+        public UserResponse build() {
+            return new UserResponse(id, fullName, contact);
+        }
+
     }
 
 }

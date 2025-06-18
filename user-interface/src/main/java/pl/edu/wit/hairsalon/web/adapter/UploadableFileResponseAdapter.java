@@ -1,20 +1,28 @@
 package pl.edu.wit.hairsalon.web.adapter;
 
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.CacheControl;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pl.edu.wit.hairsalon.uploadableFile.UploadableFileFacade;
 
 @Service
-@RequiredArgsConstructor
 public class UploadableFileResponseAdapter {
 
     private final UploadableFileFacade uploadableFileFacade;
 
-    @SneakyThrows
-    public byte[] getOneImage(String fileId) {
+    public UploadableFileResponseAdapter(UploadableFileFacade uploadableFileFacade) {
+        this.uploadableFileFacade = uploadableFileFacade;
+    }
+
+    public ResponseEntity<InputStreamResource> getOneImage(String fileId) {
         var uploadableFile = uploadableFileFacade.findOne(fileId);
-        return uploadableFile.getContent().readAllBytes();
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(uploadableFile.contentType()))
+                .contentLength(uploadableFile.length())
+                .cacheControl(CacheControl.noCache())
+                .body(new InputStreamResource(uploadableFile.content()));
     }
 
 }

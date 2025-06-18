@@ -1,8 +1,5 @@
 package pl.edu.wit.hairsalon.setting.dto;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
 import java.util.Set;
 
 import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.NOTIFICATIONS_EMAIL_LOGIN;
@@ -24,8 +21,6 @@ import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.SALON_END_HOUR_WORK;
 import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.SALON_NAME;
 import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.SALON_START_HOUR_WORK;
 
-@Getter
-@RequiredArgsConstructor
 public enum SettingGroupDto {
 
     SALON(Set.of(
@@ -62,4 +57,12 @@ public enum SettingGroupDto {
     ));
 
     private final Set<SettingIdDto> settingIds;
+
+    SettingGroupDto(Set<SettingIdDto> settingIds) {
+        this.settingIds = settingIds;
+    }
+
+    public Set<SettingIdDto> getSettingIds() {
+        return settingIds;
+    }
 }
