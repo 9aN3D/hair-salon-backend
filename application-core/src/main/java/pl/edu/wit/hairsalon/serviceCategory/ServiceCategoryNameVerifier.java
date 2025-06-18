@@ -1,6 +1,5 @@
 package pl.edu.wit.hairsalon.serviceCategory;
 
-import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.serviceCategory.command.ServiceCategoryCreateCommand;
 import pl.edu.wit.hairsalon.serviceCategory.command.ServiceCategoryUpdateCommand;
 import pl.edu.wit.hairsalon.serviceCategory.exception.ServiceCategoryUpdateException;
@@ -9,19 +8,22 @@ import static java.lang.String.format;
 import static java.util.Optional.ofNullable;
 import static pl.edu.wit.hairsalon.serviceCategory.query.ServiceCategoryFindQuery.withName;
 
-@RequiredArgsConstructor
 class ServiceCategoryNameVerifier implements ServiceCategoryCommandVerifier {
 
     private final ServiceCategoryPort serviceCategoryPort;
 
+    ServiceCategoryNameVerifier(ServiceCategoryPort serviceCategoryPort) {
+        this.serviceCategoryPort = serviceCategoryPort;
+    }
+
     @Override
     public void verify(ServiceCategoryCreateCommand command) {
-        throwIfCategoryNameExist(command.getName());
+        throwIfCategoryNameExist(command.name());
     }
 
     @Override
     public void verify(ServiceCategoryUpdateCommand command) {
-        ofNullable(command.getName())
+        ofNullable(command.name())
                 .ifPresent(this::throwIfCategoryNameExist);
     }
 

@@ -1,28 +1,21 @@
 package pl.edu.wit.hairsalon.member;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import pl.edu.wit.hairsalon.member.dto.MemberDto;
 import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
+import pl.edu.wit.hairsalon.sharedKernel.domain.FullName;
 import pl.edu.wit.hairsalon.sharedKernel.domain.NotBlankString;
 
 import java.time.LocalDateTime;
 
 import static java.util.Objects.requireNonNull;
 
-@Builder
-@ToString
-@RequiredArgsConstructor
-@EqualsAndHashCode(of = "id")
-class Member implements SelfValidator<Member> {
-
-    private final String id;
-    private final MemberFullName fullName;
-    private final MemberContact contact;
-    private final MemberAgreements agreements;
-    private final LocalDateTime registrationDateTime;
+record Member(
+        String id,
+        FullName fullName,
+        MemberContact contact,
+        MemberAgreements agreements,
+        LocalDateTime registrationDateTime
+) implements SelfValidator<Member> {
 
     @Override
     public Member validate() {
@@ -47,6 +40,49 @@ class Member implements SelfValidator<Member> {
                 .agreements(agreements.toDto())
                 .registrationDateTime(registrationDateTime)
                 .build();
+    }
+
+    static Builder builder() {
+        return new Builder();
+    }
+
+    static class Builder {
+
+        private String id;
+        private FullName fullName;
+        private MemberContact contact;
+        private MemberAgreements agreements;
+        private LocalDateTime registrationDateTime;
+
+        Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        Builder fullName(FullName fullName) {
+            this.fullName = fullName;
+            return this;
+        }
+
+        Builder contact(MemberContact contact) {
+            this.contact = contact;
+            return this;
+        }
+
+        Builder agreements(MemberAgreements agreements) {
+            this.agreements = agreements;
+            return this;
+        }
+
+        Builder registrationDateTime(LocalDateTime registrationDateTime) {
+            this.registrationDateTime = registrationDateTime;
+            return this;
+        }
+
+        Member build() {
+            return new Member(id, fullName, contact, agreements, registrationDateTime);
+        }
+
     }
 
 }

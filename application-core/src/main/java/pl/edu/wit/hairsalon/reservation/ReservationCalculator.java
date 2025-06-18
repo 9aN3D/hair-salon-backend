@@ -1,6 +1,5 @@
 package pl.edu.wit.hairsalon.reservation;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import pl.edu.wit.hairsalon.hairdresser.HairdresserFacade;
 import pl.edu.wit.hairsalon.member.MemberFacade;
@@ -15,7 +14,6 @@ import pl.edu.wit.hairsalon.service.query.ServiceFindQuery;
 import java.util.List;
 import java.util.Set;
 
-@RequiredArgsConstructor
 class ReservationCalculator {
 
     private final MemberFacade memberFacade;
@@ -23,14 +21,24 @@ class ReservationCalculator {
     private final ServiceFacade serviceFacade;
     private final ScheduledEventFacade scheduledEventFacade;
 
+    ReservationCalculator(MemberFacade memberFacade,
+                          HairdresserFacade hairdresserFacade,
+                          ServiceFacade serviceFacade,
+                          ScheduledEventFacade scheduledEventFacade) {
+        this.memberFacade = memberFacade;
+        this.hairdresserFacade = hairdresserFacade;
+        this.serviceFacade = serviceFacade;
+        this.scheduledEventFacade = scheduledEventFacade;
+    }
+
     ReservationCalculationDto calculate(String memberId, ReservationCalculateCommand command) {
         getMember(memberId);
-        var hairdresser = hairdresserFacade.findOne(command.getHairdresserId());
+        var hairdresser = hairdresserFacade.findOne(command.hairdresserId());
         var hairdresserServices = getHairdresserServices(hairdresser.serviceIds());
-        return new ReservationCalculation(hairdresser, command.getStartDateTime())
+        return new ReservationCalculation(hairdresser, command.startDateTime())
                 .addReservationHairdresserServices(hairdresserServices)
                 .validate()
-                .addSelectedServiceIds(command.getSelectedServiceIds())
+                .addSelectedServiceIds(command.selectedServiceIds())
                 .verifyReservedTimes(scheduledEventFacade::count)
                 .toDto();
     }

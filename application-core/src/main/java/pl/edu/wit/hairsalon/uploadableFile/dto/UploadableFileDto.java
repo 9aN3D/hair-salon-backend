@@ -1,33 +1,104 @@
 package pl.edu.wit.hairsalon.uploadableFile.dto;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.Value;
-
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.StringJoiner;
 
-@Value
-@Builder
-@ToString(exclude = "content")
-@EqualsAndHashCode(of = "id")
-public class UploadableFileDto {
+public record UploadableFileDto(
+        String id,
+        String name,
+        FileTypeDto type,
+        String contentType,
+        Long length,
+        LocalDateTime uploadDate,
+        InputStream content,
+        String downloadUrl
+) {
 
-    String id;
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof UploadableFileDto that)) return false;
+        return Objects.equals(id, that.id);
+    }
 
-    String name;
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 
-    FileTypeDto type;
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", UploadableFileDto.class.getSimpleName() + "[", "]")
+                .add("id='" + id + "'")
+                .add("name='" + name + "'")
+                .add("type=" + type)
+                .add("contentType='" + contentType + "'")
+                .add("length=" + length)
+                .add("uploadDate=" + uploadDate)
+                .add("downloadUrl='" + downloadUrl + "'")
+                .toString();
+    }
 
-    String contentType;
+    public static Builder builder() {
+        return new Builder();
+    }
 
-    Long length;
+    public static class Builder {
 
-    LocalDateTime uploadDate;
+        private String id;
+        private String name;
+        private FileTypeDto type;
+        private String contentType;
+        private Long length;
+        private LocalDateTime uploadDate;
+        private InputStream content;
+        private String downloadUrl;
 
-    InputStream content;
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
 
-    String downloadUrl;
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder type(FileTypeDto type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder contentType(String contentType) {
+            this.contentType = contentType;
+            return this;
+        }
+
+        public Builder length(Long length) {
+            this.length = length;
+            return this;
+        }
+
+        public Builder uploadDate(LocalDateTime uploadDate) {
+            this.uploadDate = uploadDate;
+            return this;
+        }
+
+        public Builder content(InputStream content) {
+            this.content = content;
+            return this;
+        }
+
+        public Builder downloadUrl(String downloadUrl) {
+            this.downloadUrl = downloadUrl;
+            return this;
+        }
+
+        public UploadableFileDto build() {
+            return new UploadableFileDto(id, name, type, contentType, length, uploadDate, content, downloadUrl);
+        }
+
+    }
 
 }

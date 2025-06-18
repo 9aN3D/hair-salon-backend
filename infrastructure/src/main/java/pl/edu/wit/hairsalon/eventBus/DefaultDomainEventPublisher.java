@@ -1,12 +1,14 @@
 package pl.edu.wit.hairsalon.eventBus;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 
-@RequiredArgsConstructor
 class DefaultDomainEventPublisher implements DomainEventPublisher {
 
     private final ApplicationEventPublisher applicationEventPublisher;
+
+    DefaultDomainEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        this.applicationEventPublisher = applicationEventPublisher;
+    }
 
     @Override
     public void publishEvent(Object event) {

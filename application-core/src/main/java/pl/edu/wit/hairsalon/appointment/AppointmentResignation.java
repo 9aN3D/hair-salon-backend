@@ -1,15 +1,18 @@
 package pl.edu.wit.hairsalon.appointment;
 
-import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentDto;
 import pl.edu.wit.hairsalon.appointment.query.AppointmentFindQuery;
 import pl.edu.wit.hairsalon.scheduledEvent.ScheduledEventFacade;
 
-@RequiredArgsConstructor
 class AppointmentResignation {
 
     private final AppointmentPort appointmentPort;
     private final ScheduledEventFacade scheduledEventFacade;
+
+    AppointmentResignation(AppointmentPort appointmentPort, ScheduledEventFacade scheduledEventFacade) {
+        this.appointmentPort = appointmentPort;
+        this.scheduledEventFacade = scheduledEventFacade;
+    }
 
     AppointmentDto resign(String memberId, String appointmentId) {
         var appointment = appointmentPort.findOneOrThrow(AppointmentFindQuery.with(memberId, appointmentId));

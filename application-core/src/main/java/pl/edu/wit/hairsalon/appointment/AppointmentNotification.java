@@ -1,36 +1,22 @@
 package pl.edu.wit.hairsalon.appointment;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentNotificationDto;
 import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
 
 import java.util.Objects;
 
-@Builder
-@ToString
-@EqualsAndHashCode
-@RequiredArgsConstructor
-class AppointmentNotification implements SelfValidator<AppointmentNotification> {
-
-    private final AppointmentNotificationName name;
-    private final boolean sent;
+record AppointmentNotification(AppointmentNotificationName name, boolean sent) implements SelfValidator<AppointmentNotification> {
 
     AppointmentNotification(AppointmentNotificationName name) {
         this(name, false);
     }
 
     AppointmentNotification(AppointmentNotificationDto arg) {
-        this(AppointmentNotificationName.valueOf(arg.getName().name()), arg.isSent());
+        this(AppointmentNotificationName.valueOf(arg.name().name()), arg.sent());
     }
 
     AppointmentNotificationDto toDto() {
-        return AppointmentNotificationDto.builder()
-                .name(name.toDto())
-                .sent(sent)
-                .build();
+        return new AppointmentNotificationDto(name.toDto(), sent);
     }
 
     @Override
@@ -40,10 +26,7 @@ class AppointmentNotification implements SelfValidator<AppointmentNotification> 
     }
 
     AppointmentNotification changeSent() {
-        return AppointmentNotification.builder()
-                .name(name)
-                .sent(true)
-                .build();
+        return new AppointmentNotification(name, true);
     }
 
 }

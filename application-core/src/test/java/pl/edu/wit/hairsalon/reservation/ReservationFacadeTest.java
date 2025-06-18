@@ -10,17 +10,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import pl.edu.wit.hairsalon.hairdresser.HairdresserFacade;
 import pl.edu.wit.hairsalon.hairdresser.dto.HairdresserDto;
-import pl.edu.wit.hairsalon.hairdresser.dto.HairdresserFullNameDto;
 import pl.edu.wit.hairsalon.hairdresser.exception.HairdresserNotFoundException;
 import pl.edu.wit.hairsalon.member.MemberFacade;
 import pl.edu.wit.hairsalon.member.dto.MemberContactDto;
 import pl.edu.wit.hairsalon.member.dto.MemberDto;
-import pl.edu.wit.hairsalon.member.dto.MemberFullNameDto;
 import pl.edu.wit.hairsalon.reservation.command.ReservationCalculateCommand;
 import pl.edu.wit.hairsalon.reservation.exception.ReservationCalculationException;
 import pl.edu.wit.hairsalon.scheduledEvent.ScheduledEventFacade;
 import pl.edu.wit.hairsalon.service.ServiceFacade;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
+import pl.edu.wit.hairsalon.sharedKernel.dto.FullNameDto;
 import pl.edu.wit.hairsalon.sharedKernel.dto.MoneyDto;
 
 import java.math.BigDecimal;
@@ -63,7 +62,7 @@ class ReservationFacadeTest {
     void init(@Mock MemberFacade memberFacade,
               @Mock ServiceFacade serviceFacade) {
         ReservationCalculator reservationCalculator = new ReservationCalculator(memberFacade, hairdresserFacade, serviceFacade, scheduledEventFacade);
-        reservationFacade = new AppReservationFacade(null, null, reservationCalculator);
+        reservationFacade = new LoggableReservationFacade(new AppReservationFacade(null, null, reservationCalculator));
 
         Mockito.lenient().when(memberFacade.findOne(any())).thenReturn(buildMemberDto());
         Mockito.lenient().when(hairdresserFacade.findOne(HAIRDRESSER_ID)).thenReturn(buildHairdresserDto());
@@ -134,11 +133,11 @@ class ReservationFacadeTest {
         //when
         var calculatedReservation = reservationFacade.calculate(MEMBER_ID, calculateCommand);
         //then
-        assertEquals(calculatedReservation.getTimes().getStart(), calculateCommand.getStartDateTime());
-        assertEquals(calculatedReservation.getHairdresser().getId(), calculateCommand.getHairdresserId());
-        assertEquals(calculatedReservation.getHairdresser().getServices().size(), SERVICE_IDS.size());
-        assertNull(calculatedReservation.getSelectedServices());
-        assertNull(calculatedReservation.getTotalPrice());
+        assertEquals(calculatedReservation.times().start(), calculateCommand.startDateTime());
+        assertEquals(calculatedReservation.hairdresser().id(), calculateCommand.hairdresserId());
+        assertEquals(calculatedReservation.hairdresser().services().size(), SERVICE_IDS.size());
+        assertNull(calculatedReservation.selectedServices());
+        assertNull(calculatedReservation.totalPrice());
     }
 
     @Test
@@ -152,12 +151,12 @@ class ReservationFacadeTest {
         //when
         var calculatedReservation = reservationFacade.calculate(MEMBER_ID, calculateCommand);
         //then
-        assertEquals(calculatedReservation.getTimes().getStart(), calculateCommand.getStartDateTime());
-        assertEquals(calculatedReservation.getTimes().getEnd(), calculatedReservation.getTimes().getStart().plusMinutes(SERVICE_DURATION_1ST));
-        assertEquals(calculatedReservation.getHairdresser().getId(), calculateCommand.getHairdresserId());
-        assertEquals(calculatedReservation.getHairdresser().getServices().size(), SERVICE_IDS.size());
-        assertEquals(calculatedReservation.getSelectedServices().size(), calculateCommand.getSelectedServiceIds().size());
-        assertEquals(0, calculatedReservation.getTotalPrice().compareTo(SERVICE_PRICE_1ST));
+        assertEquals(calculatedReservation.times().start(), calculateCommand.startDateTime());
+        assertEquals(calculatedReservation.times().end(), calculatedReservation.times().start().plusMinutes(SERVICE_DURATION_1ST));
+        assertEquals(calculatedReservation.hairdresser().id(), calculateCommand.hairdresserId());
+        assertEquals(calculatedReservation.hairdresser().services().size(), SERVICE_IDS.size());
+        assertEquals(calculatedReservation.selectedServices().size(), calculateCommand.selectedServiceIds().size());
+        assertEquals(0, calculatedReservation.totalPrice().compareTo(SERVICE_PRICE_1ST));
     }
 
     @Test
@@ -171,18 +170,18 @@ class ReservationFacadeTest {
         //when
         var calculatedReservation = reservationFacade.calculate(MEMBER_ID, calculateCommand);
         //then
-        assertEquals(calculatedReservation.getTimes().getStart(), calculateCommand.getStartDateTime());
-        assertEquals(calculatedReservation.getTimes().getEnd(), calculatedReservation.getTimes().getStart().plusMinutes(SERVICE_DURATION_1ST + SERVICE_DURATION_2ND));
-        assertEquals(calculatedReservation.getHairdresser().getId(), calculateCommand.getHairdresserId());
-        assertEquals(calculatedReservation.getHairdresser().getServices().size(), SERVICE_IDS.size());
-        assertEquals(calculatedReservation.getSelectedServices().size(), calculateCommand.getSelectedServiceIds().size());
-        assertEquals(0, calculatedReservation.getTotalPrice().compareTo(SERVICE_PRICE_1ST.add(SERVICE_PRICE_2ND)));
+        assertEquals(calculatedReservation.times().start(), calculateCommand.startDateTime());
+        assertEquals(calculatedReservation.times().end(), calculatedReservation.times().start().plusMinutes(SERVICE_DURATION_1ST + SERVICE_DURATION_2ND));
+        assertEquals(calculatedReservation.hairdresser().id(), calculateCommand.hairdresserId());
+        assertEquals(calculatedReservation.hairdresser().services().size(), SERVICE_IDS.size());
+        assertEquals(calculatedReservation.selectedServices().size(), calculateCommand.selectedServiceIds().size());
+        assertEquals(0, calculatedReservation.totalPrice().compareTo(SERVICE_PRICE_1ST.add(SERVICE_PRICE_2ND)));
     }
 
     private MemberDto buildMemberDto() {
         return MemberDto.builder()
                 .id(MEMBER_ID)
-                .fullName(new MemberFullNameDto("test", "1"))
+                .fullName(new FullNameDto("test", "1"))
                 .contact(new MemberContactDto("email@test.com", "+48535367182"))
                 .agreements(Set.of(PERSONAL_DATA,
                         RESERVATION_RECEIPT,
@@ -194,7 +193,7 @@ class ReservationFacadeTest {
     private HairdresserDto buildHairdresserDto() {
         return HairdresserDto.builder()
                 .id(HAIRDRESSER_ID)
-                .fullName(new HairdresserFullNameDto("test", "I"))
+                .fullName(new FullNameDto("test", "I"))
                 .serviceIds(Set.of(SERVICE_ID_1ST, SERVICE_ID_2ND))
                 .build();
     }

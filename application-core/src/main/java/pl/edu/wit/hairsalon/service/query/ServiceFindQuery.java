@@ -1,27 +1,21 @@
 package pl.edu.wit.hairsalon.service.query;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.Set;
 import java.util.function.Consumer;
 
 import static java.util.Objects.nonNull;
 import static pl.edu.wit.hairsalon.sharedKernel.CollectionHelper.nonNullOrEmpty;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class ServiceFindQuery {
+public record ServiceFindQuery(
+        String id,
+        String name,
+        Set<String> ids
+) {
 
-    private String id;
-
-    private String name;
-
-    private Set<String> ids;
+    public static ServiceFindQuery empty() {
+        return ServiceFindQuery.builder()
+                .build();
+    }
 
     public static ServiceFindQuery withId(String serviceId) {
         return ServiceFindQuery.builder()
@@ -57,6 +51,40 @@ public class ServiceFindQuery {
         if (nonNullOrEmpty(ids)) {
             action.accept(ids);
         }
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+
+        private String id;
+        private String name;
+        private Set<String> ids;
+
+        Builder() {
+        }
+
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder ids(Set<String> ids) {
+            this.ids = ids;
+            return this;
+        }
+
+        public ServiceFindQuery build() {
+            return new ServiceFindQuery(this.id, this.name, this.ids);
+        }
+
     }
 
 }

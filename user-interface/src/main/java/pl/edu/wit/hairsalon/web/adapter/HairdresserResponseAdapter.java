@@ -1,24 +1,29 @@
 package pl.edu.wit.hairsalon.web.adapter;
 
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import pl.edu.wit.hairsalon.hairdresser.command.HairdresserCreateCommand;
 import pl.edu.wit.hairsalon.hairdresser.HairdresserFacade;
+import pl.edu.wit.hairsalon.hairdresser.command.HairdresserCreateCommand;
 import pl.edu.wit.hairsalon.hairdresser.query.HairdresserFindQuery;
-import pl.edu.wit.hairsalon.web.response.HairdresserResponse;
-import pl.edu.wit.hairsalon.uploadableFile.command.FileUploadCommand;
 import pl.edu.wit.hairsalon.uploadableFile.UploadableFileFacade;
+import pl.edu.wit.hairsalon.uploadableFile.command.FileUploadCommand;
+import pl.edu.wit.hairsalon.web.response.HairdresserResponse;
+
+import static java.lang.String.format;
 
 @Service
-@RequiredArgsConstructor
 public class HairdresserResponseAdapter {
 
     private final HairdresserFacade hairdresserFacade;
     private final UploadableFileFacade uploadableFileFacade;
+
+    public HairdresserResponseAdapter(HairdresserFacade hairdresserFacade,
+                                      UploadableFileFacade uploadableFileFacade) {
+        this.hairdresserFacade = hairdresserFacade;
+        this.uploadableFileFacade = uploadableFileFacade;
+    }
 
     public String create(HairdresserCreateCommand command) {
         return hairdresserFacade.create(command);
@@ -37,14 +42,19 @@ public class HairdresserResponseAdapter {
                 .map(hairdresserDto -> HairdresserResponse.of(hairdresserDto, uploadableFileFacade::findOne));
     }
 
-    @SneakyThrows
     private FileUploadCommand buildFileUploadCommand(MultipartFile file) {
-        return FileUploadCommand.builder()
-                .originalFilename(file.getOriginalFilename())
-                .contentType(file.getContentType())
-                .size(file.getSize())
-                .content(file.getInputStream())
-                .build();
+        try (var content = file.getInputStream()) {
+            return FileUploadCommand.builder()
+                    .originalFilename(file.getOriginalFilename())
+                    .contentType(file.getContentType())
+                    .size(file.getSize())
+                    .content(content)
+                    .build();
+        } catch (Exception e) {
+            throw new RuntimeException(
+                    format("Cant build file uploadCommand, message: %s", e.getMessage()), e
+            );
+        }
     }
 
 }

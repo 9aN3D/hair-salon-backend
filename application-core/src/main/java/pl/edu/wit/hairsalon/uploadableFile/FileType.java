@@ -1,19 +1,23 @@
 package pl.edu.wit.hairsalon.uploadableFile;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.uploadableFile.dto.FileTypeDto;
 
 import java.util.Set;
 import java.util.stream.Stream;
 
-@Getter
-@RequiredArgsConstructor
 enum FileType {
 
     IMAGE(Set.of("image/jpeg", "image/png", "image/gif"));
 
     private final Set<String> contentTypes;
+
+    FileType(Set<String> contentTypes) {
+        this.contentTypes = contentTypes;
+    }
+
+    public Set<String> getContentTypes() {
+        return contentTypes;
+    }
 
     public static FileType getFileType(String name) {
         return Stream.of(values())

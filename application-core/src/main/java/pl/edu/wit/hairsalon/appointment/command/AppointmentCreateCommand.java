@@ -1,45 +1,90 @@
 package pl.edu.wit.hairsalon.appointment.command;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
 import pl.edu.wit.hairsalon.sharedKernel.dto.DateRangeDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.StringJoiner;
 
-@Data
-@NoArgsConstructor
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
-public class AppointmentCreateCommand extends AppointmentBaseCommand {
+public record AppointmentCreateCommand(
+        String memberId,
+        String reservationId,
+        DateRangeDto times,
+        List<ServiceDto> services,
+        String hairdresserId,
+        LocalDateTime creationDateTime
+) {
 
-    private String reservationId;
+    public static Builder builder() {
+        return new Builder();
+    }
 
-    private DateRangeDto times;
+    public static class Builder {
 
-    private List<ServiceDto> services;
+        private String memberId;
+        private String reservationId;
+        private DateRangeDto times;
+        private List<ServiceDto> services;
+        private String hairdresserId;
+        private LocalDateTime creationDateTime;
 
-    private String hairdresserId;
+        Builder() {
+        }
 
-    private LocalDateTime creationDateTime;
+        public Builder memberId(String memberId) {
+            this.memberId = memberId;
+            return this;
+        }
 
-    @Builder
-    public AppointmentCreateCommand(String memberId,
-                                    String reservationId,
-                                    DateRangeDto times,
-                                    List<ServiceDto> services,
-                                    String hairdresserId,
-                                    LocalDateTime creationDateTime) {
-        super(memberId);
-        this.reservationId = reservationId;
-        this.times = times;
-        this.services = services;
-        this.hairdresserId = hairdresserId;
-        this.creationDateTime = creationDateTime;
+        public Builder reservationId(String reservationId) {
+            this.reservationId = reservationId;
+            return this;
+        }
+
+        public Builder times(DateRangeDto times) {
+            this.times = times;
+            return this;
+        }
+
+        public Builder services(List<ServiceDto> services) {
+            this.services = services;
+            return this;
+        }
+
+        public Builder hairdresserId(String hairdresserId) {
+            this.hairdresserId = hairdresserId;
+            return this;
+        }
+
+        public Builder creationDateTime(LocalDateTime creationDateTime) {
+            this.creationDateTime = creationDateTime;
+            return this;
+        }
+        
+        public AppointmentCreateCommand build() {
+            return new AppointmentCreateCommand(
+                    memberId,
+                    reservationId,
+                    times,
+                    services,
+                    hairdresserId,
+                    creationDateTime
+            );
+        }
+
+        @Override
+        public String toString() {
+            return new StringJoiner(", ", Builder.class.getSimpleName() + "[", "]")
+                    .add("memberId='" + memberId + "'")
+                    .add("reservationId='" + reservationId + "'")
+                    .add("times=" + times)
+                    .add("services=" + services)
+                    .add("hairdresserId='" + hairdresserId + "'")
+                    .add("creationDateTime=" + creationDateTime)
+                    .toString();
+        }
+
     }
 
 }

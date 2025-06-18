@@ -1,23 +1,12 @@
 package pl.edu.wit.hairsalon.member;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import pl.edu.wit.hairsalon.member.dto.MemberContactDto;
 import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
 import pl.edu.wit.hairsalon.sharedKernel.domain.NotBlankString;
 
 import java.util.Objects;
 
-@Builder
-@ToString
-@EqualsAndHashCode
-@RequiredArgsConstructor
-class MemberContact implements SelfValidator<MemberContact> {
-
-    private final String email;
-    private final PhoneNumber phoneNumber;
+record MemberContact(String email, PhoneNumber phoneNumber) implements SelfValidator<MemberContact> {
 
     @Override
     public MemberContact validate() {
@@ -33,10 +22,7 @@ class MemberContact implements SelfValidator<MemberContact> {
     }
 
     MemberContactDto toDto() {
-        return MemberContactDto.builder()
-                .email(email)
-                .phone(phoneNumber.value())
-                .build();
+        return new MemberContactDto(email, phoneNumber.value());
     }
 
 }

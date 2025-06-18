@@ -1,34 +1,94 @@
 package pl.edu.wit.hairsalon.notification.dto;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.Value;
-
 import java.time.LocalDateTime;
 
-@Value
-@Builder
-@ToString(exclude = "errorMessage")
-@EqualsAndHashCode(of = "id")
-public class NotificationDto {
+public record NotificationDto(
+        String id,
+        NotificationTypeDto type,
+        NotificationContentDto content,
+        NotificationStatusDto status,
+        String errorMessage,
+        String recipientId,
+        String shipmentId,
+        LocalDateTime creationDateTime,
+        LocalDateTime modificationDateTime
+) {
 
-    String id;
+    public static Builder builder() {
+        return new Builder();
+    }
 
-    NotificationTypeDto type;
+    public static class Builder {
 
-    NotificationContentDto content;
+        private String id;
+        private NotificationTypeDto type;
+        private NotificationContentDto content;
+        private NotificationStatusDto status;
+        private String errorMessage;
+        private String recipientId;
+        private String shipmentId;
+        private LocalDateTime creationDateTime;
+        private LocalDateTime modificationDateTime;
 
-    NotificationStatusDto status;
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
 
-    String errorMessage;
+        public Builder type(NotificationTypeDto type) {
+            this.type = type;
+            return this;
+        }
 
-    String recipientId;
+        public Builder content(NotificationContentDto content) {
+            this.content = content;
+            return this;
+        }
 
-    String shipmentId;
+        public Builder status(NotificationStatusDto status) {
+            this.status = status;
+            return this;
+        }
 
-    LocalDateTime creationDateTime;
+        public Builder errorMessage(String errorMessage) {
+            this.errorMessage = errorMessage;
+            return this;
+        }
 
-    LocalDateTime modificationDateTime;
+        public Builder recipientId(String recipientId) {
+            this.recipientId = recipientId;
+            return this;
+        }
+
+        public Builder shipmentId(String shipmentId) {
+            this.shipmentId = shipmentId;
+            return this;
+        }
+
+        public Builder creationDateTime(LocalDateTime creationDateTime) {
+            this.creationDateTime = creationDateTime;
+            return this;
+        }
+
+        public Builder modificationDateTime(LocalDateTime modificationDateTime) {
+            this.modificationDateTime = modificationDateTime;
+            return this;
+        }
+
+        public NotificationDto build() {
+            return new NotificationDto(
+                    id,
+                    type,
+                    content,
+                    status,
+                    errorMessage,
+                    recipientId,
+                    shipmentId,
+                    creationDateTime,
+                    modificationDateTime
+            );
+        }
+
+    }
 
 }

@@ -1,8 +1,5 @@
 package pl.edu.wit.hairsalon.authDetails;
 
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
 import pl.edu.wit.hairsalon.sharedKernel.domain.NotBlankString;
 import pl.edu.wit.hairsalon.sharedKernel.exception.ValidationException;
@@ -11,13 +8,9 @@ import java.util.regex.Pattern;
 
 import static java.lang.String.format;
 
-@ToString(of = "value")
-@RequiredArgsConstructor
-@EqualsAndHashCode(of = "value")
-class Email implements SelfValidator<Email> {
+record Email(String value) implements SelfValidator<Email> {
 
-    private final String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
-    private final String value;
+    private final static String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
 
     @Override
     public Email validate() {
@@ -27,10 +20,6 @@ class Email implements SelfValidator<Email> {
                     format("Email %s is not valid", value));
         }
         return this;
-    }
-
-    String value() {
-        return value;
     }
 
     private Boolean hasMatchPattern(String value) {

@@ -1,18 +1,22 @@
 package pl.edu.wit.hairsalon.eventBus;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pl.edu.wit.hairsalon.reservation.event.ReservationMadeEvent;
 
 import java.util.Set;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 class ReservationMadeEventListener {
 
+    private final Logger log;
     private final Set<ReservationMadeEventHandler> handlers;
+
+    public ReservationMadeEventListener(Set<ReservationMadeEventHandler> handlers) {
+        this.log = LoggerFactory.getLogger(ReservationMadeEventListener.class);
+        this.handlers = handlers;
+    }
 
     @DomainEventListener
     @SuppressWarnings("unused")

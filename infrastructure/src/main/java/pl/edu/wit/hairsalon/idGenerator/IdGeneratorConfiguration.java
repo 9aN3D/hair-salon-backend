@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.edu.wit.hairsalon.sharedKernel.port.secondary.IdGenerator;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 class IdGeneratorConfiguration {
 
     @Bean

@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.edu.wit.hairsalon.member.PhoneNumberPort;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 class PhoneNumberProviderConfiguration {
 
     @Bean

@@ -1,25 +1,42 @@
 package pl.edu.wit.hairsalon.reservation.command;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Data
-@Builder
-@NoArgsConstructor
-@EqualsAndHashCode
-@AllArgsConstructor
-public class ReservationCalculateCommand {
+public record ReservationCalculateCommand(
+        String hairdresserId,
+        LocalDateTime startDateTime,
+        Set<String> selectedServiceIds
+) {
 
-    private String hairdresserId;
+    public static Builder builder() {
+        return new Builder();
+    }
 
-    private LocalDateTime startDateTime;
+    public static class Builder {
 
-    private Set<String> selectedServiceIds;
+        private String hairdresserId;
+        private LocalDateTime startDateTime;
+        private Set<String> selectedServiceIds;
 
+        public Builder hairdresserId(String hairdresserId) {
+            this.hairdresserId = hairdresserId;
+            return this;
+        }
+
+        public Builder startDateTime(LocalDateTime startDateTime) {
+            this.startDateTime = startDateTime;
+            return this;
+        }
+
+        public Builder selectedServiceIds(Set<String> selectedServiceIds) {
+            this.selectedServiceIds = selectedServiceIds;
+            return this;
+        }
+
+        public ReservationCalculateCommand build() {
+            return new ReservationCalculateCommand(hairdresserId, startDateTime, selectedServiceIds);
+        }
+    }
+    
 }

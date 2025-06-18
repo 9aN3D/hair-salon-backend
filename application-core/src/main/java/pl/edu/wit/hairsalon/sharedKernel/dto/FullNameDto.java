@@ -1,16 +1,6 @@
 package pl.edu.wit.hairsalon.sharedKernel.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-
-@Getter
-@EqualsAndHashCode
-@AllArgsConstructor
-public class FullNameDto {
-
-    private final String name;
-    private final String surname;
+public record FullNameDto(String name, String surname) {
 
     @Override
     public String toString() {

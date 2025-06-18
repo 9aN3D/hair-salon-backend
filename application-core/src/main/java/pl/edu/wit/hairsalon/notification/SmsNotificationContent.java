@@ -1,23 +1,21 @@
 package pl.edu.wit.hairsalon.notification;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import pl.edu.wit.hairsalon.notification.dto.SmsNotificationContentDto;
 import pl.edu.wit.hairsalon.sharedKernel.domain.NotBlankString;
 
-@Builder
-@ToString
-@RequiredArgsConstructor
-@EqualsAndHashCode(exclude = "body")
-class SmsNotificationContent implements NotificationContent {
+import java.util.StringJoiner;
 
-    private final String to;
-    private final String body;
+record SmsNotificationContent(String to, String body) implements NotificationContent {
 
     public SmsNotificationContent(SmsNotificationContentDto content) {
         this(content.getTo(), content.getBody());
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", SmsNotificationContent.class.getSimpleName() + "[", "]")
+                .add("to='" + to + "'")
+                .toString();
     }
 
     @Override
@@ -37,10 +35,10 @@ class SmsNotificationContent implements NotificationContent {
     }
 
     public SmsNotificationContentDto toDto() {
-        return SmsNotificationContentDto.builder()
-                .to(to)
-                .body(body)
-                .build();
+        return new SmsNotificationContentDto(
+                to,
+                body
+        );
     }
 
 }

@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import pl.edu.wit.hairsalon.sharedKernel.port.secondary.IdGenerator;
 import pl.edu.wit.hairsalon.uploadableFile.UploadableFileFacade;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 class HairdresserConfiguration {
 
     @Bean
@@ -15,7 +15,9 @@ class HairdresserConfiguration {
         var creator = new HairdresserCreator(idGenerator, hairdresserPort);
         var updater = new HairdresserUpdater(hairdresserPort);
         var photoUploader = new HairdresserPhotoUploader(hairdresserPort, uploadableFileFacade);
-        return new AppHairdresserFacade(hairdresserPort, creator, updater, photoUploader);
+        return new LoggableHairdresserFacade(
+                new AppHairdresserFacade(hairdresserPort, creator, updater, photoUploader)
+        );
     }
 
 }

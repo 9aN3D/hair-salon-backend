@@ -1,6 +1,6 @@
 package pl.edu.wit.hairsalon.web;
 
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,17 +11,18 @@ import pl.edu.wit.hairsalon.scheduledEvent.query.ScheduledEventFindQuery;
 import pl.edu.wit.hairsalon.web.adapter.ScheduledEventResponseAdapter;
 import pl.edu.wit.hairsalon.web.response.ScheduledEventResponse;
 
-import jakarta.validation.constraints.NotNull;
-
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/v1/scheduled-events")
 class ScheduledEventController {
 
     private final ScheduledEventResponseAdapter scheduledEventResponseAdapter;
+
+    ScheduledEventController(ScheduledEventResponseAdapter scheduledEventResponseAdapter) {
+        this.scheduledEventResponseAdapter = scheduledEventResponseAdapter;
+    }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)

@@ -1,13 +1,15 @@
 package pl.edu.wit.hairsalon.setting;
 
-import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.setting.command.SettingCreateCommand;
 import pl.edu.wit.hairsalon.setting.dto.SettingDto;
 
-@RequiredArgsConstructor
 class SettingCreator {
 
     private final SettingPort settingPort;
+
+    SettingCreator(SettingPort settingPort) {
+        this.settingPort = settingPort;
+    }
 
     SettingDto create(SettingCreateCommand command) {
         var newSetting = createNewSetting(command).validate();
@@ -15,10 +17,10 @@ class SettingCreator {
     }
 
     private Setting createNewSetting(SettingCreateCommand command) {
-        return Setting.builder()
-                .id(SettingId.valueOf(command.getId().name()))
-                .value(command.getValue())
-                .build();
+        return new Setting(
+                SettingId.valueOf(command.id().name()),
+                command.value()
+        );
     }
 
 }

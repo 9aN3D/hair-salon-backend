@@ -1,7 +1,7 @@
 package pl.edu.wit.hairsalon.web;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,18 +18,19 @@ import pl.edu.wit.hairsalon.serviceCategory.query.ServiceCategoryFindQuery;
 import pl.edu.wit.hairsalon.web.adapter.ServiceCategoryResponseAdapter;
 import pl.edu.wit.hairsalon.web.response.ServiceCategoryResponse;
 
-import jakarta.validation.constraints.NotNull;
-
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(value = "/api/v1")
 class ServiceCategoryController {
 
     private final ServiceCategoryResponseAdapter serviceCategoryResponseAdapter;
+
+    ServiceCategoryController(ServiceCategoryResponseAdapter serviceCategoryResponseAdapter) {
+        this.serviceCategoryResponseAdapter = serviceCategoryResponseAdapter;
+    }
 
     @PostMapping(value = "/admin/services/categories", consumes = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)

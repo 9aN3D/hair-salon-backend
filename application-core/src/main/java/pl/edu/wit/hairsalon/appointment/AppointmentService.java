@@ -1,9 +1,5 @@
 package pl.edu.wit.hairsalon.appointment;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentServiceDto;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
 import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
@@ -15,45 +11,29 @@ import java.time.Duration;
 
 import static java.util.Objects.requireNonNull;
 
-@Builder
-@ToString
-@RequiredArgsConstructor
-@EqualsAndHashCode(of = "serviceId")
-class AppointmentService implements SelfValidator<AppointmentService> {
-
-    private final String serviceId;
-    private final String name;
-    private final Money price;
-    private final Duration duration;
+record AppointmentService(
+        String serviceId,
+        String name,
+        Money price,
+        Duration duration
+) implements SelfValidator<AppointmentService> {
 
     AppointmentService(AppointmentServiceDto arg) {
         this(
-                arg.getServiceId(),
-                arg.getName(),
-                Money.of(arg.getPrice()),
-                Duration.ofMinutes(arg.getDurationInMinutes())
+                arg.serviceId(),
+                arg.name(),
+                Money.of(arg.price()),
+                Duration.ofMinutes(arg.durationInMinutes())
         );
     }
 
     AppointmentService(ServiceDto arg) {
         this(
-                arg.getId(),
-                arg.getName(),
-                Money.of(arg.getPrice()),
-                Duration.ofMinutes(arg.getDurationInMinutes())
+                arg.id(),
+                arg.name(),
+                Money.of(arg.price()),
+                Duration.ofMinutes(arg.durationInMinutes())
         );
-    }
-
-    String name() {
-        return name;
-    }
-
-    Money price() {
-        return price;
-    }
-
-    Duration duration() {
-        return duration;
     }
 
     AppointmentServiceDto toDto() {

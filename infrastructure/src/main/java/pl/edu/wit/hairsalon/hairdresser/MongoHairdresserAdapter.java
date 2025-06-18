@@ -1,26 +1,29 @@
 package pl.edu.wit.hairsalon.hairdresser;
 
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import pl.edu.wit.hairsalon.hairdresser.dto.HairdresserDto;
 import pl.edu.wit.hairsalon.hairdresser.exception.HairdresserNotFoundException;
 import pl.edu.wit.hairsalon.hairdresser.query.HairdresserFindQuery;
+import pl.edu.wit.hairsalon.sharedKernel.QuerydslPredicateBuilder;
 
+import java.util.List;
 import java.util.Optional;
 
 import static java.lang.String.format;
-import static java.util.Optional.ofNullable;
 
 @Repository
-@RequiredArgsConstructor
 class MongoHairdresserAdapter implements HairdresserPort {
 
     private final MongoHairdresserRepository hairdresserRepository;
     private final HairdresserMapper mapper;
+
+    MongoHairdresserAdapter(MongoHairdresserRepository hairdresserRepository, HairdresserMapper mapper) {
+        this.hairdresserRepository = hairdresserRepository;
+        this.mapper = mapper;
+    }
 
     @Override
     public HairdresserDto save(HairdresserDto hairdresser) {
@@ -57,12 +60,10 @@ class MongoHairdresserAdapter implements HairdresserPort {
 
     private Optional<Predicate> buildPredicate(HairdresserFindQuery findQuery) {
         var qHairdresser = QHairdresserDocument.hairdresserDocument;
-        var builder = new BooleanBuilder();
-        findQuery.ifIdPresent(id -> builder.and(qHairdresser.id.eq(id)));
-        findQuery.ifFullNamePresent(fullName -> builder
-                .and(qHairdresser.fullName.name.like(fullName))
-                .or(qHairdresser.fullName.surname.like(fullName)));
-        return ofNullable(builder.getValue());
+        return QuerydslPredicateBuilder.create()
+                .equals(qHairdresser.id, findQuery.id())
+                .like(List.of(qHairdresser.fullName.name, qHairdresser.fullName.surname), findQuery.fullName())
+                .build();
     }
 
 }

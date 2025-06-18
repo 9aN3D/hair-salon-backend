@@ -1,16 +1,15 @@
 package pl.edu.wit.hairsalon.notification.dto;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Value;
+public record SmsNotificationContentDto(String to, String body) implements NotificationContentDto {
 
-@Value
-@Builder
-@EqualsAndHashCode(exclude = "body")
-public class SmsNotificationContentDto implements NotificationContentDto {
+    @Override
+    public String getTo() {
+        return to;
+    }
 
-    String to;
-
-    String body;
+    @Override
+    public String getBody() {
+        return body;
+    }
 
 }

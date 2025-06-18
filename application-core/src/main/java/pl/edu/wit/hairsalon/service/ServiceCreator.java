@@ -1,6 +1,5 @@
 package pl.edu.wit.hairsalon.service;
 
-import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.service.command.ServiceCreateCommand;
 import pl.edu.wit.hairsalon.service.exception.ServiceAlreadyExists;
 import pl.edu.wit.hairsalon.service.query.ServiceFindQuery;
@@ -11,14 +10,18 @@ import java.time.Duration;
 
 import static java.lang.String.format;
 
-@RequiredArgsConstructor
 class ServiceCreator {
 
     private final ServicePort servicePort;
     private final IdGenerator idGenerator;
 
+    ServiceCreator(ServicePort servicePort, IdGenerator idGenerator) {
+        this.servicePort = servicePort;
+        this.idGenerator = idGenerator;
+    }
+
     Service create(ServiceCreateCommand command) {
-        throwIfExistProductName(command.getName());
+        throwIfExistProductName(command.name());
         return createNewService(command).validate();
     }
 
@@ -34,12 +37,12 @@ class ServiceCreator {
         return servicePort.findOne(ServiceFindQuery.withName(name)).isPresent();
     }
 
-    public Service createNewService(ServiceCreateCommand command) {
+    private Service createNewService(ServiceCreateCommand command) {
         return Service.builder()
                 .id(idGenerator.generate())
-                .name(command.getName())
-                .price(Money.ofPln(command.getPrice()))
-                .duration(Duration.ofMinutes(command.getDurationInMinutes()))
+                .name(command.name())
+                .price(Money.ofPln(command.price()))
+                .duration(Duration.ofMinutes(command.durationInMinutes()))
                 .build();
     }
 

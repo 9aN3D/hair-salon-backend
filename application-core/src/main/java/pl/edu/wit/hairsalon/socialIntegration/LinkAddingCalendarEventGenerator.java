@@ -13,9 +13,9 @@ class LinkAddingCalendarEventGenerator {
 
     private GoogleAddingCalendarEvent createNewGoogleAddingCalendarEvent(LinkAddingCalendarEventGenerateCommand command) {
         return GoogleAddingCalendarEvent.builder()
-                .times(new DateRange(command.getTimes()))
-                .eventName(command.getEventName())
-                .location(command.getLocation())
+                .times(new DateRange(command.times()))
+                .eventName(command.eventName())
+                .location(command.location())
                 .build();
     }
 

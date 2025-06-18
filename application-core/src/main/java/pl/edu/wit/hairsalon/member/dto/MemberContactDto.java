@@ -1,16 +1,5 @@
 package pl.edu.wit.hairsalon.member.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Value;
-
-@Value
-@Builder
-@AllArgsConstructor
-public class MemberContactDto {
-
-    String email;
-
-    String phone;
+public record MemberContactDto(String email, String phone) {
 
 }

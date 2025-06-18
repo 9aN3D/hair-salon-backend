@@ -1,7 +1,7 @@
 package pl.edu.wit.hairsalon.web;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,18 +18,19 @@ import pl.edu.wit.hairsalon.hairdresser.query.HairdresserFindQuery;
 import pl.edu.wit.hairsalon.web.adapter.HairdresserResponseAdapter;
 import pl.edu.wit.hairsalon.web.response.HairdresserResponse;
 
-import jakarta.validation.constraints.NotNull;
-
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(value = "/api/v1")
 class HairdresserController {
 
     private final HairdresserResponseAdapter hairdresserResponseAdapter;
+
+    HairdresserController(HairdresserResponseAdapter hairdresserResponseAdapter) {
+        this.hairdresserResponseAdapter = hairdresserResponseAdapter;
+    }
 
     @PostMapping(value = "/admin/hairdressers", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)

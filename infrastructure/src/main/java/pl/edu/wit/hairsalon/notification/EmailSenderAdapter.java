@@ -1,19 +1,22 @@
 package pl.edu.wit.hairsalon.notification;
 
 import jakarta.mail.MessagingException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import pl.edu.wit.hairsalon.notification.dto.EmailNotificationContentDto;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 class EmailSenderAdapter implements EmailSenderPort {
 
+    private final Logger log = LoggerFactory.getLogger(EmailSenderAdapter.class);
     private final JavaMailSender javaMailSender;
+
+    EmailSenderAdapter(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
 
     @Override
     public boolean send(EmailNotificationContentDto notificationContent) {
@@ -25,8 +28,8 @@ class EmailSenderAdapter implements EmailSenderPort {
             var mail = javaMailSender.createMimeMessage();
             var helper = new MimeMessageHelper(mail, true, "UTF-8");
             helper.setTo(notificationContent.getTo());
-            helper.setSubject(notificationContent.getSubject());
-            helper.setText(notificationContent.getBody(), notificationContent.isHtml());
+            helper.setSubject(notificationContent.subject());
+            helper.setText(notificationContent.getBody(), notificationContent.html());
             javaMailSender.send(mail);
             return true;
         } catch (MessagingException exception) {

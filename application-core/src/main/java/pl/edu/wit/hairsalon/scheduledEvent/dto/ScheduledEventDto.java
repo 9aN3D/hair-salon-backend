@@ -1,27 +1,62 @@
 package pl.edu.wit.hairsalon.scheduledEvent.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Value;
 import pl.edu.wit.hairsalon.sharedKernel.dto.DateRangeDto;
 
-@Value
-@Builder
-@AllArgsConstructor
-@EqualsAndHashCode(of = "id")
-public class ScheduledEventDto {
+public record ScheduledEventDto(
+        String id,
+        DateRangeDto times,
+        String hairdresserId,
+        ScheduledEventTypeDto type,
+        String description,
+        String reservationId
+) {
 
-    String id;
+    public static Builder builder() {
+        return new Builder();
+    }
 
-    DateRangeDto times;
+    public static class Builder {
 
-    String hairdresserId;
+        private String id;
+        private DateRangeDto times;
+        private String hairdresserId;
+        private ScheduledEventTypeDto type;
+        private String description;
+        private String reservationId;
 
-    ScheduledEventTypeDto type;
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
 
-    String description;
+        public Builder times(DateRangeDto times) {
+            this.times = times;
+            return this;
+        }
 
-    String reservationId;
+        public Builder hairdresserId(String hairdresserId) {
+            this.hairdresserId = hairdresserId;
+            return this;
+        }
 
+        public Builder type(ScheduledEventTypeDto type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder reservationId(String reservationId) {
+            this.reservationId = reservationId;
+            return this;
+        }
+
+        public ScheduledEventDto build() {
+            return new ScheduledEventDto(id, times, hairdresserId, type, description, reservationId);
+        }
+    }
 }
+

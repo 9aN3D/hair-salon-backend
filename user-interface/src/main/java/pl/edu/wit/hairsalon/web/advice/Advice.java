@@ -34,7 +34,7 @@ abstract class Advice {
     }
 
     private HttpStatus getOrDefault(Problem problem) {
-        return ofNullable(problem.getStatus())
+        return ofNullable(problem.status())
                 .orElse(INTERNAL_SERVER_ERROR);
     }
 

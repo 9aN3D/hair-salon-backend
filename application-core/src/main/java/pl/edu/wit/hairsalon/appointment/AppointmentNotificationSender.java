@@ -1,6 +1,5 @@
 package pl.edu.wit.hairsalon.appointment;
 
-import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentDto;
 import pl.edu.wit.hairsalon.appointment.query.AppointmentFindQuery;
 import pl.edu.wit.hairsalon.member.MemberFacade;
@@ -15,7 +14,6 @@ import pl.edu.wit.hairsalon.setting.dto.SettingIdDto;
 import static pl.edu.wit.hairsalon.notification.dto.NotificationTypeDto.EMAIL;
 import static pl.edu.wit.hairsalon.notification.dto.NotificationTypeDto.SMS;
 
-@RequiredArgsConstructor
 class AppointmentNotificationSender {
 
     private final AppointmentPort appointmentPort;
@@ -23,9 +21,16 @@ class AppointmentNotificationSender {
     private final NotificationFacade notificationFacade;
     private final SettingFacade settingFacade;
 
+    AppointmentNotificationSender(AppointmentPort appointmentPort, MemberFacade memberFacade, NotificationFacade notificationFacade, SettingFacade settingFacade) {
+        this.appointmentPort = appointmentPort;
+        this.memberFacade = memberFacade;
+        this.notificationFacade = notificationFacade;
+        this.settingFacade = settingFacade;
+    }
+
     void send(String appointmentId) {
         var appointmentDto = appointmentPort.findOneOrThrow(AppointmentFindQuery.with(appointmentId));
-        var member = memberFacade.findOne(appointmentDto.getMemberId());
+        var member = memberFacade.findOne(appointmentDto.memberId());
         var salonName = settingFacade.findOne(SettingIdDto.SALON_NAME).value();
         var appointment = new Appointment(appointmentDto).validate();
         notificationFacade.send(buildSmsNotificationSendCommand(appointmentDto, member, salonName));
@@ -34,30 +39,30 @@ class AppointmentNotificationSender {
     }
 
     private NotificationSendCommand buildEmailNotificationSendCommand(AppointmentDto appointment, MemberDto member, String salonName) {
-        return NotificationSendCommand.builder()
-                .recipientId(member.id())
-                .type(EMAIL)
-                .content(EmailNotificationContentDto.builder()
-                        .to(member.contact().getEmail())
+        return new NotificationSendCommand(
+                member.id(),
+                EMAIL,
+                EmailNotificationContentDto.builder()
+                        .to(member.contact().email())
                         .subject("Przypomienia o wizycie")
                         .body(prepareNotificationContentBody(appointment, salonName))
-                        .build())
-                .build();
+                        .build()
+        );
     }
 
     private NotificationSendCommand buildSmsNotificationSendCommand(AppointmentDto appointment, MemberDto member, String salonName) {
-        return NotificationSendCommand.builder()
-                .recipientId(member.id())
-                .type(SMS)
-                .content(SmsNotificationContentDto.builder()
-                        .to(member.contact().getPhone())
-                        .body(prepareNotificationContentBody(appointment, salonName))
-                        .build())
-                .build();
+        return new NotificationSendCommand(
+                member.id(),
+                SMS,
+                new SmsNotificationContentDto(
+                        member.contact().email(),
+                        prepareNotificationContentBody(appointment, salonName)
+                )
+        );
     }
 
     private String prepareNotificationContentBody(AppointmentDto appointment, String salonName) {
-        var startDateTime = appointment.getTimes().getStart();
+        var startDateTime = appointment.times().start();
         return "Przypominam o wizycie w " + salonName + " " + startDateTime.toLocalDate() + " o " + startDateTime.toLocalTime();
     }
 

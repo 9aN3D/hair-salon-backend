@@ -2,7 +2,7 @@ package pl.edu.wit.hairsalon.web;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,28 +18,29 @@ import pl.edu.wit.hairsalon.sharedKernel.dto.Identity;
 import pl.edu.wit.hairsalon.web.adapter.MemberResponseAdapter;
 import pl.edu.wit.hairsalon.web.response.MemberResponse;
 
-import jakarta.validation.constraints.NotNull;
-
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(value = "/api/v1", produces = APPLICATION_JSON_VALUE)
 @SecurityRequirement(name = "hair-salon-API")
 class MemberController {
 
     private final MemberResponseAdapter memberResponseAdapter;
 
+    MemberController(MemberResponseAdapter memberResponseAdapter) {
+        this.memberResponseAdapter = memberResponseAdapter;
+    }
+
     @GetMapping(value = "/members")
     @ResponseStatus(OK)
     MemberResponse findOne(@Parameter(hidden = true) @AuthenticationPrincipal Identity identity) {
-        return memberResponseAdapter.findOne(identity.getId());
+        return memberResponseAdapter.findOne(identity.id());
     }
 
     @PostMapping(value = "/members", consumes = APPLICATION_JSON_VALUE)
     void update(@Parameter(hidden = true) @AuthenticationPrincipal Identity identity, @NotNull @RequestBody MemberUpdateCommand command) {
-        memberResponseAdapter.update(identity.getId(), command);
+        memberResponseAdapter.update(identity.id(), command);
     }
 
     @GetMapping(value = "/admin/members")

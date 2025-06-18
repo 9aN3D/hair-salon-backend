@@ -1,8 +1,5 @@
 package pl.edu.wit.hairsalon.authDetails;
 
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
 import pl.edu.wit.hairsalon.sharedKernel.domain.NotBlankString;
 import pl.edu.wit.hairsalon.sharedKernel.exception.ValidationException;
@@ -10,16 +7,10 @@ import pl.edu.wit.hairsalon.sharedKernel.exception.ValidationException;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-@ToString
-@EqualsAndHashCode
-@RequiredArgsConstructor
-class Password implements SelfValidator<Password> {
+record Password(String value, Integer passwordMinLength) implements SelfValidator<Password> {
 
-    private final String value;
-    private final Integer passwordMinLength = 6;
-
-    public String value() {
-        return value;
+    Password(String value) {
+        this(value, 6);
     }
 
     @Override

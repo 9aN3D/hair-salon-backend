@@ -1,26 +1,24 @@
 package pl.edu.wit.hairsalon.socialIntegration;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
 import pl.edu.wit.hairsalon.sharedKernel.domain.DateRange;
 import pl.edu.wit.hairsalon.sharedKernel.domain.NotBlankString;
 
+import java.util.StringJoiner;
+
 import static java.util.Objects.requireNonNull;
 import static pl.edu.wit.hairsalon.socialIntegration.SocialProvider.GOOGLE;
 
-@Builder
-@ToString
-@RequiredArgsConstructor
-@EqualsAndHashCode(exclude = "location")
-class GoogleAddingCalendarEvent implements SelfValidator<GoogleAddingCalendarEvent> {
+record GoogleAddingCalendarEvent(
+        SocialProvider socialProvider,
+        DateRange times,
+        String eventName,
+        String location
+) implements SelfValidator<GoogleAddingCalendarEvent> {
 
-    private final SocialProvider socialProvider = GOOGLE;
-    private final DateRange times;
-    private final String eventName;
-    private final String location;
+    GoogleAddingCalendarEvent(DateRange times, String eventName, String location) {
+        this(GOOGLE, times, eventName, location);
+    }
 
     @Override
     public GoogleAddingCalendarEvent validate() {
@@ -31,16 +29,52 @@ class GoogleAddingCalendarEvent implements SelfValidator<GoogleAddingCalendarEve
 
     String link() {
         var formatPattern = "yyyyMMdd'T'HHmmss";
-        return new StringBuilder()
-                .append("http://www.google.com/calendar/event?action=TEMPLATE&dates=")
-                .append(times.formatStart(formatPattern))
-                .append("%2F")
-                .append(times.formatEnd(formatPattern))
-                .append("&text=")
-                .append(eventName)
-                .append("&location=")
-                .append(location)
-                .toString();
+        var baseUrl = "http://www.google.com/calendar/event?action=TEMPLATE";
+        var dateRange = times.formatStart(formatPattern) + "%2F" + times.formatEnd(formatPattern);
+
+        var joiner = new StringJoiner("&", baseUrl + "&", "");
+        joiner.add("dates=" + dateRange);
+        joiner.add("text=" + eventName);
+        joiner.add("location=" + location);
+
+        return joiner.toString();
+    }
+
+    static Builder builder() {
+        return new Builder();
+    }
+
+    static class Builder {
+
+        private SocialProvider socialProvider;
+        private DateRange times;
+        private String eventName;
+        private String location;
+
+        Builder socialProvider(SocialProvider socialProvider) {
+            this.socialProvider = socialProvider;
+            return this;
+        }
+
+        Builder times(DateRange times) {
+            this.times = times;
+            return this;
+        }
+
+        Builder eventName(String eventName) {
+            this.eventName = eventName;
+            return this;
+        }
+
+        Builder location(String location) {
+            this.location = location;
+            return this;
+        }
+
+        GoogleAddingCalendarEvent build() {
+            return new GoogleAddingCalendarEvent(socialProvider, times, eventName, location);
+        }
+
     }
 
 }

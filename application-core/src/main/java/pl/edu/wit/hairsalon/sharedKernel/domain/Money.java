@@ -1,7 +1,5 @@
 package pl.edu.wit.hairsalon.sharedKernel.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import pl.edu.wit.hairsalon.sharedKernel.dto.CurrencyDto;
 import pl.edu.wit.hairsalon.sharedKernel.dto.MoneyDto;
 import pl.edu.wit.hairsalon.sharedKernel.exception.ValidationException;
@@ -11,16 +9,11 @@ import java.math.BigDecimal;
 import static java.util.Objects.requireNonNull;
 import static pl.edu.wit.hairsalon.sharedKernel.domain.Currency.PLN;
 
-@ToString
-@EqualsAndHashCode
-public class Money {
+public record Money(BigDecimal amount, Currency currency) {
 
     public static final Money ZERO = new Money(BigDecimal.ZERO, Currency.valueOf(CurrencyDto.PLN));
 
-    private final BigDecimal amount;
-    private final Currency currency;
-
-    private Money(BigDecimal amount, Currency currency) {
+    public Money(BigDecimal amount, Currency currency) {
         this.currency = requireNonNull(currency, "Money amount must not be null");
         this.amount = requireNonNull(amount, "Money amount must not be null").setScale(this.currency.scale(), this.currency.roundingMode());
     }
@@ -42,8 +35,8 @@ public class Money {
     }
 
     public static Money of(MoneyDto dto) {
-        var currency = Currency.valueOf(dto.getCurrency());
-        return new Money(dto.getAmount(), currency);
+        var currency = Currency.valueOf(dto.currency());
+        return new Money(dto.amount(), currency);
     }
 
     public static Money ofPln(BigDecimal amount) {
@@ -59,10 +52,10 @@ public class Money {
     }
 
     public MoneyDto toDto() {
-        return MoneyDto.builder()
-                .amount(amount)
-                .currency(currency.toDto())
-                .build();
+        return new MoneyDto(
+                amount,
+                currency.toDto()
+        );
     }
 
 }

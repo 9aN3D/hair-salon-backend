@@ -1,23 +1,52 @@
 package pl.edu.wit.hairsalon.reservation.dto;
 
-import lombok.Builder;
-import lombok.Value;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
 import pl.edu.wit.hairsalon.sharedKernel.dto.DateRangeDto;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@Value
-@Builder
-public class ReservationCalculationDto {
+public record ReservationCalculationDto(
+        ReservationHairdresserDto hairdresser,
+        DateRangeDto times,
+        List<ServiceDto> selectedServices,
+        BigDecimal totalPrice
+) {
 
-    ReservationHairdresserDto hairdresser;
+    public static Builder builder() {
+        return new Builder();
+    }
 
-    DateRangeDto times;
+    public static class Builder {
 
-    List<ServiceDto> selectedServices;
+        private ReservationHairdresserDto hairdresser;
+        private DateRangeDto times;
+        private List<ServiceDto> selectedServices;
+        private BigDecimal totalPrice;
 
-    BigDecimal totalPrice;
+        public Builder hairdresser(ReservationHairdresserDto hairdresser) {
+            this.hairdresser = hairdresser;
+            return this;
+        }
 
+        public Builder times(DateRangeDto times) {
+            this.times = times;
+            return this;
+        }
+
+        public Builder selectedServices(List<ServiceDto> selectedServices) {
+            this.selectedServices = selectedServices;
+            return this;
+        }
+
+        public Builder totalPrice(BigDecimal totalPrice) {
+            this.totalPrice = totalPrice;
+            return this;
+        }
+
+        public ReservationCalculationDto build() {
+            return new ReservationCalculationDto(hairdresser, times, selectedServices, totalPrice);
+        }
+    }
+    
 }

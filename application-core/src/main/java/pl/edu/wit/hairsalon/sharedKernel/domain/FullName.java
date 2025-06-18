@@ -1,19 +1,12 @@
 package pl.edu.wit.hairsalon.sharedKernel.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
 import pl.edu.wit.hairsalon.sharedKernel.dto.FullNameDto;
 
-@EqualsAndHashCode
-@RequiredArgsConstructor
-public abstract class FullName implements SelfValidator<FullName> {
-
-    private final String name;
-    private final String surname;
+public record FullName(String name, String surname) implements SelfValidator<FullName> {
 
     public FullName(FullNameDto dto) {
-        this(dto.getName(), dto.getSurname());
+        this(dto.name(), dto.surname());
     }
 
     @Override

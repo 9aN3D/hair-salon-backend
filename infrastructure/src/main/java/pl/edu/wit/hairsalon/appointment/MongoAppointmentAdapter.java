@@ -1,29 +1,29 @@
 package pl.edu.wit.hairsalon.appointment;
 
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import pl.edu.wit.hairsalon.appointment.dto.AppointmentDto;
 import pl.edu.wit.hairsalon.appointment.exception.AppointmentNotFoundException;
 import pl.edu.wit.hairsalon.appointment.query.AppointmentFindQuery;
-import pl.edu.wit.hairsalon.sharedKernel.dto.DateRangeDto;
-import pl.edu.wit.hairsalon.sharedKernel.dto.QDateRangeDto;
+import pl.edu.wit.hairsalon.sharedKernel.QuerydslPredicateBuilder;
 
 import java.util.Optional;
 
 import static java.lang.String.format;
-import static java.util.Optional.ofNullable;
 
 @Repository
-@RequiredArgsConstructor
 class MongoAppointmentAdapter implements AppointmentPort {
 
     private final MongoAppointmentRepository repository;
     private final AppointmentMapper mapper;
+
+    public MongoAppointmentAdapter(MongoAppointmentRepository repository,
+                                   AppointmentMapper appointmentMapper) {
+        this.repository = repository;
+        this.mapper = appointmentMapper;
+    }
 
     @Override
     public AppointmentDto save(AppointmentDto appointment) {
@@ -58,21 +58,17 @@ class MongoAppointmentAdapter implements AppointmentPort {
 
     private Optional<Predicate> buildPredicate(AppointmentFindQuery findQuery) {
         var qAppointment = QAppointmentDocument.appointmentDocument;
-        var builder = new BooleanBuilder();
-        findQuery.ifIncludesTimesPresent(includesTime -> builder.and(includes(qAppointment.times, includesTime)));
-        findQuery.ifHairdresserIdPresent(hairdresserId -> builder.and(qAppointment.hairdresserId.eq(hairdresserId)));
-        findQuery.ifStatusesPresent(statuses -> builder.and(qAppointment.status.in(statuses)));
-        findQuery.ifMemberIdPresent(memberId -> builder.and(qAppointment.memberId.eq(memberId)));
-        findQuery.ifAppointmentIdPresent(appointmentId -> builder.and(qAppointment.id.eq(appointmentId)));
-        findQuery.ifStartTimeGreaterThanEqualPresent(startDateTime -> builder.and(qAppointment.times.start.goe(startDateTime)));
-        findQuery.ifStartTimeLessThanPresent(startDateTime -> builder.and(qAppointment.times.start.lt(startDateTime)));
-        findQuery.ifExceptStatusesPresent(statuses -> builder.and(qAppointment.status.notIn(statuses)));
-        findQuery.ifNotificationSentPresent(notificationSent -> builder.and(qAppointment.notification.sent.eq(notificationSent)));
-        return ofNullable(builder.getValue());
-    }
-
-    private BooleanExpression includes(QDateRangeDto qDateRangeDto, DateRangeDto arg) {
-        return qDateRangeDto.start.between(arg.getStart(), arg.getEnd()).and(qDateRangeDto.end.between(arg.getStart(), arg.getEnd()));
+        return QuerydslPredicateBuilder.create()
+                .equals(qAppointment.id, findQuery.appointmentId())
+                .equals(qAppointment.hairdresserId, findQuery.hairdresserId())
+                .equals(qAppointment.memberId, findQuery.memberId())
+                .equals(qAppointment.notification.sent, findQuery.notificationSent())
+                .in(qAppointment.status, findQuery.statuses())
+                .notIn(qAppointment.status, findQuery.exceptStatuses())
+                .includes(qAppointment.times, findQuery.includesTimes())
+                .greaterThanEqual(qAppointment.times.start, findQuery.startTimeGreaterThanEqual())
+                .lessThan(qAppointment.times.start, findQuery.startTimeLessThan())
+                .build();
     }
 
 }

@@ -1,18 +1,22 @@
 package pl.edu.wit.hairsalon.user;
 
-import lombok.RequiredArgsConstructor;
 import pl.edu.wit.hairsalon.authDetails.AuthDetailsFacade;
 import pl.edu.wit.hairsalon.authDetails.dto.AuthDetailsDto;
+import pl.edu.wit.hairsalon.sharedKernel.domain.FullName;
 import pl.edu.wit.hairsalon.user.command.UserCreateCommand;
 import pl.edu.wit.hairsalon.user.dto.UserDto;
 
 import static java.time.LocalDateTime.now;
 
-@RequiredArgsConstructor
 class UserCreator {
 
     private final UserPort userPort;
     private final AuthDetailsFacade authDetailsFacade;
+
+    UserCreator(UserPort userPort, AuthDetailsFacade authDetailsFacade) {
+        this.userPort = userPort;
+        this.authDetailsFacade = authDetailsFacade;
+    }
 
     UserDto create(UserCreateCommand command) {
         var savedAuthDetails = saveAuthDetails(command);
@@ -43,12 +47,12 @@ class UserCreator {
                 .build();
     }
 
-    private UserFullName getFullName(UserCreateCommand command) {
-        return new UserFullName(command.getName(), command.getSurname());
+    private FullName getFullName(UserCreateCommand command) {
+        return new FullName(command.name(), command.surname());
     }
 
     private UserContact getContact(UserCreateCommand command) {
-        return new UserContact(command.getEmail());
+        return new UserContact(command.email());
     }
 
 }
