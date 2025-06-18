@@ -13,7 +13,7 @@
 
     <properties>
         <jjwt.version>0.11.5</jjwt.version>
-        <querydsl.version>5.0.0</querydsl.version>
+        <querydsl.version>5.1.0</querydsl.version>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>

@@ -50,7 +50,7 @@ public class QuerydslPredicateBuilder {
         Function<String, Predicate> predicateFunction = v -> {
             var builder = new BooleanBuilder();
             for (var path : paths) {
-                builder.or(path.toLowerCase().like(v.toLowerCase()));
+                builder.or(path.likeIgnoreCase(v.toLowerCase()));
             }
             return builder.getValue();
         };
@@ -58,7 +58,7 @@ public class QuerydslPredicateBuilder {
     }
 
     public QuerydslPredicateBuilder like(StringPath path, String value) {
-        return predicate(v -> path.toLowerCase().like(v.toLowerCase()), value, () -> nonNull(value) && !value.isBlank());
+        return predicate(v -> path.likeIgnoreCase(v.toLowerCase()), value, () -> nonNull(value) && !value.isBlank());
     }
 
     public QuerydslPredicateBuilder includes(QEmbeddableDateRange qDateRange, DateRangeDto dateRange) {

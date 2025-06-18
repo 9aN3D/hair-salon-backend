@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
 import pl.edu.wit.hairsalon.uploadableFile.command.FileUploadCommand;
 import pl.edu.wit.hairsalon.uploadableFile.dto.UploadableFileDto;
 import pl.edu.wit.hairsalon.uploadableFile.exception.UploadableFileNotFoundException;
+import pl.edu.wit.hairsalon.uploadableFile.exception.UploadableFileStoreException;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import static java.lang.String.format;
