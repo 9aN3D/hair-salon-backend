@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import pl.edu.wit.hairsalon.common.init.AdminInitializer;
 import pl.edu.wit.hairsalon.common.init.HairdresserInitializer;
 import pl.edu.wit.hairsalon.common.init.ServiceInitializer;
+import pl.edu.wit.hairsalon.common.init.SettingInitializer;
 
 import static io.swagger.v3.oas.annotations.enums.SecuritySchemeIn.HEADER;
 import static io.swagger.v3.oas.annotations.enums.SecuritySchemeType.HTTP;
@@ -25,11 +26,14 @@ class Application extends SpringBootServletInitializer implements CommandLineRun
     private final AdminInitializer adminInitializer;
     private final ServiceInitializer serviceInitializer;
     private final HairdresserInitializer hairdresserInitializer;
+    private final SettingInitializer settingInitializer;
 
-    public Application(AdminInitializer adminInitializer, ServiceInitializer serviceInitializer, HairdresserInitializer hairdresserInitializer) {
+    public Application(AdminInitializer adminInitializer, ServiceInitializer serviceInitializer,
+                       HairdresserInitializer hairdresserInitializer, SettingInitializer settingInitializer) {
         this.adminInitializer = adminInitializer;
         this.serviceInitializer = serviceInitializer;
         this.hairdresserInitializer = hairdresserInitializer;
+        this.settingInitializer = settingInitializer;
     }
 
     public static void main(String... args) {
@@ -42,6 +46,8 @@ class Application extends SpringBootServletInitializer implements CommandLineRun
         adminInitializer.createIfNecessary();
         serviceInitializer.createIfNecessary();
         hairdresserInitializer.createIfNecessary();
+        hairdresserInitializer.createIfNecessary();
+        settingInitializer.createIfNecessary();
     }
 
     @Override
