@@ -7,6 +7,7 @@ import pl.edu.wit.hairsalon.uploadableFile.dto.UploadableFileDto;
 
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.function.Supplier;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
@@ -18,7 +19,7 @@ record UploadableFile(
         String contentType,
         Long length,
         LocalDateTime uploadDate,
-        InputStream content
+        Supplier<InputStream> contentSupplier
 ) implements SelfValidator<UploadableFile> {
 
     public UploadableFile(UploadableFileDto dto) {
@@ -29,7 +30,7 @@ record UploadableFile(
                 dto.contentType(),
                 dto.length(),
                 dto.uploadDate(),
-                dto.content()
+                dto.contentSupplier()
         );
     }
 
@@ -37,7 +38,7 @@ record UploadableFile(
     public UploadableFile validate() {
         requireNonNull(length, "Uploadable file length must not be null");
         requireNonNull(uploadDate, "Uploadable file upload date must not be null");
-        requireNonNull(content, "Uploadable file content must not be null");
+        requireNonNull(contentSupplier, "Uploadable file content must not be null");
         validate(new NotBlankString(id), new NotBlankString(name));
         if (!hasPositiveLength(length)) {
             throw new ValidationException(format("Uploadable file length negative %d", length));
@@ -53,7 +54,7 @@ record UploadableFile(
                 .contentType(contentType)
                 .length(length)
                 .uploadDate(uploadDate)
-                .content(content)
+                .content(contentSupplier)
                 .build();
     }
 
@@ -73,7 +74,7 @@ record UploadableFile(
         private String contentType;
         private Long length;
         private LocalDateTime uploadDate;
-        private InputStream content;
+        private Supplier<InputStream> contentSupplier;
 
         Builder id(String id) {
             this.id = id;
@@ -105,13 +106,13 @@ record UploadableFile(
             return this;
         }
 
-        Builder content(InputStream content) {
-            this.content = content;
+        Builder contentSupplier(Supplier<InputStream> contentSupplier) {
+            this.contentSupplier = contentSupplier;
             return this;
         }
 
         UploadableFile build() {
-            return new UploadableFile(id, name, type, contentType, length, uploadDate, content);
+            return new UploadableFile(id, name, type, contentType, length, uploadDate, contentSupplier);
         }
 
     }

@@ -27,7 +27,7 @@ class LoggableUploadableFileFacade implements UploadableFileFacade {
     public UploadableFileDto findOne(String fileId) {
         log.trace("Getting file {fileId: {}}", fileId);
         var dto = delegate.findOne(fileId);
-        log.info("Getting file {dto: {}}", dto);
+        log.info("Got file {dto: {}}", dto);
         return dto;
     }
 

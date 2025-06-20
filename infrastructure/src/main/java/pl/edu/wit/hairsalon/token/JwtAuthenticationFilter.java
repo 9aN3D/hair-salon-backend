@@ -4,9 +4,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -38,17 +37,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        try {
-            resolveToken(request)
-                    .filter(jwtProvider::isTokenValid)
-                    .ifPresentOrElse(
-                            token -> validateTokenAndSetAuthentication(token, new WebAuthenticationDetailsSource().buildDetails(request)),
-                            () -> log.trace("No Authorization Bearer token found, skipping JWT filter")
-                    );
-        } catch (Exception e) {
-            log.error("JwtAuthenticationFilter -> {}", e.getMessage(), e);
+        var maybeToken = resolveToken(request);
+        if (maybeToken.isEmpty()) {
+            filterChain.doFilter(request, response);
+            return;
         }
-
+        if (jwtProvider.isTokenValid(maybeToken.get())) {
+            validateTokenAndSetAuthentication(maybeToken.get(), new WebAuthenticationDetailsSource().buildDetails(request));
+        }
         filterChain.doFilter(request, response);
     }
 

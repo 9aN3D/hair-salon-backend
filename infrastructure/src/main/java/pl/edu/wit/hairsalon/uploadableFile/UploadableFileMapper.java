@@ -21,13 +21,13 @@ class UploadableFileMapper {
                         .atZone(ZoneId.systemDefault())
                         .toLocalDateTime())
                 .contentType(gridFSFile.getMetadata().get("_contentType").toString())
-                .content(tryGetInputStream(resource))
+                .content(() -> tryGetInputStream(resource))
                 .build();
     }
 
     private InputStream tryGetInputStream(GridFsResource resource) {
-        try (var result = resource.getInputStream()) {
-            return result;
+        try {
+            return resource.getInputStream();
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }

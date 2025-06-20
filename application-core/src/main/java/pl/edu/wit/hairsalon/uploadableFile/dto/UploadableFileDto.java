@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.StringJoiner;
+import java.util.function.Supplier;
 
 public record UploadableFileDto(
         String id,
@@ -12,7 +13,7 @@ public record UploadableFileDto(
         String contentType,
         Long length,
         LocalDateTime uploadDate,
-        InputStream content,
+        Supplier<InputStream> contentSupplier,
         String downloadUrl
 ) {
 
@@ -44,6 +45,10 @@ public record UploadableFileDto(
         return new Builder();
     }
 
+    public InputStream content() {
+        return contentSupplier.get();
+    }
+    
     public static class Builder {
 
         private String id;
@@ -52,7 +57,7 @@ public record UploadableFileDto(
         private String contentType;
         private Long length;
         private LocalDateTime uploadDate;
-        private InputStream content;
+        private Supplier<InputStream> contentSupplier;
         private String downloadUrl;
 
         public Builder id(String id) {
@@ -85,8 +90,8 @@ public record UploadableFileDto(
             return this;
         }
 
-        public Builder content(InputStream content) {
-            this.content = content;
+        public Builder content(Supplier<InputStream> content) {
+            this.contentSupplier = content;
             return this;
         }
 
@@ -96,7 +101,7 @@ public record UploadableFileDto(
         }
 
         public UploadableFileDto build() {
-            return new UploadableFileDto(id, name, type, contentType, length, uploadDate, content, downloadUrl);
+            return new UploadableFileDto(id, name, type, contentType, length, uploadDate, contentSupplier, downloadUrl);
         }
 
     }

@@ -110,8 +110,8 @@ public class HairdresserInitializer {
     }
 
     private FileInputStream getContent(String name) {
-        try (var result = new FileInputStream(name)) {
-            return result;
+        try {
+            return new FileInputStream(name);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

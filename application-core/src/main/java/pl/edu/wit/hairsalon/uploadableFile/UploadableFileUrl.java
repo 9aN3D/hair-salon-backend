@@ -32,7 +32,7 @@ class UploadableFileUrl implements SelfValidator<UploadableFileUrl> {
                 .contentType(uploadableFileDto.contentType())
                 .length(uploadableFileDto.length())
                 .uploadDate(uploadableFileDto.uploadDate())
-                .content(uploadableFileDto.content())
+                .content(uploadableFileDto.contentSupplier())
                 .downloadUrl(prepareDownloadUrl(fileStoragePort, uploadableFileDto))
                 .build();
     }

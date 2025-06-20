@@ -1,5 +1,6 @@
 package pl.edu.wit.hairsalon.web;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import pl.edu.wit.hairsalon.web.adapter.UploadableFileResponseAdapter;
 
 import static org.springframework.http.HttpStatus.OK;
@@ -26,8 +28,8 @@ class UploadableFileController {
 
     @GetMapping(value = "/{fileId}/image", produces = {IMAGE_PNG_VALUE, IMAGE_GIF_VALUE, IMAGE_JPEG_VALUE})
     @ResponseStatus(OK)
-    ResponseEntity<InputStreamResource> getOneImage(@PathVariable String fileId) {
-        return fileFacade.getOneImage(fileId);
+    StreamingResponseBody getOneImage(@PathVariable String fileId, HttpServletResponse response) {
+        return fileFacade.getOneImage(fileId, response);
     }
 
 }

@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.lang.String.format;
+import static java.util.Objects.isNull;
+import static java.util.Optional.empty;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
 
@@ -46,13 +48,16 @@ class MongoSettingAdapter implements SettingPort {
     public List<SettingDto> findAll(SettingGroupDto settingGroup) {
         return stream(buildPredicate(settingGroup)
                 .map(repository::findAll)
-                .orElseGet(ArrayList::new)
+                .orElseGet(repository::findAll)
                 .spliterator(), false)
                 .map(mapper::toDto)
                 .collect(toList());
     }
 
     private Optional<Predicate> buildPredicate(SettingGroupDto findQuery) {
+        if (isNull(findQuery)) {
+            return empty();
+        }
         var qSetting = QSettingDocument.settingDocument;
         return QuerydslPredicateBuilder.create()
                 .in(qSetting.id, findQuery.getSettingIds())
