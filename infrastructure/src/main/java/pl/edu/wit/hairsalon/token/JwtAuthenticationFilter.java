@@ -24,6 +24,7 @@ import static org.springframework.util.StringUtils.hasText;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
     private final JwtTokenProvider jwtProvider;
     private final UserDetailsService userDetailsService;
 

@@ -36,6 +36,12 @@ class Application extends SpringBootServletInitializer implements CommandLineRun
         this.settingInitializer = settingInitializer;
     }
 
+    public Application(AdminInitializer adminInitializer, ServiceInitializer serviceInitializer, HairdresserInitializer hairdresserInitializer) {
+        this.adminInitializer = adminInitializer;
+        this.serviceInitializer = serviceInitializer;
+        this.hairdresserInitializer = hairdresserInitializer;
+    }
+
     public static void main(String... args) {
         SpringApplication.run(Application.class, args);
     }
