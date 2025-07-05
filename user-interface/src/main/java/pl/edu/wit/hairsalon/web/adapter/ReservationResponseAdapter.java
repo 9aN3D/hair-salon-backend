@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import pl.edu.wit.hairsalon.reservation.ReservationFacade;
 import pl.edu.wit.hairsalon.reservation.command.ReservationCalculateCommand;
 import pl.edu.wit.hairsalon.reservation.command.ReservationMakeCommand;
+import pl.edu.wit.hairsalon.reservation.dto.ReservationCalculationDto;
+import pl.edu.wit.hairsalon.reservation.dto.ReservationHairdresserDto;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
 import pl.edu.wit.hairsalon.serviceCategory.ServiceCategoryFacade;
 import pl.edu.wit.hairsalon.serviceCategory.dto.ServiceCategoryDto;
@@ -14,9 +16,11 @@ import pl.edu.wit.hairsalon.web.response.HairdresserResponse;
 import pl.edu.wit.hairsalon.web.response.ReservationCalculationResponse;
 import pl.edu.wit.hairsalon.web.response.ServiceResponse;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import static java.util.function.Function.identity;
@@ -46,34 +50,51 @@ public class ReservationResponseAdapter {
 
     public ReservationCalculationResponse calculate(String memberId, ReservationCalculateCommand command) {
         var reservationCalculation = reservationFacade.calculate(memberId, command);
-        var reservationCalculationHairdresser = reservationCalculation.hairdresser();
-        var serviceIdToServiceResponse = collectServiceIdToServiceResponse(reservationCalculationHairdresser.services());
+        var serviceIdToServiceResponse = collectServiceIdToServiceResponse(reservationCalculation.availableServices());
+
         return ReservationCalculationResponse.builder()
-                .hairdresser(HairdresserResponse.of(reservationCalculationHairdresser, serviceIdToServiceResponse.values(), uploadableFileFacade::findOne))
-                .times(reservationCalculation.times())
-                .selectedServices(collectSelectedServiceResponses(reservationCalculation.selectedServices(), serviceIdToServiceResponse))
+                .memberId(reservationCalculation.memberId())
+                .calculationTime(reservationCalculation.calculationTime())
+                .date(reservationCalculation.date())
+                .availableServices(collectServiceResponses(reservationCalculation.availableServices(), serviceIdToServiceResponse))
+                .selectedServices(collectServiceResponses(reservationCalculation.selectedServices(), serviceIdToServiceResponse))
                 .totalPrice(reservationCalculation.totalPrice())
+                .availableHairdressers(prepareHairdressers(reservationCalculation.availableHairdressers(), serviceIdToServiceResponse.values()))
+                .selectedHairdresser(prepareHairdresser(reservationCalculation, serviceIdToServiceResponse.values()))
+                .availableStartTimes(reservationCalculation.formatAvailableStartTimes())
+                .times(reservationCalculation.times().orElse(null))
                 .build();
     }
 
-    private Map<String, ServiceResponse> collectServiceIdToServiceResponse(List<ServiceDto> hairdresserServices) {
-        var serviceCategories = getServiceCategories(hairdresserServices);
-        return hairdresserServices.stream()
-                .map(service -> ServiceResponse.of(service, getServiceCategoryName(serviceCategories, service.id())))
+    private List<HairdresserResponse> prepareHairdressers(List<ReservationHairdresserDto> availableHairdressers, Collection<ServiceResponse> values) {
+        return availableHairdressers.stream()
+                .map(hairdresser -> HairdresserResponse.of(hairdresser, values, uploadableFileFacade::findOne))
+                .toList();
+    }
+
+    private HairdresserResponse prepareHairdresser(ReservationCalculationDto reservationCalculation, Collection<ServiceResponse> values) {
+        return reservationCalculation.selectedHairdresser()
+                .map(hairdresser -> HairdresserResponse.of(hairdresser, values, uploadableFileFacade::findOne))
+                .orElse(null);
+    }
+
+    private Map<String, ServiceResponse> collectServiceIdToServiceResponse(List<ServiceDto> services) {
+        var serviceCategories = getServiceCategories(services);
+        return services.stream()
+                .map(service -> getServiceCategory(serviceCategories, service.id())
+                        .map(category -> ServiceResponse.of(service, category))
+                        .orElseGet(() -> ServiceResponse.of(service)))
                 .collect(toMap(ServiceResponse::id, identity()));
     }
 
-    private String getServiceCategoryName(List<ServiceCategoryDto> serviceCategories, String serviceId) {
+    private Optional<ServiceCategoryDto> getServiceCategory(List<ServiceCategoryDto> serviceCategories, String serviceId) {
         return serviceCategories.stream()
                 .filter(serviceCategory -> serviceCategory.itemIds().contains(serviceId))
-                .findFirst()
-                .map(ServiceCategoryDto::name)
-                .orElse("");
-
+                .findFirst();
     }
 
-    private List<ServiceCategoryDto> getServiceCategories(List<ServiceDto> hairdresserServices) {
-        var hairdresserServiceIds = collectHairdresserServiceIds(hairdresserServices);
+    private List<ServiceCategoryDto> getServiceCategories(List<ServiceDto> services) {
+        var hairdresserServiceIds = collectHairdresserServiceIds(services);
         var findQuery = ServiceCategoryFindQuery.withServiceIds(hairdresserServiceIds);
         var pageRequest = PageRequest.of(0, Integer.MAX_VALUE);
         return serviceCategoryFacade.findAll(findQuery, pageRequest).getContent();
@@ -85,11 +106,11 @@ public class ReservationResponseAdapter {
                 .collect(toSet());
     }
 
-    private List<ServiceResponse> collectSelectedServiceResponses(List<ServiceDto> selectedServices, Map<String, ServiceResponse> serviceIdToServiceResponse) {
-        if (isNullOrEmpty(selectedServices)) {
+    private List<ServiceResponse> collectServiceResponses(List<ServiceDto> services, Map<String, ServiceResponse> serviceIdToServiceResponse) {
+        if (isNullOrEmpty(services)) {
             return null;
         }
-        return selectedServices.stream()
+        return services.stream()
                 .map(ServiceDto::id)
                 .map(serviceIdToServiceResponse::get)
                 .filter(Objects::nonNull)

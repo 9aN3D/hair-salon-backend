@@ -3,9 +3,6 @@ package pl.edu.wit.hairsalon.scheduledEvent.query;
 import pl.edu.wit.hairsalon.sharedKernel.dto.DateRangeDto;
 
 import java.time.LocalDateTime;
-import java.util.function.Consumer;
-
-import static java.util.Objects.nonNull;
 
 public record ScheduledEventFindQuery(
         LocalDateTime startDateTime,
@@ -20,30 +17,6 @@ public record ScheduledEventFindQuery(
                 .overlapsTimes(dateRange)
                 .hairdresserId(hairdresserId)
                 .build();
-    }
-
-    public void ifIncludesStartAndEndDateTimesPresent(Consumer<DateRangeDto> action) {
-        if (nonNull(startDateTime) && nonNull(endDateTime)) {
-            action.accept(new DateRangeDto(startDateTime, endDateTime));
-        }
-    }
-
-    public void ifOverlapsTimesPresent(Consumer<DateRangeDto> action) {
-        if (nonNull(overlapsTimes) && nonNull(overlapsTimes.start()) && nonNull(overlapsTimes.end())) {
-            action.accept(overlapsTimes);
-        }
-    }
-
-    public void ifHairdresserIdPresent(Consumer<String> action) {
-        if (nonNull(hairdresserId) && !hairdresserId.trim().isBlank()) {
-            action.accept(hairdresserId);
-        }
-    }
-
-    public void ifReservationIdPresent(Consumer<String> action) {
-        if (nonNull(reservationId) && !reservationId.trim().isBlank()) {
-            action.accept(reservationId);
-        }
     }
 
     public static Builder builder() {

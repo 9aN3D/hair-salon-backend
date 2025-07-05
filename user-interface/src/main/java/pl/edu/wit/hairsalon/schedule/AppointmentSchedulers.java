@@ -16,7 +16,7 @@ class AppointmentSchedulers {
     }
 
     //At every 30th minute
-    @Scheduled(cron = "* 30 * * * *")
+    @Scheduled(cron = "0 30 * * * *")
     void remindAppointments() {
         appointmentFacade.reminds(PageRequest.of(0, 50, Sort.Direction.DESC, "creationDateTime"));
     }

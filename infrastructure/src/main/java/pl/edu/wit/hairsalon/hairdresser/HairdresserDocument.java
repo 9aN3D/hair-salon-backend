@@ -18,15 +18,20 @@ class HairdresserDocument {
     private String photoId;
 
     private Set<String> serviceIds;
+    
+    private Set<EmbeddableHairdresserDaySchedule> daySchedules;
 
     HairdresserDocument() {
     }
 
-    HairdresserDocument(String id, EmbeddableHairdresserFullName fullName, String photoId, Set<String> serviceIds) {
+    HairdresserDocument(String id, EmbeddableHairdresserFullName fullName,
+                        String photoId, Set<String> serviceIds,
+                        Set<EmbeddableHairdresserDaySchedule> daySchedules) {
         this.id = id;
         this.fullName = fullName;
         this.photoId = photoId;
         this.serviceIds = serviceIds;
+        this.daySchedules = daySchedules;
     }
 
     public String getId() {
@@ -61,6 +66,14 @@ class HairdresserDocument {
         this.serviceIds = serviceIds;
     }
 
+    public Set<EmbeddableHairdresserDaySchedule> getDaySchedules() {
+        return daySchedules;
+    }
+
+    public void setDaySchedules(Set<EmbeddableHairdresserDaySchedule> daySchedules) {
+        this.daySchedules = daySchedules;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -83,6 +96,7 @@ class HairdresserDocument {
         private EmbeddableHairdresserFullName fullName;
         private String photoId;
         private Set<String> serviceIds;
+        private Set<EmbeddableHairdresserDaySchedule> daySchedules;
 
         Builder id(String id) {
             this.id = id;
@@ -104,8 +118,13 @@ class HairdresserDocument {
             return this;
         }
 
+        Builder daySchedules(Set<EmbeddableHairdresserDaySchedule> daySchedules) {
+            this.daySchedules = daySchedules;
+            return this;
+        }
+
         HairdresserDocument build() {
-            return new HairdresserDocument(id, fullName, photoId, serviceIds);
+            return new HairdresserDocument(id, fullName, photoId, serviceIds, daySchedules);
         }
 
     }

@@ -1,11 +1,16 @@
 package pl.edu.wit.hairsalon.hairdresser.command;
 
+import pl.edu.wit.hairsalon.sharedKernel.dto.TimeRangeDto;
+
+import java.time.DayOfWeek;
+import java.util.Map;
 import java.util.Set;
 
 public record HairdresserCreateCommand(
         String name,
         String surname,
-        Set<String> services
+        Set<String> services,
+        Map<DayOfWeek, TimeRangeDto> weeklySchedule
 ) {
 
     public static Builder builder() {
@@ -17,6 +22,7 @@ public record HairdresserCreateCommand(
         private String name;
         private String surname;
         private Set<String> services;
+        private Map<DayOfWeek, TimeRangeDto> weeklySchedule;
 
         public Builder name(String name) {
             this.name = name;
@@ -33,8 +39,13 @@ public record HairdresserCreateCommand(
             return this;
         }
 
+        public Builder weeklySchedule(Map<DayOfWeek, TimeRangeDto> weeklySchedule) {
+            this.weeklySchedule = weeklySchedule;
+            return this;
+        }
+
         public HairdresserCreateCommand build() {
-            return new HairdresserCreateCommand(name, surname, services);
+            return new HairdresserCreateCommand(name, surname, services, weeklySchedule);
         }
     }
 }

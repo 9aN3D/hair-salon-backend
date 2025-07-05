@@ -9,6 +9,8 @@ import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.NOTIFICATIONS_EMAIL_
 import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.NOTIFICATIONS_EMAIL_SMTP_HOST;
 import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.NOTIFICATIONS_EMAIL_SMTP_PORT;
 import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.NOTIFICATIONS_SMS_API_TOKEN;
+import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.RESERVATION_GAP_MINUTES;
+import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.RESERVATION_INTERVAL_MINUTES;
 import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.SALON_ADDRESS_APARTMENT_NUMBER;
 import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.SALON_ADDRESS_CITY;
 import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.SALON_ADDRESS_COUNTRY;
@@ -54,6 +56,10 @@ public enum SettingGroupDto {
     )),
     NOTIFICATION_SMS(Set.of(
             NOTIFICATIONS_SMS_API_TOKEN
+    )),
+    RESERVATION(Set.of(
+            RESERVATION_GAP_MINUTES,
+            RESERVATION_INTERVAL_MINUTES
     ));
 
     private final Set<SettingIdDto> settingIds;

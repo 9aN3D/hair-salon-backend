@@ -17,6 +17,7 @@ import pl.edu.wit.hairsalon.service.command.ServiceCreateCommand;
 import pl.edu.wit.hairsalon.service.command.ServiceUpdateCommand;
 import pl.edu.wit.hairsalon.service.query.ServiceFindQuery;
 import pl.edu.wit.hairsalon.web.adapter.ServiceResponseAdapter;
+import pl.edu.wit.hairsalon.web.response.PagedResponse;
 import pl.edu.wit.hairsalon.web.response.ServiceResponse;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
@@ -53,7 +54,7 @@ class ServiceController {
 
     @GetMapping(value = "/services", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    Page<ServiceResponse> findAll(@NotNull ServiceFindQuery findQuery, @NotNull @ParameterObject @PageableDefault(size = 100, sort = "name") Pageable pageable) {
+    PagedResponse<ServiceResponse> findAll(@NotNull ServiceFindQuery findQuery, @NotNull @ParameterObject @PageableDefault(size = 100, sort = "name") Pageable pageable) {
         return serviceResponseAdapter.findAll(findQuery, pageable);
     }
 

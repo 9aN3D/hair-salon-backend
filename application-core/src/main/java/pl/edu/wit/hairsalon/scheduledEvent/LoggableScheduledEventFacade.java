@@ -8,6 +8,8 @@ import pl.edu.wit.hairsalon.scheduledEvent.command.ScheduledEventCreateCommand;
 import pl.edu.wit.hairsalon.scheduledEvent.dto.ScheduledEventDto;
 import pl.edu.wit.hairsalon.scheduledEvent.query.ScheduledEventFindQuery;
 
+import java.util.List;
+
 class LoggableScheduledEventFacade implements ScheduledEventFacade {
 
     private final Logger log;
@@ -31,6 +33,14 @@ class LoggableScheduledEventFacade implements ScheduledEventFacade {
         log.trace("Deleting scheduled event {reservationId: {}}", reservationId);
         delegate.delete(reservationId);
         log.info("Deleted scheduled event {reservationId: {}}", reservationId);
+    }
+
+    @Override
+    public List<ScheduledEventDto> findAll(ScheduledEventFindQuery findQuery) {
+        log.trace("Searching scheduled events {findQuery: {}}", findQuery);
+        var result = delegate.findAll(findQuery);
+        log.info("Searched scheduled events {size: {}}", result.size());
+        return result;
     }
 
     @Override

@@ -63,6 +63,7 @@ class MongoHairdresserAdapter implements HairdresserPort {
         return QuerydslPredicateBuilder.create()
                 .equals(qHairdresser.id, findQuery.id())
                 .like(List.of(qHairdresser.fullName.name, qHairdresser.fullName.surname), findQuery.fullName())
+                .anyIn(qHairdresser.serviceIds, findQuery.serviceIds())
                 .build();
     }
 

@@ -5,11 +5,8 @@ import pl.edu.wit.hairsalon.sharedKernel.dto.DateRangeDto;
 
 import java.time.LocalDateTime;
 import java.util.Set;
-import java.util.function.Consumer;
 
-import static java.util.Objects.nonNull;
 import static pl.edu.wit.hairsalon.appointment.dto.AppointmentStatusDto.RESERVED;
-import static pl.edu.wit.hairsalon.sharedKernel.CollectionHelper.nonNullOrEmpty;
 
 public record AppointmentFindQuery(
         DateRangeDto includesTimes,
@@ -64,60 +61,6 @@ public record AppointmentFindQuery(
                 .hairdresserId(hairdresserId)
                 .statuses(Set.of(RESERVED))
                 .build();
-    }
-
-    public void ifIncludesTimesPresent(Consumer<DateRangeDto> action) {
-        if (nonNull(includesTimes) && nonNull(includesTimes.start()) && nonNull(includesTimes.end())) {
-            action.accept(includesTimes);
-        }
-    }
-
-    public void ifHairdresserIdPresent(Consumer<String> action) {
-        if (nonNull(hairdresserId) && !hairdresserId.trim().isBlank()) {
-            action.accept(hairdresserId);
-        }
-    }
-
-    public void ifStatusesPresent(Consumer<Set<AppointmentStatusDto>> action) {
-        if (nonNullOrEmpty(statuses)) {
-            action.accept(statuses);
-        }
-    }
-
-    public void ifMemberIdPresent(Consumer<String> action) {
-        if (nonNull(memberId) && !memberId.trim().isBlank()) {
-            action.accept(memberId);
-        }
-    }
-
-    public void ifAppointmentIdPresent(Consumer<String> action) {
-        if (nonNull(appointmentId) && !appointmentId.trim().isBlank()) {
-            action.accept(appointmentId);
-        }
-    }
-
-    public void ifStartTimeGreaterThanEqualPresent(Consumer<LocalDateTime> action) {
-        if (nonNull(startTimeGreaterThanEqual)) {
-            action.accept(startTimeGreaterThanEqual);
-        }
-    }
-
-    public void ifStartTimeLessThanPresent(Consumer<LocalDateTime> action) {
-        if (nonNull(startTimeLessThan)) {
-            action.accept(startTimeLessThan);
-        }
-    }
-
-    public void ifExceptStatusesPresent(Consumer<Set<AppointmentStatusDto>> action) {
-        if (nonNullOrEmpty(exceptStatuses)) {
-            action.accept(exceptStatuses);
-        }
-    }
-
-    public void ifNotificationSentPresent(Consumer<Boolean> action) {
-        if (nonNull(notificationSent)) {
-            action.accept(notificationSent);
-        }
     }
 
     public static Builder builder() {

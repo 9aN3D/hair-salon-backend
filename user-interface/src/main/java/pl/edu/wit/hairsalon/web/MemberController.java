@@ -17,6 +17,7 @@ import pl.edu.wit.hairsalon.member.query.MemberFindQuery;
 import pl.edu.wit.hairsalon.sharedKernel.dto.Identity;
 import pl.edu.wit.hairsalon.web.adapter.MemberResponseAdapter;
 import pl.edu.wit.hairsalon.web.response.MemberResponse;
+import pl.edu.wit.hairsalon.web.response.PagedResponse;
 
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -46,7 +47,7 @@ class MemberController {
     @GetMapping(value = "/admin/members")
     @ResponseStatus(OK)
     @SecurityRequirement(name = "hair-salon-API")
-    Page<MemberResponse> findAll(@NotNull MemberFindQuery findQuery, @NotNull Pageable pageable) {
+    PagedResponse<MemberResponse> findAll(@NotNull MemberFindQuery findQuery, @NotNull Pageable pageable) {
         return memberResponseAdapter.findAll(findQuery, pageable);
     }
 

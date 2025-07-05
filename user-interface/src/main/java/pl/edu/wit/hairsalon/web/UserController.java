@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.wit.hairsalon.user.query.UserFindQuery;
 import pl.edu.wit.hairsalon.web.adapter.UserResponseAdapter;
+import pl.edu.wit.hairsalon.web.response.PagedResponse;
 import pl.edu.wit.hairsalon.web.response.UserResponse;
 
 import static org.springframework.http.HttpStatus.OK;
@@ -35,7 +36,7 @@ class UserController {
 
     @GetMapping(value = "/admin/users")
     @ResponseStatus(OK)
-    Page<UserResponse> findAll(@NotNull UserFindQuery findQuery, @NotNull Pageable pageable) {
+    PagedResponse<UserResponse> findAll(@NotNull UserFindQuery findQuery, @NotNull Pageable pageable) {
         return userResponseAdapter.findAll(findQuery, pageable);
     }
 

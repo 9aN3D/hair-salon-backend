@@ -1,98 +1,95 @@
 package pl.edu.wit.hairsalon.sharedKernel.domain;
 
-import pl.edu.wit.hairsalon.sharedKernel.SelfValidator;
 import pl.edu.wit.hairsalon.sharedKernel.dto.DateRangeDto;
-import pl.edu.wit.hairsalon.sharedKernel.exception.ValidationException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
 
-public record DateRange(LocalDateTime start, LocalDateTime end) implements Comparable<DateRange>, SelfValidator<DateRange> {
+public record DateRange(Range<LocalDateTime> range) implements Range<LocalDateTime> {
 
     public DateRange(DateRangeDto arg) {
-        this(arg.start(), arg.end());
+        this(new Range.DefaultRange<>(arg.start(), arg.end()));
     }
 
-    public boolean overlaps(DateRange arg) {
-        return arg.includes(start) || arg.includes(end) || this.includes(arg);
+    public DateRange(LocalDateTime start, LocalDateTime end) {
+        this(new Range.DefaultRange<>(start, end));
     }
 
-    public boolean includes(DateRange arg) {
-        return this.includes(arg.start) && this.includes(arg.end);
+    @Override
+    public boolean overlaps(Range<LocalDateTime> arg) {
+        requireNonNull(arg, "Time range must not be null");
+        return range.overlaps(arg);
     }
 
+    @Override
+    public boolean includes(Range<LocalDateTime> arg) {
+        requireNonNull(arg, "Time range must not be null");
+        return range.includes(arg);
+    }
+
+    @Override
     public boolean includes(LocalDateTime arg) {
-        return !arg.isBefore(start) && !arg.isAfter(end);
+        return range.includes(arg);
     }
 
-    public boolean isNotEmpty() {
-        return !isEmpty();
-    }
-
+    @Override
     public boolean isEmpty() {
-        if (isNull(start) || isNull(end)) {
-            return true;
-        }
-        return start.isAfter(end);
+        return range.isEmpty();
     }
 
+    @Override
     public LocalDateTime start() {
-        return start;
+        return range.start();
     }
 
+    @Override
     public LocalDateTime end() {
-        return end;
+        return range.end();
     }
 
     public DateRangeDto toDto() {
-        return new DateRangeDto(start, end);
+        return new DateRangeDto(range.start(), range.end());
     }
 
     public String formatStart(String pattern) {
-        return format(start, pattern);
+        return format(range.start(), pattern);
     }
 
     public String formatEnd(String pattern) {
-        return format(end, pattern);
+        return format(range.end(), pattern);
     }
 
     @Override
     public DateRange validate() {
-        requireNonNull(start, "Date range start must not be null");
-        requireNonNull(end, "Date range end must not be null");
-        if (isEmpty()) {
-            throw new ValidationException("Start is after end");
-        }
+        requireNonNull(range.start(), "Date range start must not be null");
+        requireNonNull(range.end(), "Date range end must not be null");
+        range.validate();
         return this;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof DateRange)) return false;
-        var other = (DateRange) o;
-        return start.equals(other.start) && end.equals(other.end);
+        if (!(o instanceof DateRange(Range<LocalDateTime> arg))) {
+            return false;
+        }
+        return range.equals(arg);
     }
 
     @Override
     public int hashCode() {
-        return start.hashCode();
+        return range.hashCode();
     }
 
     @Override
     public String toString() {
-        return isEmpty()
-                ? "Empty date range"
-                : start.toString() + " - " + end.toString();
+        return range.toString();
     }
 
     @Override
-    public int compareTo(DateRange arg) {
-        return start.equals(arg.start)
-                ? end.compareTo(arg.end)
-                : start.compareTo(arg.start);
+    public int compareTo(Range<LocalDateTime> arg) {
+        return range.compareTo(arg);
     }
 
     private String format(LocalDateTime dateTime, String pattern) {

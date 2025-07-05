@@ -1,12 +1,17 @@
 package pl.edu.wit.hairsalon.reservation.command;
 
-import java.time.LocalDateTime;
+import pl.edu.wit.hairsalon.reservation.dto.ReservationCalculateStepDto;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Set;
 
 public record ReservationCalculateCommand(
+        ReservationCalculateStepDto step,
+        LocalDate date,
+        Set<String> selectedServiceIds,
         String hairdresserId,
-        LocalDateTime startDateTime,
-        Set<String> selectedServiceIds
+        LocalTime startTime
 ) {
 
     public static Builder builder() {
@@ -15,17 +20,29 @@ public record ReservationCalculateCommand(
 
     public static class Builder {
 
+        private ReservationCalculateStepDto step;
         private String hairdresserId;
-        private LocalDateTime startDateTime;
+        private LocalDate date;
+        private LocalTime startTime;
         private Set<String> selectedServiceIds;
 
+        public Builder step(ReservationCalculateStepDto step) {
+            this.step = step;
+            return this;
+        }
+        
         public Builder hairdresserId(String hairdresserId) {
             this.hairdresserId = hairdresserId;
             return this;
         }
 
-        public Builder startDateTime(LocalDateTime startDateTime) {
-            this.startDateTime = startDateTime;
+        public Builder date(LocalDate date) {
+            this.date = date;
+            return this;
+        }
+
+        public Builder startTime(LocalTime startTime) {
+            this.startTime = startTime;
             return this;
         }
 
@@ -35,8 +52,9 @@ public record ReservationCalculateCommand(
         }
 
         public ReservationCalculateCommand build() {
-            return new ReservationCalculateCommand(hairdresserId, startDateTime, selectedServiceIds);
+            return new ReservationCalculateCommand(step, date, selectedServiceIds, hairdresserId, startTime);
         }
+
     }
-    
+
 }

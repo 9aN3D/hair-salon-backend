@@ -6,6 +6,8 @@ import pl.edu.wit.hairsalon.scheduledEvent.command.ScheduledEventCreateCommand;
 import pl.edu.wit.hairsalon.scheduledEvent.dto.ScheduledEventDto;
 import pl.edu.wit.hairsalon.scheduledEvent.query.ScheduledEventFindQuery;
 
+import java.util.List;
+
 import static java.util.Objects.requireNonNull;
 
 class AppScheduledEventFacade implements ScheduledEventFacade {
@@ -29,6 +31,12 @@ class AppScheduledEventFacade implements ScheduledEventFacade {
     public void delete(String reservationId) {
         requireNonNull(reservationId, "Reservation id must not be null");
         scheduledEventPort.deleteByReservationId(reservationId);
+    }
+
+    @Override
+    public List<ScheduledEventDto> findAll(ScheduledEventFindQuery findQuery) {
+        requireNonNull(findQuery, "Scheduled event find query must not be null");
+        return scheduledEventPort.findAll(findQuery);
     }
 
     @Override

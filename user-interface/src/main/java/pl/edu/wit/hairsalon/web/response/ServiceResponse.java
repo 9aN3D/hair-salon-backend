@@ -3,6 +3,7 @@ package pl.edu.wit.hairsalon.web.response;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
+import pl.edu.wit.hairsalon.serviceCategory.dto.ServiceCategoryDto;
 import pl.edu.wit.hairsalon.sharedKernel.dto.MoneyDto;
 
 import java.util.Objects;
@@ -14,7 +15,8 @@ public record ServiceResponse(
         @NotBlank String name,
         @NotNull MoneyDto price,
         @NotNull Long durationInMinutes,
-        String categoryName
+        String categoryName,
+        Integer categoryOrder
 ) {
 
     @Override
@@ -37,13 +39,14 @@ public record ServiceResponse(
                 .build();
     }
 
-    public static ServiceResponse of(ServiceDto dto, String categoryName) {
+    public static ServiceResponse of(ServiceDto dto, ServiceCategoryDto category) {
         return builder()
                 .id(dto.id())
                 .name(dto.name())
                 .price(dto.price())
                 .durationInMinutes(dto.durationInMinutes())
-                .categoryName(categoryName)
+                .categoryName(category.name())
+                .categoryOrder(category.order())
                 .build();
     }
 
@@ -58,6 +61,7 @@ public record ServiceResponse(
         private MoneyDto price;
         private Long durationInMinutes;
         private String categoryName;
+        private Integer categoryOrder;
 
         public Builder id(String id) {
             this.id = id;
@@ -84,13 +88,18 @@ public record ServiceResponse(
             return this;
         }
 
+        public Builder categoryOrder(Integer categoryOrder) {
+            this.categoryOrder = categoryOrder;
+            return this;
+        }
+
         public ServiceResponse build() {
             requireNonNull(id, "id must not be null");
             requireNonNull(name, "name must not be null");
             requireNonNull(price, "price must not be null");
             requireNonNull(durationInMinutes, "durationInMinutes must not be null");
 
-            return new ServiceResponse(id, name, price, durationInMinutes, categoryName);
+            return new ServiceResponse(id, name, price, durationInMinutes, categoryName, categoryOrder);
         }
 
     }

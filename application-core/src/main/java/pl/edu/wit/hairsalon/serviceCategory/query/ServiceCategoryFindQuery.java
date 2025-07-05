@@ -3,10 +3,6 @@ package pl.edu.wit.hairsalon.serviceCategory.query;
 import pl.edu.wit.hairsalon.serviceCategory.dto.ServiceCategoryStatusDto;
 
 import java.util.Set;
-import java.util.function.Consumer;
-
-import static java.util.Objects.nonNull;
-import static pl.edu.wit.hairsalon.sharedKernel.CollectionHelper.nonNullOrEmpty;
 
 public record ServiceCategoryFindQuery(
         String name,
@@ -49,36 +45,6 @@ public record ServiceCategoryFindQuery(
         return ServiceCategoryFindQuery.builder()
                 .order(order)
                 .build();
-    }
-
-    public void ifNamePresent(Consumer<String> action) {
-        if (nonNull(name) && !name.isBlank()) {
-            action.accept(name);
-        }
-    }
-
-    public void ifServiceCategoryIdPresent(Consumer<String> action) {
-        if (nonNull(serviceCategoryId) && !name.isBlank()) {
-            action.accept(serviceCategoryId);
-        }
-    }
-
-    public void ifStatusPresent(Consumer<ServiceCategoryStatusDto> action) {
-        if (nonNull(status)) {
-            action.accept(status);
-        }
-    }
-
-    public void ifServiceIdsPresent(Consumer<Set<String>> action) {
-        if (nonNullOrEmpty(serviceIds)) {
-            action.accept(serviceIds);
-        }
-    }
-
-    public void ifOrderPresent(Consumer<Integer> action) {
-        if (nonNull(order)) {
-            action.accept(order);
-        }
     }
 
     public static Builder builder() {

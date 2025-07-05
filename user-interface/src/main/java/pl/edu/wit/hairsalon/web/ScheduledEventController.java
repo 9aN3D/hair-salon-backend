@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.wit.hairsalon.scheduledEvent.query.ScheduledEventFindQuery;
 import pl.edu.wit.hairsalon.web.adapter.ScheduledEventResponseAdapter;
+import pl.edu.wit.hairsalon.web.response.PagedResponse;
 import pl.edu.wit.hairsalon.web.response.ScheduledEventResponse;
 
 import static org.springframework.http.HttpStatus.OK;
@@ -26,7 +27,7 @@ class ScheduledEventController {
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    Page<ScheduledEventResponse> getAll(@NotNull ScheduledEventFindQuery findQuery, Pageable pageable) {
+    PagedResponse<ScheduledEventResponse> getAll(@NotNull ScheduledEventFindQuery findQuery, Pageable pageable) {
         return scheduledEventResponseAdapter.findAll(findQuery, pageable);
     }
 

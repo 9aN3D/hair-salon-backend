@@ -9,7 +9,10 @@ import pl.edu.wit.hairsalon.scheduledEvent.query.ScheduledEventFindQuery;
 import pl.edu.wit.hairsalon.sharedKernel.QuerydslPredicateBuilder;
 import pl.edu.wit.hairsalon.sharedKernel.dto.DateRangeDto;
 
+import java.util.List;
 import java.util.Optional;
+
+import static java.util.stream.StreamSupport.stream;
 
 @Repository
 class MongoScheduledEventAdapter implements ScheduledEventPort {
@@ -31,6 +34,18 @@ class MongoScheduledEventAdapter implements ScheduledEventPort {
     @Override
     public void deleteByReservationId(String reservationId) {
         repository.deleteByReservationId(reservationId);
+    }
+
+    @Override
+    public List<ScheduledEventDto> findAll(ScheduledEventFindQuery findQuery) {
+        return stream(
+                buildPredicate(findQuery)
+                        .map(repository::findAll)
+                        .orElseGet(repository::findAll)
+                        .spliterator(),
+                false)
+                .map(mapper::toDto)
+                .toList();
     }
 
     @Override

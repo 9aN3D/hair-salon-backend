@@ -8,6 +8,8 @@ import pl.edu.wit.hairsalon.sharedKernel.domain.FullName;
 import pl.edu.wit.hairsalon.sharedKernel.domain.NotBlankString;
 import pl.edu.wit.hairsalon.sharedKernel.exception.ValidationException;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,18 +24,20 @@ record ReservationHairdresser(
         String hairdresserId,
         FullName fullName,
         String photoId,
+        List<LocalTime> availableStartTimes,
         List<ReservationHairdresserService> services
 ) implements SelfValidator<ReservationHairdresser> {
 
-    ReservationHairdresser(String hairdresserId, FullName fullName, String photoId) {
-        this(hairdresserId, fullName, photoId, new ArrayList<>());
+    ReservationHairdresser(String hairdresserId, FullName fullName, String photoId, List<LocalTime> availableStartTimes) {
+        this(hairdresserId, fullName, photoId, availableStartTimes, new ArrayList<>());
     }
 
-    ReservationHairdresser(HairdresserDto arg) {
+    ReservationHairdresser(HairdresserDto arg, List<LocalTime> availableStartTimes) {
         this(
                 arg.id(),
                 new FullName(arg.fullName()),
-                arg.photoId()
+                arg.photoId(),
+                availableStartTimes
         );
     }
 
@@ -41,7 +45,8 @@ record ReservationHairdresser(
         this(
                 arg.id(),
                 new FullName(arg.fullName()),
-                arg.photoId()
+                arg.photoId(),
+                arg.availableStartTimes()
         );
         addAllServices(arg.services());
     }
@@ -59,6 +64,23 @@ record ReservationHairdresser(
 
     String id() {
         return hairdresserId;
+    }
+
+    boolean hasAvailableStartTimesForDate(LocalDate date) {
+        return !getAvailableStartTimesForDate(date).isEmpty();
+    }
+
+    List<LocalTime> getAvailableStartTimesForDate(LocalDate date) {
+        var today = LocalDate.now();
+        if (date.isBefore(today)) {
+            return List.of();
+        }
+        var timeNow = LocalTime.now();
+        return date.equals(today)
+                ? availableStartTimes.stream()
+                .filter(value -> value.isAfter(timeNow))
+                .toList()
+                : availableStartTimes;
     }
 
     ReservationHairdresser addAllServices(List<ServiceDto> args) {
@@ -80,6 +102,7 @@ record ReservationHairdresser(
                 .id(hairdresserId)
                 .fullName(fullName.toDto())
                 .photoId(photoId)
+                .availableStartTimes(availableStartTimes)
                 .services(services.stream()
                         .map(ReservationHairdresserService::toDto)
                         .collect(toList()))
@@ -89,10 +112,15 @@ record ReservationHairdresser(
     @Override
     public ReservationHairdresser validate() {
         validate(new NotBlankString(hairdresserId), fullName);
+        requireNonNull(availableStartTimes, "Reservation hairdresser availableStartTimes must not null");
         if (services.isEmpty()) {
             throw new ValidationException("Reservation hairdresser services size must not be equal zero");
         }
         return this;
+    }
+
+    public boolean hasSameId(String arg) {
+        return hairdresserId.equals(arg);
     }
 
     static Builder builder() {
@@ -104,6 +132,7 @@ record ReservationHairdresser(
         private String hairdresserId;
         private FullName fullName;
         private String photoId;
+        private List<LocalTime> availableStartTimes;
         private List<ReservationHairdresserService> services;
 
         Builder hairdresserId(String hairdresserId) {
@@ -121,13 +150,18 @@ record ReservationHairdresser(
             return this;
         }
 
+        Builder availableStartTimes(List<LocalTime> availableStartTimes) {
+            this.availableStartTimes = availableStartTimes;
+            return this;
+        }
+
         Builder services(List<ReservationHairdresserService> services) {
             this.services = services;
             return this;
         }
 
         ReservationHairdresser build() {
-            return new ReservationHairdresser(hairdresserId, fullName, photoId, services);
+            return new ReservationHairdresser(hairdresserId, fullName, photoId, availableStartTimes, services);
         }
 
     }

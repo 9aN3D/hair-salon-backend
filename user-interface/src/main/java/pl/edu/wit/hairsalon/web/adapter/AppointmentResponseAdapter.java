@@ -16,6 +16,7 @@ import pl.edu.wit.hairsalon.web.response.AppointmentConciseResponse;
 import pl.edu.wit.hairsalon.web.response.AppointmentResponse;
 import pl.edu.wit.hairsalon.web.response.HairdresserResponse;
 import pl.edu.wit.hairsalon.web.response.LinkAddingGoogleCalendarEventResponse;
+import pl.edu.wit.hairsalon.web.response.PagedResponse;
 
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
@@ -48,9 +49,11 @@ public class AppointmentResponseAdapter {
         this.settingFacade = settingFacade;
     }
 
-    public Page<AppointmentConciseResponse> findAll(String memberId, AppointmentFindQuery findQuery, Pageable pageable) {
-        return appointmentFacade.findAll(findQuery.withMemberId(memberId), pageable)
-                .map(AppointmentConciseResponse::of);
+    public PagedResponse<AppointmentConciseResponse> findAll(String memberId, AppointmentFindQuery findQuery, Pageable pageable) {
+        return PagedResponse.from(
+                appointmentFacade.findAll(findQuery.withMemberId(memberId), pageable)
+                        .map(AppointmentConciseResponse::of)
+        );
     }
 
     public AppointmentResponse findOne(String memberId, String appointmentId) {

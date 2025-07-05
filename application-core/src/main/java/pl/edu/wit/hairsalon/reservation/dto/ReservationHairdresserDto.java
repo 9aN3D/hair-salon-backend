@@ -3,12 +3,14 @@ package pl.edu.wit.hairsalon.reservation.dto;
 import pl.edu.wit.hairsalon.service.dto.ServiceDto;
 import pl.edu.wit.hairsalon.sharedKernel.dto.FullNameDto;
 
+import java.time.LocalTime;
 import java.util.List;
 
 public record ReservationHairdresserDto(
         String id,
         FullNameDto fullName,
         String photoId,
+        List<LocalTime> availableStartTimes,
         List<ServiceDto> services
 ) {
 
@@ -21,6 +23,7 @@ public record ReservationHairdresserDto(
         private String id;
         private FullNameDto fullName;
         private String photoId;
+        private List<LocalTime> availableStartTimes;
         private List<ServiceDto> services;
 
         public Builder id(String id) {
@@ -38,14 +41,20 @@ public record ReservationHairdresserDto(
             return this;
         }
 
+        public Builder availableStartTimes(List<LocalTime> availableStartTimes) {
+            this.availableStartTimes = availableStartTimes;
+            return this;
+        }
+
         public Builder services(List<ServiceDto> services) {
             this.services = services;
             return this;
         }
 
         public ReservationHairdresserDto build() {
-            return new ReservationHairdresserDto(id, fullName, photoId, services);
+            return new ReservationHairdresserDto(id, fullName, photoId, availableStartTimes, services);
         }
+
     }
-    
+
 }

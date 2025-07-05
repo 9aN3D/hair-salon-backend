@@ -2,6 +2,8 @@ package pl.edu.wit.hairsalon.service.dto;
 
 import pl.edu.wit.hairsalon.sharedKernel.dto.MoneyDto;
 
+import java.time.Duration;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 public record ServiceDto(
@@ -11,6 +13,21 @@ public record ServiceDto(
         Long durationInMinutes
 ) {
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ServiceDto that)) return false;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    public Duration getDurationInMinutes() {
+        return Duration.ofMinutes(durationInMinutes);
+    }
+    
     public static Builder builder() {
         return new Builder();
     }

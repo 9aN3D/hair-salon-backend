@@ -10,6 +10,7 @@ import pl.edu.wit.hairsalon.serviceCategory.command.ServiceCategoryCreateCommand
 import pl.edu.wit.hairsalon.serviceCategory.command.ServiceCategoryUpdateCommand;
 import pl.edu.wit.hairsalon.serviceCategory.dto.ServiceCategoryDto;
 import pl.edu.wit.hairsalon.serviceCategory.query.ServiceCategoryFindQuery;
+import pl.edu.wit.hairsalon.web.response.PagedResponse;
 import pl.edu.wit.hairsalon.web.response.ServiceCategoryResponse;
 import pl.edu.wit.hairsalon.web.response.ServiceResponse;
 
@@ -43,9 +44,11 @@ public class ServiceCategoryResponseAdapter {
         serviceCategoryFacade.update(productCategoryId, command);
     }
 
-    public Page<ServiceCategoryResponse> findAll(ServiceCategoryFindQuery findQuery, Pageable pageable) {
+    public PagedResponse<ServiceCategoryResponse> findAll(ServiceCategoryFindQuery findQuery, Pageable pageable) {
         var serviceCategoryPage = serviceCategoryFacade.findAll(findQuery, pageable);
-        return ifServiceCategoryHasContentPrepareResponse(serviceCategoryPage);
+        return PagedResponse.from(
+                ifServiceCategoryHasContentPrepareResponse(serviceCategoryPage)
+        );
     }
 
     private Page<ServiceCategoryResponse> ifServiceCategoryHasContentPrepareResponse(Page<ServiceCategoryDto> serviceCategoryPage) {

@@ -16,6 +16,7 @@ import pl.edu.wit.hairsalon.serviceCategory.command.ServiceCategoryCreateCommand
 import pl.edu.wit.hairsalon.serviceCategory.command.ServiceCategoryUpdateCommand;
 import pl.edu.wit.hairsalon.serviceCategory.query.ServiceCategoryFindQuery;
 import pl.edu.wit.hairsalon.web.adapter.ServiceCategoryResponseAdapter;
+import pl.edu.wit.hairsalon.web.response.PagedResponse;
 import pl.edu.wit.hairsalon.web.response.ServiceCategoryResponse;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
@@ -48,7 +49,7 @@ class ServiceCategoryController {
 
     @GetMapping(value = "/services/categories", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    Page<ServiceCategoryResponse> findAll(@NotNull ServiceCategoryFindQuery findQuery, @NotNull Pageable pageable) {
+    PagedResponse<ServiceCategoryResponse> findAll(@NotNull ServiceCategoryFindQuery findQuery, @NotNull Pageable pageable) {
         return serviceCategoryResponseAdapter.findAll(findQuery, pageable);
     }
 

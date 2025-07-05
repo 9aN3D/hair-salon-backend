@@ -8,6 +8,11 @@ import pl.edu.wit.hairsalon.hairdresser.dto.HairdresserDto;
 import pl.edu.wit.hairsalon.hairdresser.query.HairdresserFindQuery;
 import pl.edu.wit.hairsalon.uploadableFile.command.FileUploadCommand;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+
 import static java.util.Objects.requireNonNull;
 import static pl.edu.wit.hairsalon.hairdresser.query.HairdresserFindQuery.ofHairdresserId;
 
@@ -17,15 +22,18 @@ class AppHairdresserFacade implements HairdresserFacade {
     private final HairdresserCreator creator;
     private final HairdresserUpdater updater;
     private final HairdresserPhotoUploader photoUploader;
+    private final HairdresserAvailabilityFetcher availabilityFetcher;
 
     AppHairdresserFacade(HairdresserPort hairdresserPort,
                          HairdresserCreator creator,
                          HairdresserUpdater updater,
-                         HairdresserPhotoUploader photoUploader) {
+                         HairdresserPhotoUploader photoUploader,
+                         HairdresserAvailabilityFetcher availabilityFetcher) {
         this.hairdresserPort = hairdresserPort;
         this.creator = creator;
         this.updater = updater;
         this.photoUploader = photoUploader;
+        this.availabilityFetcher = availabilityFetcher;
     }
 
     @Override
@@ -53,6 +61,20 @@ class AppHairdresserFacade implements HairdresserFacade {
     public HairdresserDto findOne(String hairdresserId) {
         requireNonNull(hairdresserId, "Hairdresser id must not be null");
         return hairdresserPort.findOneOrThrow(ofHairdresserId(hairdresserId));
+    }
+
+    @Override
+    public List<LocalTime> getAvailableStartTimes(String hairdresserId, LocalDate date, Duration serviceDuration) {
+        requireNonNull(hairdresserId, "HairdresserId must not be null");
+        requireNonNull(date, "Date must not be null");
+        return availabilityFetcher.getAvailableStartTimes(hairdresserId, date, serviceDuration);
+    }
+
+    @Override
+    public List<Duration> getAvailableTimeDurations(String hairdresserId, LocalDate date) {
+        requireNonNull(hairdresserId, "HairdresserId must not be null");
+        requireNonNull(date, "Date must not be null");
+        return availabilityFetcher.getAvailableTimeDurations(hairdresserId, date);
     }
 
     @Override

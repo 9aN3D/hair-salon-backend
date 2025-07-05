@@ -1,9 +1,5 @@
 package pl.edu.wit.hairsalon.authDetails.query;
 
-import java.util.function.Consumer;
-
-import static java.util.Objects.nonNull;
-
 public record AuthDetailsFindQuery(
         String id,
         String email
@@ -19,19 +15,6 @@ public record AuthDetailsFindQuery(
         return AuthDetailsFindQuery.builder()
                 .email(email)
                 .build();
-    }
-    @Deprecated
-    public void ifIdPresent(Consumer<String> action) {
-        if (nonNull(id)) {
-            action.accept(id);
-        }
-    }
-
-    @Deprecated
-    public void ifEmailPresent(Consumer<String> action) {
-        if (nonNull(email) && !email.isBlank()) {
-            action.accept(email);
-        }
     }
 
     public static Builder builder() {

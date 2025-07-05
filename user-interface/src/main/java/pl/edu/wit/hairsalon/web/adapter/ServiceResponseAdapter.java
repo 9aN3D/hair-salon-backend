@@ -1,12 +1,12 @@
 package pl.edu.wit.hairsalon.web.adapter;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.edu.wit.hairsalon.service.ServiceFacade;
 import pl.edu.wit.hairsalon.service.command.ServiceCreateCommand;
 import pl.edu.wit.hairsalon.service.command.ServiceUpdateCommand;
 import pl.edu.wit.hairsalon.service.query.ServiceFindQuery;
+import pl.edu.wit.hairsalon.web.response.PagedResponse;
 import pl.edu.wit.hairsalon.web.response.ServiceResponse;
 
 @Service
@@ -30,9 +30,11 @@ public class ServiceResponseAdapter {
         return ServiceResponse.of(serviceFacade.findOne(serviceId));
     }
 
-    public Page<ServiceResponse> findAll(ServiceFindQuery findQuery, Pageable pageable) {
-        return serviceFacade.findAll(findQuery, pageable)
-                .map(ServiceResponse::of);
+    public PagedResponse<ServiceResponse> findAll(ServiceFindQuery findQuery, Pageable pageable) {
+        return PagedResponse.from(
+                serviceFacade.findAll(findQuery, pageable)
+                        .map(ServiceResponse::of)
+        );
     }
 
 }

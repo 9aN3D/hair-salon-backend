@@ -18,6 +18,7 @@ import pl.edu.wit.hairsalon.web.adapter.AppointmentResponseAdapter;
 import pl.edu.wit.hairsalon.web.response.AppointmentConciseResponse;
 import pl.edu.wit.hairsalon.web.response.AppointmentResponse;
 import pl.edu.wit.hairsalon.web.response.LinkAddingGoogleCalendarEventResponse;
+import pl.edu.wit.hairsalon.web.response.PagedResponse;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
@@ -36,7 +37,7 @@ class MyAppointmentController {
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    Page<AppointmentConciseResponse> findAll(@Parameter(hidden = true) @AuthenticationPrincipal Identity identity, @NotNull AppointmentFindQuery findQuery, Pageable pageable) {
+    PagedResponse<AppointmentConciseResponse> findAll(@Parameter(hidden = true) @AuthenticationPrincipal Identity identity, @NotNull AppointmentFindQuery findQuery, Pageable pageable) {
         return appointmentResponseAdapter.findAll(identity.id(), findQuery, pageable);
     }
 

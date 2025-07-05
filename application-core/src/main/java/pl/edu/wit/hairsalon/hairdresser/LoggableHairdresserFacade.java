@@ -10,6 +10,11 @@ import pl.edu.wit.hairsalon.hairdresser.dto.HairdresserDto;
 import pl.edu.wit.hairsalon.hairdresser.query.HairdresserFindQuery;
 import pl.edu.wit.hairsalon.uploadableFile.command.FileUploadCommand;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+
 class LoggableHairdresserFacade implements HairdresserFacade {
 
     private final Logger log;
@@ -56,6 +61,22 @@ class LoggableHairdresserFacade implements HairdresserFacade {
         var page = delegate.findAll(findQuery, pageable);
         log.info("Searched hairdressers {numberOfElements: {}}", page.getNumberOfElements());
         return page;
+    }
+
+    @Override
+    public List<LocalTime> getAvailableStartTimes(String hairdresserId, LocalDate date, Duration serviceDuration) {
+        log.trace("Getting hairdresser available start times {hairdresserId: {}, date: {}, serviceDuration: {}}", hairdresserId, date, serviceDuration);
+        var result = delegate.getAvailableStartTimes(hairdresserId, date);
+        log.info("Got hairdresser available start times {numberOfElements: {}}", result.size());
+        return result;
+    }
+
+    @Override
+    public List<Duration> getAvailableTimeDurations(String hairdresserId, LocalDate date) {
+        log.trace("Getting hairdresser available time durations {hairdresserId: {}, date: {}}", hairdresserId, date);
+        var result = delegate.getAvailableTimeDurations(hairdresserId, date);
+        log.info("Got hairdresser available time durations {numberOfElements: {}}", result.size());
+        return result;
     }
 
 }

@@ -28,6 +28,8 @@ class HairdresserUpdater {
                 .id(dto.id())
                 .fullName(getFullName(dto, command))
                 .services(getServices(dto, command))
+                .photoId(dto.photoId())
+                .weeklySchedule(getWeeklySchedule(dto, command))
                 .build();
     }
 
@@ -41,6 +43,12 @@ class HairdresserUpdater {
     private Set<String> getServices(HairdresserDto dto, HairdresserUpdateCommand command) {
         return ofNullable(command.services())
                 .orElseGet(dto::serviceIds);
+    }
+
+    private HairdresserWeeklySchedule getWeeklySchedule(HairdresserDto dto, HairdresserUpdateCommand command) {
+        return new HairdresserWeeklySchedule(
+                ofNullable(command.weeklySchedule()).orElseGet(dto::weeklySchedule)
+        );
     }
 
 }

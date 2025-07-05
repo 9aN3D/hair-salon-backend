@@ -40,11 +40,13 @@ class ReservationCreator {
         return Reservation.builder()
                 .id(idGenerator.generate())
                 .memberId(memberId)
-                .hairdresser(new ReservationHairdresser(reservationCalculation.hairdresser()))
-                .times(new DateRange(reservationCalculation.times()))
+                .hairdresser(reservationCalculation.selectedHairdresser()
+                        .map(ReservationHairdresser::new)
+                        .orElseThrow(() -> new IllegalArgumentException("Hairdresser must not be null")))
+                .times(new DateRange(reservationCalculation.dateTimes()))
                 .selectedServices(toReservationHairdresserService(reservationCalculation.selectedServices()))
                 .totalPrice(reservationCalculation.totalPrice())
-                .creationDateTime(now())
+                .creationDateTime(reservationCalculation.calculationTime())
                 .build();
     }
 
