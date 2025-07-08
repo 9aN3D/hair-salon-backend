@@ -29,6 +29,25 @@ import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 import static pl.edu.wit.hairsalon.sharedKernel.CollectionHelper.isNullOrEmpty;
 
+/**
+ * Adapter odpowiedzialny za przetwarzanie i udostępnianie informacji dotyczących rezerwacji usług w salonie.
+ * <p>
+ * Integruje logikę z warstwy domenowej {@link ReservationFacade}, {@link ServiceCategoryFacade} i {@link UploadableFileFacade},
+ * przekształcając dane domenowe na formaty gotowe do zwrócenia w kontrolerze REST.
+ * </p>
+ *
+ * <p>Główne odpowiedzialności:</p>
+ * <ul>
+ *     <li>Tworzenie rezerwacji przez klienta,</li>
+ *     <li>Obliczanie możliwych opcji rezerwacji (dostępne godziny, usługi, fryzjerzy),</li>
+ *     <li>Ubogacanie danych o usługi z informacjami o kategoriach i zdjęciach.</li>
+ * </ul>
+ *
+ * @see ReservationCalculationResponse
+ * @see HairdresserResponse
+ * @see ServiceResponse
+ */
+
 @Service
 public class ReservationResponseAdapter {
 
@@ -36,6 +55,9 @@ public class ReservationResponseAdapter {
     private final ServiceCategoryFacade serviceCategoryFacade;
     private final UploadableFileFacade uploadableFileFacade;
 
+    /**
+     * Tworzy adapter rezerwacji na podstawie fasad domenowych.
+     */
     public ReservationResponseAdapter(ReservationFacade reservationFacade,
                                       ServiceCategoryFacade serviceCategoryFacade,
                                       UploadableFileFacade uploadableFileFacade) {
@@ -44,10 +66,31 @@ public class ReservationResponseAdapter {
         this.uploadableFileFacade = uploadableFileFacade;
     }
 
+    /**
+     * Tworzy nową rezerwację na podstawie danych użytkownika i komendy.
+     *
+     * @param memberId identyfikator klienta wykonującego rezerwację
+     * @param command  dane wejściowe rezerwacji (np. wybrane usługi, fryzjer, czas)
+     * 
+     * @see ReservationMakeCommand
+     */
     public void make(String memberId, ReservationMakeCommand command) {
         reservationFacade.make(memberId, command);
     }
-
+    /**
+     * Oblicza dostępność usług, fryzjerów i godzin na podstawie podanych danych rezerwacyjnych.
+     * <p>
+     * Wynik zawiera szczegółowe informacje, takie jak możliwe godziny rozpoczęcia, sumaryczną cenę,
+     * dostępnych fryzjerów (z obsługiwanymi usługami) i dostępne usługi z przypisanymi kategoriami.
+     * </p>
+     *
+     * @param memberId identyfikator klienta
+     * @param command  dane wejściowe (np. data, preferencje usługowe)
+     * @return obiekt z obliczoną propozycją rezerwacji
+     * 
+     * @see ReservationCalculateCommand
+     * @see ReservationCalculationResponse
+     */
     public ReservationCalculationResponse calculate(String memberId, ReservationCalculateCommand command) {
         var reservationCalculation = reservationFacade.calculate(memberId, command);
         var serviceIdToServiceResponse = collectServiceIdToServiceResponse(reservationCalculation.availableServices());
@@ -66,18 +109,27 @@ public class ReservationResponseAdapter {
                 .build();
     }
 
+    /**
+     * Tworzy listę odpowiedzi dla fryzjerów z przypisanymi usługami i zdjęciem profilowym.
+     */
     private List<HairdresserResponse> prepareHairdressers(List<ReservationHairdresserDto> availableHairdressers, Collection<ServiceResponse> values) {
         return availableHairdressers.stream()
                 .map(hairdresser -> HairdresserResponse.of(hairdresser, values, uploadableFileFacade::findOne))
                 .toList();
     }
 
+    /**
+     * Tworzy odpowiedź dla wybranego fryzjera, jeśli został podany.
+     */
     private HairdresserResponse prepareHairdresser(ReservationCalculationDto reservationCalculation, Collection<ServiceResponse> values) {
         return reservationCalculation.selectedHairdresser()
                 .map(hairdresser -> HairdresserResponse.of(hairdresser, values, uploadableFileFacade::findOne))
                 .orElse(null);
     }
 
+    /**
+     * Buduje mapę {@code serviceId -> ServiceResponse}, uwzględniając przypisanie do kategorii.
+     */
     private Map<String, ServiceResponse> collectServiceIdToServiceResponse(List<ServiceDto> services) {
         var serviceCategories = getServiceCategories(services);
         return services.stream()
@@ -87,12 +139,18 @@ public class ReservationResponseAdapter {
                 .collect(toMap(ServiceResponse::id, identity()));
     }
 
+    /**
+     * Przypisuje usługę do jej kategorii (jeśli istnieje).
+     */
     private Optional<ServiceCategoryDto> getServiceCategory(List<ServiceCategoryDto> serviceCategories, String serviceId) {
         return serviceCategories.stream()
                 .filter(serviceCategory -> serviceCategory.itemIds().contains(serviceId))
                 .findFirst();
     }
 
+    /**
+     * Pobiera kategorie usług na podstawie ID usług, do których należą.
+     */
     private List<ServiceCategoryDto> getServiceCategories(List<ServiceDto> services) {
         var hairdresserServiceIds = collectHairdresserServiceIds(services);
         var findQuery = ServiceCategoryFindQuery.withServiceIds(hairdresserServiceIds);
@@ -100,12 +158,18 @@ public class ReservationResponseAdapter {
         return serviceCategoryFacade.findAll(findQuery, pageRequest).getContent();
     }
 
+    /**
+     * Zbiera unikalne identyfikatory usług fryzjerskich.
+     */
     private Set<String> collectHairdresserServiceIds(List<ServiceDto> hairdresserServices) {
         return hairdresserServices.stream()
                 .map(ServiceDto::id)
                 .collect(toSet());
     }
 
+    /**
+     * Tworzy listę odpowiedzi usług na podstawie mapy ID -> odpowiedź.
+     */
     private List<ServiceResponse> collectServiceResponses(List<ServiceDto> services, Map<String, ServiceResponse> serviceIdToServiceResponse) {
         if (isNullOrEmpty(services)) {
             return null;

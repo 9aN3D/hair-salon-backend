@@ -1,6 +1,5 @@
 package pl.edu.wit.hairsalon.web.adapter;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.edu.wit.hairsalon.appointment.AppointmentFacade;
@@ -28,6 +27,27 @@ import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.SALON_ADDRESS_STREET
 import static pl.edu.wit.hairsalon.setting.dto.SettingIdDto.SALON_NAME;
 import static pl.edu.wit.hairsalon.socialIntegration.dto.SocialProviderDto.GOOGLE;
 
+/**
+ * Adapter odpowiedzialny za tworzenie odpowiedzi związanych z wizytami użytkownika.
+ * <p>
+ * Łączy dane z różnych fasad (spotkania, fryzjerzy, pliki, ustawienia, integracje zewnętrzne)
+ * w złożone modele odpowiedzi, wykorzystywane przez kontrolery REST.
+ * </p>
+ *
+ * <p>Zakres odpowiedzialności tej klasy obejmuje:</p>
+ * <ul>
+ *     <li>pobieranie paginowanej listy wizyt użytkownika,</li>
+ *     <li>pobieranie szczegółów jednej wizyty,</li>
+ *     <li>rezygnację z wizyty,</li>
+ *     <li>generowanie linku do dodania wizyty do kalendarza Google</li>
+ * </ul>
+ *
+ * @see AppointmentFacade
+ * @see HairdresserFacade
+ * @see SocialIntegrationFacade
+ * @see SettingFacade
+ * @see UploadableFileFacade
+ */
 @Service
 public class AppointmentResponseAdapter {
 
@@ -49,6 +69,14 @@ public class AppointmentResponseAdapter {
         this.settingFacade = settingFacade;
     }
 
+    /**
+     * Zwraca listę wizyt użytkownika w formacie paginowanym.
+     *
+     * @param memberId  identyfikator użytkownika
+     * @param findQuery kryteria wyszukiwania
+     * @param pageable  parametry paginacji
+     * @return lista wizyt w formacie skróconym
+     */
     public PagedResponse<AppointmentConciseResponse> findAll(String memberId, AppointmentFindQuery findQuery, Pageable pageable) {
         return PagedResponse.from(
                 appointmentFacade.findAll(findQuery.withMemberId(memberId), pageable)
@@ -56,6 +84,13 @@ public class AppointmentResponseAdapter {
         );
     }
 
+    /**
+     * Zwraca szczegóły pojedynczej wizyty użytkownika.
+     *
+     * @param memberId      identyfikator użytkownika
+     * @param appointmentId identyfikator wizyty
+     * @return pełna odpowiedź dotycząca wizyty
+     */
     public AppointmentResponse findOne(String memberId, String appointmentId) {
         var appointment = appointmentFacade.findOne(AppointmentFindQuery.with(memberId, appointmentId));
         var hairdresserResponse = HairdresserResponse.of(hairdresserFacade.findOne(appointment.hairdresserId()), uploadableFileFacade::findOne);
@@ -68,10 +103,23 @@ public class AppointmentResponseAdapter {
                 .build();
     }
 
+    /**
+     * Pozwala użytkownikowi zrezygnować z danej wizyty.
+     *
+     * @param memberId      identyfikator użytkownika
+     * @param appointmentId identyfikator wizyty
+     */
     public void resign(String memberId, String appointmentId) {
         appointmentFacade.resign(memberId, appointmentId);
     }
 
+    /**
+     * Generuje link do dodania wizyty do kalendarza Google.
+     *
+     * @param memberId      identyfikator użytkownika
+     * @param appointmentId identyfikator wizyty
+     * @return odpowiedź zawierająca link do Google Calendar
+     */
     public LinkAddingGoogleCalendarEventResponse getLinkAddingGoogleCalendarEvent(String memberId, String appointmentId) {
         var appointment = appointmentFacade.findOne(AppointmentFindQuery.with(memberId, appointmentId));
         return new LinkAddingGoogleCalendarEventResponse(socialIntegrationFacade.generateLinkAddingCalendarEvent(
