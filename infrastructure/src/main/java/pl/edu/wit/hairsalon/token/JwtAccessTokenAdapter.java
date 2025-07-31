@@ -13,16 +13,16 @@ import pl.edu.wit.hairsalon.token.exception.InvalidCredentialsException;
 import static java.lang.String.format;
 
 @Service
-class OAuth2AccessTokenAdapter implements AccessTokenPort {
+class JwtAccessTokenAdapter implements AccessTokenPort {
 
-    private final Logger log = LoggerFactory.getLogger(OAuth2AccessTokenAdapter.class);
+    private final Logger log = LoggerFactory.getLogger(JwtAccessTokenAdapter.class);
     private final AuthenticationManager authManager;
     private final JwtTokenProvider jwtProvider;
     private final UserDetailsService userDetailsService;
     private final RefreshTokenService refreshService;
 
-    public OAuth2AccessTokenAdapter(AuthenticationManager authManager, JwtTokenProvider jwtProvider,
-                                    UserDetailsService userDetailsService, RefreshTokenService refreshService) {
+    public JwtAccessTokenAdapter(AuthenticationManager authManager, JwtTokenProvider jwtProvider,
+                                 UserDetailsService userDetailsService, RefreshTokenService refreshService) {
         this.authManager = authManager;
         this.jwtProvider = jwtProvider;
         this.userDetailsService = userDetailsService;
