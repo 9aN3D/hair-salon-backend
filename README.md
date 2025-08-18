@@ -1,10 +1,10 @@
 # Hair salon backend
 
 ## Temat
-Projekt i implementacja aplikacji internetowej umożliwiająca rezerwację terminu usługi bezpośredniej u fryzjera.
+Projekt i implementacja aplikacji internetowej obsługującej system rezerwacji w zakładzie fryzjerskim.
 
 ## Cel
-Stworzenie serwisu który umożliwiaja rezerwację terminu usługi bezpośredniej u fryzjera. Aplikacja będzie pomagała tworzyć grafik pracy dla fryzjerów. Dla klientów bedzię mozliwość przypomnienia o wizycie przy pomocy wysyłki sms oraz dodatkowa usługą będzie wysyłka zdarzenia na kalendarz Google użytkownika.
+Celem pracy jest stworzenie aplikacji internetowej wspierającej obsługę rezerwacji usług fryzjerskich. Aplikacja umożliwia użytkownikom przeglądanie listy dostępnych usług i usługodawców, przeglądanie grafiku rezerwacji, dokonywanie rezerwacji oraz otrzymywanie powiadomień przypominających. System wspiera również profil klienta, co pozwala na: rezygnację z umówionej wizyty, sprawdzenie wybranego terminu oraz dodanie wizyty do kalendarza Google.
 
 ## OpenAPI
 * [local](http://localhost:9000/swagger-ui/index.html)
