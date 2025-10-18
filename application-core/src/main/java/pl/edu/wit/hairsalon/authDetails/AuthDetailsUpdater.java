@@ -45,7 +45,7 @@ class AuthDetailsUpdater {
         return ofNullable(command.password())
                 .map(Password::new)
                 .map(newPassword -> newPassword.encode(passwordEncoderPort))
-                .orElseGet(() -> new Password(authDetailsDto.email()));
+                .orElseGet(() -> new Password(authDetailsDto.password()));
     }
 
     private AuthDetailsStatus getAuthDetailsStatus(AuthDetailsDto authDetailsDto, AuthDetailsUpdateCommand command) {
