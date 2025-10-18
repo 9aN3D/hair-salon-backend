@@ -66,7 +66,7 @@ class LoggableHairdresserFacade implements HairdresserFacade {
     @Override
     public List<LocalTime> getAvailableStartTimes(String hairdresserId, LocalDate date, Duration serviceDuration) {
         log.trace("Getting hairdresser available start times {hairdresserId: {}, date: {}, serviceDuration: {}}", hairdresserId, date, serviceDuration);
-        var result = delegate.getAvailableStartTimes(hairdresserId, date);
+        var result = delegate.getAvailableStartTimes(hairdresserId, date, serviceDuration);
         log.info("Got hairdresser available start times {numberOfElements: {}}", result.size());
         return result;
     }
