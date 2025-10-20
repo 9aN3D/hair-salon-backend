@@ -55,7 +55,7 @@ class AppointmentNotificationSender {
                 member.id(),
                 SMS,
                 new SmsNotificationContentDto(
-                        member.contact().email(),
+                        member.contact().phone(),
                         prepareNotificationContentBody(appointment, salonName)
                 )
         );
