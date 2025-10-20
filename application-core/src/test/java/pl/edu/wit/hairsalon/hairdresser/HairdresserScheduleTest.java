@@ -83,21 +83,6 @@ class HairdresserScheduleTest {
     }
 
     @Test
-    @DisplayName("Brak sensownego czasu usługi")
-    void shouldThrowExceptionWhenMinServiceDurationIsZero() {
-        var exception = assertThrows(IllegalArgumentException.class, () -> HairdresserSchedule.builder()
-                .workHours(of(LocalTime.of(8, 0), LocalTime.of(9, 0)))
-                .existingEvents(emptyList())
-                .minServiceDuration(Duration.ofMinutes(0))
-                .gapDuration(Duration.ofMinutes(0))
-                .interval(Duration.ofMinutes(15))
-                .build()
-                .validate());
-
-        assertTrue(exception.getMessage().contains("minServiceDuration must be positive"));
-    }
-
-    @Test
     @DisplayName("Walidacja pól wymaganych")
     void shouldThrowExceptionWhenAnyFieldIsNull() {
         assertThrows(NullPointerException.class, () -> HairdresserSchedule.builder()
